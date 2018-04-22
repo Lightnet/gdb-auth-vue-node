@@ -23,7 +23,7 @@ On the front-end,
 - drag in `assets`, like images or music, to add them to your project
 
 On the back-end,
-- your app starts at `server.js`
+- your app starts at `main.js`
 - add frameworks and packages in `package.json`
 - safely store app secrets in `.env` (nobody can see this but you and people you invite)
 
@@ -31,6 +31,7 @@ This app has a database!
 - this app uses sqlite but you can power your apps with [a number of other storage options](https://glitch.com/storage)
 - `sqlite.db` is created and put into the `.data` folder, a hidden directory whose contents aren’t copied when a project is remixed. you can see the contents of `.data` in the console under "advanced options"
 
+# References:
 
 # Links:
  * https://scrimba.com/c/c2gBgt4
@@ -39,8 +40,12 @@ This app has a database!
  * https://github.com/lmangani/gun-scape gundb graph node
  * https://webpack.js.org/configuration/
  * https://appendto.com/2017/07/intro-decentralized-databases-gun-js/
+ * https://samuelabiodun.com/build-a-todo-app-with-node-js-expressjs-mongodb-and-vuejs-part-2/
 
-parent and child events
+# input hanlder:
+ * https://vuejs.org/v2/guide/components-custom-events.html
+
+# parent and child events:
  * https://forum.vuejs.org/t/vue2-0-parent-component-cannot-listen-to-emit-event-in-child-component-by-on/2336
  * https://jsfiddle.net/tiagomatosweb/vqtnpyzw/ 
  * https://jsfiddle.net/dangvanthanh/3m6s54qx/

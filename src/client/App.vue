@@ -39,7 +39,8 @@ export default {
 		return {
 			username:'none',
 			//currentView: 'manage-posts'
-			currentView: 'account',
+			//currentView: 'account',
+			currentView: 'todolistapp',
 			//blogin:false,
 			postid:'default',
 			postlistid:'default'
