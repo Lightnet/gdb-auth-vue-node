@@ -31,6 +31,7 @@ This app has a database!
  * https://www.youtube.com/watch?v=ik_dqXBMBHw
  * https://github.com/lmangani/gun-scape gundb graph node
  * https://webpack.js.org/configuration/
+ * https://appendto.com/2017/07/intro-decentralized-databases-gun-js/
 
 parent and child events
  * https://forum.vuejs.org/t/vue2-0-parent-component-cannot-listen-to-emit-event-in-child-component-by-on/2336

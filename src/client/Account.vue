@@ -1,21 +1,32 @@
 <template id="Account">
 	<div>
-		<h1>My Account!</h1>
+		<label>My Account!</label>
 		<div v-if="bshowlogin">
-			<label> User: </label>
-			<input type="text" class="input" v-model="username" v-on="listeners">
-			<br>
-			<label> Passphrase: </label>
-			<input type="text" class="input" v-model="passphrase" v-on="listeners">
-			<br>
-			<button v-on:click="click_login()">Login</button>
-			<button v-on:click="click_siginup()">Sign Up</button>
+			<div class="form-group">
+				<label> User: </label>
+				<input type="text" class="input" v-model="iusername">
+			</div>
+			<div class="form-group">
+				<label> Passphrase: </label>
+				<input type="text" class="input" v-model="ipassphrase">
+			</div>
+			<div class="form-group">
+				<button v-on:click="click_login()">Login</button>
+				<button v-on:click="click_siginup()">Sign Up</button>
+			</div>
 		</div>
-		<div v-if="bshowlogout">
+		<div v-if="!bshowlogin">
 			<button v-on:click="click_logout()">Logout</button>
+			<button v-on:click="setProfile()">set Profile</button>
+			<button v-on:click="getProfile()">get Profile</button>
 		</div>
-		<div v-if="bshowinfo">
-			<label> User Name: </label>
+		<div v-if="!bshowlogin">
+			<div class="form-group">
+				<label> User Name: {{username}} </label>
+			</div>
+			<div class="form-group">
+				<label> Public Key: {{userpublickey}} </label>
+			</div>
 		</div>
 	</div>
 </template>
@@ -25,14 +36,14 @@
 import bus from './bus';
 
 export default {
-	props:['blogin'],
+	//props:['blogin','username'],
 	data() {
 		return{
-			username:'test',
-			passphrase:'test',
+			iusername:'test',
+			ipassphrase:'test',
+			username:'',
+			userpublickey:'',
 			bshowlogin:true,
-			bshowlogout:false,
-			bshowinfo:false
 		}
 	},
 	watch:{
@@ -45,9 +56,13 @@ export default {
 		//console.log(this);
 		//console.log(this.$parent.$parent);
 		//console.log(this.$parent.$parent.blogin);
-		
 	},
 	computed: {
+		//displayuser:function(){
+			//console.log("this",this);
+			//console.log(this.username);
+			//return this.username + "test";
+		//},
 		listeners () {
         	//console.log("???");
       		return {
@@ -60,35 +75,64 @@ export default {
     	}
 	},
 	created:function(){
-		//console.log(this.blogin);
-		//console.log(this.$data);
-		console.log(this);
+		//console.log(this.$root.blogin);
 		bus.$on('action',this.action);
-		//console.log("action...");
-		//console.log(this);
 		if(this.$root.blogin){
 			this.bshowlogin = false;
-			this.bshowinfo = true;
-			this.bshowlogout = true;
+			this.updateprofile();
 		}else{
 			this.bshowlogin = true;
-			this.bshowinfo = false;
-			this.bshowlogout = false;
 		}
+		//console.log("user",this.$root.user);
 	},
 	methods:{
+		updateprofile:function(){
+			if(this.$root.user.is){
+				this.username = this.$root.user.is.alias;
+				this.userpublickey = this.$root.user.is.pub;
+			}
+		},
+		updateMessage(message) {
+      		// By emitting the 'update' event in every intermediary component we can pass data
+      		// from GrandchildComponent to ChildComponent and from there to the parent
+      		this.$emit('update', message);
+    	},
+		setProfile:function(){
+			let user = this.$root.user;
+			console.log(user);
+
+			var test = {name: "test"};
+			user.get('profile').put(test);
+
+			//user.once(function(data){
+  				//console.log("data:", data); // Alice
+			//});
+		},
+		getProfile:function(){
+			let user = this.$root.user;
+			console.log(user);
+
+			user.get('profile').get('name').once(function(data){
+  				console.log("Name is:", data); // Alice
+			});
+
+			user.get('profile').once(function(data){
+  				console.log("Name is:", data); // Alice
+			});
+			
+		},
 		click_login:function(){
 			//console.log(this);
 			//console.log("this.username",this.username);
 			//console.log("this.passphrase",this.passphrase);
-			bus.$emit('userlogin',{username:this.username,passphrase:this.passphrase});
-			this.passphrase = '';
+			bus.$emit('userlogin',{username:this.iusername,passphrase:this.ipassphrase});
+			this._passphrase = '';
 			//bus.$emit('userlogin',{username:'test',passphrase:'test'});
 			//console.log("login...");
 		},
 		click_siginup:function(){
-			bus.$emit('usersiginup',{username:this.username,passphrase:this.passphrase});
-			this.passphrase = '';
+			bus.$emit('usersiginup',{username:this.iusername,passphrase:this.ipassphrase});
+			this.ipassphrase = '';
 		},
 		click_logout:function(){
 			bus.$emit('userlogout');
@@ -96,14 +140,11 @@ export default {
 		action:function(params){
 			if(params == "hidelogin"){
 				this.bshowlogin = false;
-				this.bshowinfo = true;
-				this.bshowlogout = true;
 				this.$root.blogin = true;
+				this.updateprofile();
 			}
 			if(params == "logout"){
-				this.bshowlogin = true;
-				this.bshowinfo = false;
-				this.bshowlogout = false;
+				//this.bshowlogin = true;
 				this.$root.blogin = false;
 			}
 		}

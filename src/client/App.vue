@@ -21,7 +21,7 @@
 		</div>
 
 		<div class="container"  >
-			<component :is="currentView" v-bind:blogin="blogin"></component>
+			<component :is="currentView" @update="updateMessage"></component>
 		</div>
 	</div>
 </template>
@@ -37,10 +37,18 @@ export default {
     name: 'app',
     data() {
 		return {
+			username:'none',
 			//currentView: 'manage-posts'
 			currentView: 'account',
-			blogin:false
+			//blogin:false,
+			postid:'default',
+			postlistid:'default'
 		}
+	},
+	created:function(){
+		this.$on('update:username',(event)=>{
+			console.log("data child?");
+		});
 	},
 	components: {
 		'manage-posts':managetemplate,
@@ -49,6 +57,11 @@ export default {
 		'account':Account
 	},
 	methods: {
+		updateMessage (message) {
+      		// By emitting the 'update' event in every intermediary component we can pass data
+      		// from GrandchildComponent to ChildComponent and from there to the parent
+      		this.$emit('update', message)
+    	}
 	}
 }
 </script>

@@ -42,14 +42,14 @@ Vue.use(VueGun, {
     import App from "./App.vue";
 
     var app = new Vue({
-      el: '#app',
-      //template:'<App/>',
-      render: h => h(App),
-      components: { App },
-      data: {
+		el: '#app',
+      	//template:'<App/>',
+      	render: h => h(App),
+      	components: { App },
+      	data: {
         blogin: false
-      },
-      created:function(){
+    },
+    created:function(){
         this.user = this.$gun.user();
         //console.log(this.user);
         bus.$on('event', this.handler);
@@ -57,50 +57,56 @@ Vue.use(VueGun, {
         bus.$on('userlogout', this.handler_logout);
         bus.$on('usersiginup', this.usersiginup);
         //this.$on('event', this.clicktest);
-      },
-      //mounted: function() {
-        //console.log(this);
-      //},
-      methods: {
+    },
+    //mounted: function() {
+    	//console.log(this);
+    //},
+    methods: {
         handler_login(params){
-          //this.user = this.$gun.user();
-          console.log(params);
-          //console.log(this);
-          //let blogin = false;
-          this.user.auth(params.username, params.passphrase,function(ack){
-            //console.log(ack);
-            if(ack.err){
-              console.log("fail!");
-            }else{
-              console.log("Authorized!");
-              bus.$emit('action','hidelogin');
-              //blogin = true;
-            }
-          });
-          //this.blogin = blogin;
-          //console.log(this.blogin);
+        	//this.user = this.$gun.user();
+          	//console.log(params);
+          	//console.log(this);
+          	//let blogin = false;
+          	this.user.auth(params.username, params.passphrase,function(ack){
+            	//console.log(ack);
+            	if(ack.err){
+              		console.log("fail!");
+            	}else{
+              		console.log("Authorized!");
+              		bus.$emit('action','hidelogin');
+				}
+				//console.log("test?");
+			});
+			//console.log("test login?");
+			//console.log(this.user);
+          	//this.blogin = blogin;
+          	//console.log(this.blogin);
         },
         usersiginup(params){
-          this.user.create(params.username, params.passphrase, function(ack){
-            //console.log(ack);
-            if(ack.err){
-              console.log("fail!");
-            }
-            console.log("created!", ack.pub);
-          });
-
-
+          	this.user.create(params.username, params.passphrase, function(ack){
+				//console.log(ack);
+				if(ack.err){
+					console.log("fail!");
+				}
+				console.log("created!", ack.pub);
+          	});
         },
         handler(params) {
-          console.log(params);
+          	console.log(params);
         },
         handler_logout:function(){
-          //console.log("event logout");
-          this.user.leave();
-          bus.$emit('action','logout');
-          this.blogin = false;
+          	console.log("event logout");
+            this.user.leave(function(ack){ 
+			  console.log("ack",ack);
+			  console.log("Logout Finish");
+            });
+            //console.log(this.user);
+          	bus.$emit('action','logout');
+			this.blogin = false;
+			location.reload();
+            //this.user = this.$gun.user();
         }
-      },
+    },
     });
 
 //})()
