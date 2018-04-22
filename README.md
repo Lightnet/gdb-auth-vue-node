@@ -1,3 +1,11 @@
+# gdb-auth-vue-node
+
+# Information:
+ Simple prototype build for gun.js and vue.js setup stand alone web node in javascript, html and others.
+
+
+Project on glitch Link: https://glitch.com/edit/#!/gdb-auth-vue-node (Work in progress.)
+
 Welcome to Glitch
 =================
 
@@ -6,8 +14,6 @@ Click `Show` in the header to see your app live. Updates to your code will insta
 **Glitch** is the friendly community where you'll build the app of your dreams. Glitch lets you instantly create, remix, edit, and host an app, bot or site, and you can invite collaborators or helpers to simultaneously edit code with you.
 
 Find out more [about Glitch](https://glitch.com/about).
-
-Project on glitch Link: https://glitch.com/edit/#!/gdb-auth-vue-node (Work in progress.)
 
 Your Project
 ------------
