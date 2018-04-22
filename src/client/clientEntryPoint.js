@@ -9,7 +9,7 @@ import Gun from 'gun';
 import 'gun/sea';
 
 //localhost 8080 , proxy doesn't work for reason when 8080 > 3000
-var gun = Gun('http://localhost:8080/gun');
+var gun = Gun(location.origin + '/gun');
 //console.log(gun);
 //window.onload = function() {
   //loginuser("test","test");
