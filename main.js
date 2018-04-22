@@ -37,7 +37,8 @@ app.use(express.static('public'));
 // init sqlite db
 var fs = require('fs');
 //var dbFile = './.data/sqlite.db';
-var dbFile = './.data/data.json';
+var dbFile = process.env.DatabaseFile;// './.data/data.json';
+console.log("database path:", process.env.DatabaseFile);
 var exists = fs.existsSync(dbFile);
 // if ./.data/sqlite.db does not exist, create it, otherwise print records to console
 if(!exists){
@@ -60,6 +61,6 @@ var listener = app.listen(PORT, function () {
 });
 
 var gun = Gun({
-  file: dbFile,
+  //file: dbFile,
   web:listener//server express
 });

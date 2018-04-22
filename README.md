@@ -29,7 +29,7 @@ This app has a database!
  * https://scrimba.com/c/c2gBgt4
  * https://github.com/amark/gun/wiki/auth
  * https://www.youtube.com/watch?v=ik_dqXBMBHw
- 
+ * https://github.com/lmangani/gun-scape gundb graph node
  * https://webpack.js.org/configuration/
 
 parent and child events

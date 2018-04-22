@@ -2,3 +2,5 @@ node_modules/
 public/bundle.js
 backend.js
 package-lock.json
+.env
+data.json

@@ -4,6 +4,12 @@
 			<nav>
 			<ul class="nav nav-pills pull-right">
 				<li role="presentation">
+				<a href="#" @click="currentView='account'">Account</a>
+				</li>
+				<li role="presentation">
+				<a href="#" @click="currentView='todolistapp'">To Do List</a>
+				</li>
+				<li role="presentation">
 				<a href="#" @click="currentView='manage-posts'">Manage Posts</a>
 				</li>
 				<li role="presentation">
@@ -11,11 +17,11 @@
 				</li>
 			</ul>
 			</nav>
-			<h3 class="text-muted">Admin Panel</h3>
+			<h3 class="text-muted">Node Panel</h3>
 		</div>
 
-		<div class="container">
-			<component :is="currentView"></component>
+		<div class="container"  >
+			<component :is="currentView" v-bind:blogin="blogin"></component>
 		</div>
 	</div>
 </template>
@@ -24,15 +30,24 @@
 import Vue from 'vue';
 import managetemplate from './manage-template.vue';
 import createtemplate from './create-template.vue';
+import ToDoListApp from './ToDoListApp.vue';
+import Account from './Account.vue';
 
 export default {
     name: 'app',
     data() {
 		return {
-			currentView: 'manage-posts'
+			//currentView: 'manage-posts'
+			currentView: 'account',
+			blogin:false
 		}
 	},
-	components: {'manage-posts':managetemplate, 'create-post': createtemplate},
+	components: {
+		'manage-posts':managetemplate,
+		'create-post': createtemplate,
+		'todolistapp':ToDoListApp,
+		'account':Account
+	},
 	methods: {
 	}
 }
