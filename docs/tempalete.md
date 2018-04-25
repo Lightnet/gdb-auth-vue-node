@@ -1,3 +1,6 @@
+
+
+```
 <template>
   <p ref="dom-element">{{counter}}</p>
 </template>
@@ -40,3 +43,4 @@ export default {
     },
 }
 </script>
+```
