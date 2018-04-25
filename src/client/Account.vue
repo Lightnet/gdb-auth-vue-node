@@ -112,13 +112,40 @@ export default {
 			let user = this.$root.user;
 			console.log(user);
 
-			user.get('profile').get('name').once(function(data){
-  				console.log("Name is:", data); // Alice
-			});
+			//user.get('profile').get('name').once(function(data){
+  				//console.log("Name is:", data); // Alice
+			//});
 
-			user.get('profile').once(function(data){
-  				console.log("Name is:", data); // Alice
+			//user.get('profile').once(function(data){
+  				//console.log("Name is:", data.name); // Alice
+			//});
+
+			console.log(this.$root.$gun);
+			let gun = this.$root.$gun;
+			//gun.get('alias/test').get('profile').once(function(data, key){
+				// `once` grabs the data once, no subscriptions.
+				//console.log("key ", key);
+  				//console.log("data ", data);
+			//});
+
+			//public user access?
+			//gun.get('alias/test').once(function(data, key){
+				// `once` grabs the data once, no subscriptions.
+				//console.log("key ", key);
+  				//console.log("data ", data);
+			//});
+
+			gun.get('pub/'+user.is.pub).once(function(data, key){
+				// `once` grabs the data once, no subscriptions.
+				console.log(">>key ", key);
+  				console.log("data ", data);
 			});
+			//profile id {profile:#key}
+			//gun.get('jgb7yy7ust~pm718zNKuDKlpVp_mi6Q1XKIl39wrYsGnLnEJY1QiYg.guaxTitPCqEwGRCIrGsR9gbaFN6RdyPYp7AWF7QyLeE').once(function(data, key){
+				// `once` grabs the data once, no subscriptions.
+				//console.log("profile >key ", key);
+  				//console.log("data ", data);
+			//});
 			
 		},
 		click_login:function(){

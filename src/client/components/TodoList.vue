@@ -33,6 +33,7 @@ export default {
 		return {
 			newTodoText: '',
 			todos: [
+				/*
 				{
 					id: nextTodoId++,
 					text: 'Learn Vue'
@@ -45,24 +46,64 @@ export default {
 					id: nextTodoId++,
 					text: 'Fall in love'
 				}
+				*/
 			]
 		}
   	},
+	created() { // get todo items and start listening to events once component is created
+		this.fetchTodo();
+		let gun = this.$root.$gun;
+		this.gun_thoughts = gun.get('thoughts');
+
+		console.log("thought ?");
+		let self = this;
+		this.gun_thoughts.map().once(function(thought, id){
+			//console.log(">>",thought,":",id);
+			if (thought == null)
+				return;
+			self.todos.push({
+					id: id,
+					text: thought
+			})
+			
+      	});
+		//this.listenToEvents();
+	},
+	unmounted(){
+		console.log("unmounted");
+	},
+	destroyed(){
+		console.log("destroy");
+	},
 	methods: {
+		fetchTodo() {
+			let uri = 'http://localhost:4000/api/all';
+			//axios.get(uri).then((response) => {
+				//this.todos = response.data;
+			//});
+			console.log(this.$root.$gun);
+			console.log(this.todos);
+        },
+
 		addTodo () {
 			const trimmedText = this.newTodoText.trim()
 			if (trimmedText) {
-				this.todos.push({
-					id: nextTodoId++,
-					text: trimmedText
-				})
+				//this.todos.push({
+					//id: nextTodoId++,
+					//text: trimmedText
+				//})
+				this.gun_thoughts.set(trimmedText);
+
 				this.newTodoText = ''
 			}
 		},
 		removeTodo (idToRemove) {
+			console.log("idToRemove:",idToRemove);
+			this.$root.$gun.get('thoughts').get(idToRemove).put(null);
+
 			this.todos = this.todos.filter(todo => {
 				return todo.id !== idToRemove
-			})
+			});
 		}
 	}
 }

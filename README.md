@@ -2,9 +2,9 @@
 
 # Required:
  * [Nodejs](https://nodejs.org)
- * [Vue.js](https://vuejs.org/)
- * [Gun.js](https://gun.eco)
- * [Babel.js](https://babeljs.io/)
+ * [Vue js](https://vuejs.org/)
+ * [Gun js](https://gun.eco)
+ * [Babel js](https://babeljs.io/)
 
 # Information:
  Simple prototype build for gun.js, vue.js and babel.js setup stand alone decentralized database for prototype project build.
@@ -83,6 +83,9 @@ This app has a database!
  * https://webpack.js.org/configuration/
  * https://appendto.com/2017/07/intro-decentralized-databases-gun-js/
  * https://samuelabiodun.com/build-a-todo-app-with-node-js-expressjs-mongodb-and-vuejs-part-2/
+ * https://gun.eco/docs/SEA
+ * 
+
 
 # input hanlder:
  * https://vuejs.org/v2/guide/components-custom-events.html
@@ -91,6 +94,7 @@ This app has a database!
  * https://forum.vuejs.org/t/vue2-0-parent-component-cannot-listen-to-emit-event-in-child-component-by-on/2336
  * https://jsfiddle.net/tiagomatosweb/vqtnpyzw/ 
  * https://jsfiddle.net/dangvanthanh/3m6s54qx/
+
 
 -------------------
 
