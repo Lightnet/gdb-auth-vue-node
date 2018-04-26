@@ -84,15 +84,15 @@ export default {
 			this.$root.user.trust(this.adduser);
 		},
 		updateMessageList(){
-			console.log("list?");
+			//console.log("list?");
 			let user = this.$root.user;
 			let self = this;
 			this.$root.$gun.get("pub/"+user.is.pub).get('messages').map().once(function(data,id){
 				if(!data.sender)
 					return;
-				console.log("===========data");
-				console.log(data);
-				console.log(id);
+				//console.log("===========data");
+				//console.log(data);
+				//console.log(id);
 				self.messages.push({id:id,text:data.subject});
 			});
 

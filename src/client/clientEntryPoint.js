@@ -13,27 +13,42 @@ import 'gun/sea';
 
 //localhost 8080 , proxy doesn't work for reason when 8080 > 3000
 //var gun = Gun(location.origin + '/gun');
-var gun = Gun('http://localhost:8080' + '/gun');
 
-gun.on(function(data){
-  console.log("update:", data);
-});
-//https://stackoverflow.com/questions/49519571/gun-v0-9-92-using-sea-cant-put-nested-data-when-not-logged-in
 
-gun.on('secure', function(msg){
+//Gun.on('opt', function(at){
+  //console.log('opt...');
+  //console.log(at);
+  //this.to.next(at); 
+//});
+
+//Gun.on('secure', function(msg){
   //var yes;
   /* enforce some rules about data */
   /* requires wire-spec understanding */
   //if(yes){
       //this.to.next(msg); // call next middleware
   //}
-  console.log('secure');
+  //console.log('secure');
   // NOT calling next middleware firewalls the data.
-});
+//});
 
-gun.get('node').map().once(function(data){
-  console.log('data',data);
-});
+//Gun.get('node').map().once(function(data){
+  //console.log('data',data);
+//});
+
+//var gun = Gun('http://localhost:8080' + '/gun');
+var gun = Gun(location.origin + '/gun');
+
+//Gun.on('opt',function(data){
+  //console.log("update:", data);
+//});
+
+//Gun.on(function(data){
+  //console.log("update:", data);
+//});
+//https://stackoverflow.com/questions/49519571/gun-v0-9-92-using-sea-cant-put-nested-data-when-not-logged-in
+
+
 console.log('data...');
 
 //console.log(gun);

@@ -102,21 +102,27 @@ export default {
 			let user = this.$root.user;
 			console.log(user);
 
-			var test = {
-				name: "test2",
+
+			console.log(user.pair());
+
+
+
+
+			//var test = {
+				//name: "test2",
 				//_:{soul:user['_'].soul}
-			};
+			//};
 			//user.get('profile').put(test);
 			//gun.get('jgb7yy7ust~pm718zNKuDKlpVp_mi6Q1XKIl39wrYsGnLnEJY1QiYg.guaxTitPCqEwGRCIrGsR9gbaFN6RdyPYp7AWF7QyLeE').put(test);
 			//gun.get('test').once(function(data,key){
   				//console.log("data:", data,key); // Alice
 			//});
 			//profile id {profile:#key}
-			gun.get('jgb7yy7ust~pm718zNKuDKlpVp_mi6Q1XKIl39wrYsGnLnEJY1QiYg.guaxTitPCqEwGRCIrGsR9gbaFN6RdyPYp7AWF7QyLeE').once(function(data, key){
+			//gun.get('jgb7yy7ust~pm718zNKuDKlpVp_mi6Q1XKIl39wrYsGnLnEJY1QiYg.guaxTitPCqEwGRCIrGsR9gbaFN6RdyPYp7AWF7QyLeE').once(function(data, key){
 				// `once` grabs the data once, no subscriptions.
-				console.log("profile >key ", key);
-  				console.log("data ", data);
-			});
+				//console.log("profile >key ", key);
+  				//console.log("data ", data);
+			//});
 			//user.once(function(data){
   				//console.log("data:", data); // Alice
 			//});

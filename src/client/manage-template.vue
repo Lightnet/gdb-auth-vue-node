@@ -35,12 +35,12 @@ export default {
 		let gun = this.$root.user;
 		this.gun_posts = gun.get('posts');
 		let self = this;
-		console.log("test posts?");
+		//console.log("test posts?");
 		this.gun_posts.map().once(function(thought, id){
-			console.log(">>",thought,":",id);
+			//console.log(">>",thought,":",id);
 			if (thought == null)
 				return;
-			console.log(thought.posttitle);
+			//console.log(thought.posttitle);
 			let textt = thought.posttitle;
 			self.posts.push({
 					id: id,

@@ -55,10 +55,10 @@ export default {
 		let gun = this.$root.$gun;
 		this.gun_thoughts =  this.$root.user.get('thoughts');
 
-		console.log("thought ?");
+		//console.log("thought ?");
 		let self = this;
 		this.gun_thoughts.map().once(function(thought, id){
-			console.log(">>",thought,":",id);
+			//console.log(">>",thought,":",id);
 			if ((thought == null)||(thought == 'null'))
 				return;
 			self.todos.push({
@@ -80,8 +80,8 @@ export default {
 			//axios.get(uri).then((response) => {
 				//this.todos = response.data;
 			//});
-			console.log(this.$root.$gun);
-			console.log(this.todos);
+			//console.log(this.$root.$gun);
+			//console.log(this.todos);
         },
 		addTodo () {
 			const trimmedText = this.newTodoText.trim()
@@ -91,7 +91,6 @@ export default {
 					//text: trimmedText
 				//})
 				this.gun_thoughts.set(trimmedText);
-
 				this.newTodoText = ''
 			}
 		},
@@ -103,7 +102,6 @@ export default {
 				//console.log(value);
 			//});
 			this.$root.user.get('thoughts').get(idToRemove).put(undefined);
-
 			this.todos = this.todos.filter(todo => {
 				return todo.id !== idToRemove
 			});
