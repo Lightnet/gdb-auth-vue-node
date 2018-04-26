@@ -63,16 +63,16 @@ export default {
 			//console.log(this.username);
 			//return this.username + "test";
 		//},
-		listeners () {
+		//listeners () {
         	//console.log("???");
-      		return {
+      		//return {
         		// Pass all component listeners directly to input
         		// this.$listeners,
 				//...this.$listeners,
         		// Override input listener to work with v-model
         		input: event => this.$emit('input', event.target.value)
-      		}
-    	}
+      		//}
+		//}
 	},
 	created:function(){
 		//console.log(this.$root.blogin);
@@ -98,12 +98,25 @@ export default {
       		this.$emit('update', message);
     	},
 		setProfile:function(){
+			let gun = this.$root.$gun;
 			let user = this.$root.user;
 			console.log(user);
 
-			var test = {name: "test"};
-			user.get('profile').put(test);
-
+			var test = {
+				name: "test2",
+				//_:{soul:user['_'].soul}
+			};
+			//user.get('profile').put(test);
+			//gun.get('jgb7yy7ust~pm718zNKuDKlpVp_mi6Q1XKIl39wrYsGnLnEJY1QiYg.guaxTitPCqEwGRCIrGsR9gbaFN6RdyPYp7AWF7QyLeE').put(test);
+			//gun.get('test').once(function(data,key){
+  				//console.log("data:", data,key); // Alice
+			//});
+			//profile id {profile:#key}
+			gun.get('jgb7yy7ust~pm718zNKuDKlpVp_mi6Q1XKIl39wrYsGnLnEJY1QiYg.guaxTitPCqEwGRCIrGsR9gbaFN6RdyPYp7AWF7QyLeE').once(function(data, key){
+				// `once` grabs the data once, no subscriptions.
+				console.log("profile >key ", key);
+  				console.log("data ", data);
+			});
 			//user.once(function(data){
   				//console.log("data:", data); // Alice
 			//});

@@ -7,6 +7,8 @@
 # Notes:
  * You can check the example site link.
 
+Project on glitch Link: https://glitch.com/edit/#!/gdb-auth-vue-node (Work in progress.)
+
 # Required:
  * [Nodejs](https://nodejs.org)
  * [Vue js](https://vuejs.org/)
@@ -20,9 +22,8 @@
  
  It very basics examples for auth, forum post, todolist, and other test builds.
 
-Project on glitch Link: https://glitch.com/edit/#!/gdb-auth-vue-node (Work in progress.)
-
-Check for more information on docs folder.
+ Check for more information on docs folder.
+ 
 
 # Credits and links:
  * http://babeljs.io

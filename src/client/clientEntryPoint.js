@@ -1,4 +1,7 @@
 // client-side js
+
+localStorage.clear();
+
 // run by the browser each time your view template referencing it is loaded
 import Vue from 'vue';
 Vue.config.productionTip = false
@@ -9,7 +12,30 @@ import Gun from 'gun';
 import 'gun/sea';
 
 //localhost 8080 , proxy doesn't work for reason when 8080 > 3000
-var gun = Gun(location.origin + '/gun');
+//var gun = Gun(location.origin + '/gun');
+var gun = Gun('http://localhost:8080' + '/gun');
+
+gun.on(function(data){
+  console.log("update:", data);
+});
+//https://stackoverflow.com/questions/49519571/gun-v0-9-92-using-sea-cant-put-nested-data-when-not-logged-in
+
+gun.on('secure', function(msg){
+  //var yes;
+  /* enforce some rules about data */
+  /* requires wire-spec understanding */
+  //if(yes){
+      //this.to.next(msg); // call next middleware
+  //}
+  console.log('secure');
+  // NOT calling next middleware firewalls the data.
+});
+
+gun.get('node').map().once(function(data){
+  console.log('data',data);
+});
+console.log('data...');
+
 //console.log(gun);
 //window.onload = function() {
   //loginuser("test","test");
@@ -56,7 +82,9 @@ Vue.use(VueGun, {
         bus.$on('userlogin', this.handler_login);
         bus.$on('userlogout', this.handler_logout);
         bus.$on('usersiginup', this.usersiginup);
-        //this.$on('event', this.clicktest);
+		//this.$on('event', this.clicktest);
+		
+		//this.handler_login({username:"test",passphrase:"test"});
     },
     //mounted: function() {
     	//console.log(this);

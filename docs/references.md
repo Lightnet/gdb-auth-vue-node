@@ -1,5 +1,10 @@
 # References:
 
+# Gun js:
+ * https://gun.eco/docs/API#-a-name-bye-a-gun-bye-
+ * https://github.com/amark/gun/wiki/API-(v0.2.x)
+ * 
+
 # Links:
  * https://scrimba.com/c/c2gBgt4
  * https://github.com/amark/gun/wiki/auth

@@ -4,16 +4,19 @@
 			<nav>
 			<ul class="nav nav-pills pull-right">
 				<li role="presentation">
-				<a href="#" @click="currentView='account'">Account</a>
+					<a href="#" @click="currentView='account'">Account</a>
 				</li>
 				<li role="presentation">
-				<a href="#" @click="currentView='todolistapp'">To Do List</a>
+					<a href="#" @click="currentView='messages'">Messages</a>
 				</li>
 				<li role="presentation">
-				<a href="#" @click="currentView='manage-posts'">Manage Posts</a>
+					<a href="#" @click="currentView='todolistapp'">To Do List</a>
 				</li>
 				<li role="presentation">
-				<a href="#" @click="currentView='create-post'">Create Post</a>
+					<a href="#" @click="currentView='manage-posts'">Manage Posts</a>
+				</li>
+				<li role="presentation">
+					<a href="#" @click="currentView='create-post'">Create Post</a>
 				</li>
 			</ul>
 			</nav>
@@ -30,8 +33,9 @@
 import Vue from 'vue';
 import managetemplate from './manage-template.vue';
 import createtemplate from './create-template.vue';
-import ToDoListApp from './ToDoListApp.vue';
-import Account from './Account.vue';
+import toDoListTemplate from './todolist-template.vue';
+import accountTemplate from './account-template.vue';
+import messagesTemplate from './message-template.vue';
 
 export default {
     name: 'app',
@@ -39,8 +43,9 @@ export default {
 		return {
 			username:'none',
 			//currentView: 'manage-posts'
-			//currentView: 'account',
-			currentView: 'todolistapp',
+			currentView: 'account',
+			//currentView: 'todolistapp',
+			//currentView: 'create-post',
 			//blogin:false,
 			postid:'default',
 			postlistid:'default'
@@ -54,8 +59,9 @@ export default {
 	components: {
 		'manage-posts':managetemplate,
 		'create-post': createtemplate,
-		'todolistapp':ToDoListApp,
-		'account':Account
+		'todolistapp':toDoListTemplate,
+		'account':accountTemplate,
+		'messages':messagesTemplate
 	},
 	methods: {
 		updateMessage (message) {
