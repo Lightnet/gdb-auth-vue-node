@@ -1,6 +1,6 @@
 // client-side js
 
-localStorage.clear();
+//localStorage.clear();
 
 // run by the browser each time your view template referencing it is loaded
 import Vue from 'vue';
@@ -8,12 +8,27 @@ Vue.config.productionTip = false
 import VueGun from 'vue-gun';
 
 //gun.js
-import Gun from 'gun';
-import 'gun/sea';
+//import Gun from 'gun';
+//import 'gun/sea';
+
+/*
+;(async () => {
+  var SEA = Gun.SEA;
+  var pair = await SEA.pair();
+  var enc = await SEA.encrypt('hello self', pair);
+  var data = await SEA.sign(enc, pair);
+  console.log(data);
+  var msg = await SEA.verify(data, pair);
+  var dec = await SEA.decrypt(msg, pair);
+  var proof = await SEA.work(dec, pair);
+  var check = await SEA.work('hello self', pair);
+  console.log(dec);
+  console.log(proof === check);
+  })();
+  */
 
 //localhost 8080 , proxy doesn't work for reason when 8080 > 3000
 //var gun = Gun(location.origin + '/gun');
-
 
 //Gun.on('opt', function(at){
   //console.log('opt...');
@@ -36,8 +51,30 @@ import 'gun/sea';
   //console.log('data',data);
 //});
 
-//var gun = Gun('http://localhost:8080' + '/gun');
-var gun = Gun(location.origin + '/gun');
+var gun = Gun('http://localhost:8080' + '/gun');
+//var gun = Gun(location.origin + '/gun');
+
+//gun.get('test').put(true);
+//gun.get('test').put({});
+//gun.get('test').put(null);
+
+//gun.get('test').once(function(data){
+  //console.log(data);
+//});
+
+gun.on('auth', function(at){
+  //if('sign' === c.hash){ c.hash = '' }
+  //as.route(c.hash || 'people');
+  console.log('auth');
+});
+
+gun.on('secure', function(at){
+  console.log('secure');
+});
+
+//var c = window.c = {};
+//c.hash = location.hash.slice(1);
+//console.log("c.hash ",c.hash );
 
 //Gun.on('opt',function(data){
   //console.log("update:", data);
@@ -48,8 +85,7 @@ var gun = Gun(location.origin + '/gun');
 //});
 //https://stackoverflow.com/questions/49519571/gun-v0-9-92-using-sea-cant-put-nested-data-when-not-logged-in
 
-
-console.log('data...');
+//console.log('data...');
 
 //console.log(gun);
 //window.onload = function() {

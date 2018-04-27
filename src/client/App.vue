@@ -10,6 +10,9 @@
 					<a href="#" @click="currentView='messages'">Messages</a>
 				</li>
 				<li role="presentation">
+					<a href="#" @click="currentView='chat'">Chat</a>
+				</li>
+				<li role="presentation">
 					<a href="#" @click="currentView='todolistapp'">To Do List</a>
 				</li>
 				<li role="presentation">
@@ -36,6 +39,7 @@ import createtemplate from './create-template.vue';
 import toDoListTemplate from './todolist-template.vue';
 import accountTemplate from './account-template.vue';
 import messagesTemplate from './message-template.vue';
+import chatTemplate from './chat-template.vue';
 
 export default {
     name: 'app',
@@ -61,7 +65,8 @@ export default {
 		'create-post': createtemplate,
 		'todolistapp':toDoListTemplate,
 		'account':accountTemplate,
-		'messages':messagesTemplate
+		'messages':messagesTemplate,
+		'chat':chatTemplate,
 	},
 	methods: {
 		updateMessage (message) {
