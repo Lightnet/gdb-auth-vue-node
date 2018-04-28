@@ -8,14 +8,12 @@
 			<button @click="action('compose')" > Compose</button>
 			<button @click="action('sendmail')" > Send Mail</button>
 			<button @click="action('contacts')" > Contacts</button>
-			
 			<button @click="action('options')" > Options</button>
-			
 			<input v-model="adduser">
 			<button @click="trustuser" > Trust</button>
 			-->
 			<div>
-				sender: <input v-model="sendername"><button @click="checkuser"> Check </button><label>{{pmusercheck}}</label>
+				sender: <input v-model="pubkey"><button @click="checkuser"> Check </button><label>{{pubkeystatus}}</label>
 				<br>
 				<!--
 				subject: <input v-model="sendersubject">
@@ -47,22 +45,26 @@ export default {
 	//props:['blogin','username'],
 	data() {
 		return{
-			username:'',
 			userpublickey:'',
 			bshowlogin:true,
 			messages:[],
 			adduser:'hh',
-			sendername:'OhsmOcQu7mjfcvIqX7oaY2FhaKiXCAD6R5gGk5pln0w.P72Jf2iigd5hSlBPpeJpszItzLsO6B2ekzdQYAiZdfc',
+			pubkey:'OhsmOcQu7mjfcvIqX7oaY2FhaKiXCAD6R5gGk5pln0w.P72Jf2iigd5hSlBPpeJpszItzLsO6B2ekzdQYAiZdfc',
 			sendersubject:'tedst',
 			sendercontent:'test',
-			pmusercheck:'',
+			pubkeystatus:'none',
 		}
 	},
-	computed: {
-
+	watch: {
+		pubkey:function(newvalue,oldvalue){
+			console.log("new string?");
+			this.pubkeystatus = 'typing...';
+			this.getpubkey();
+		}
 	},
 	created:function(){
 		//console.log(this.$root.blogin);
+		//console.log("user",this.$root.user);
 		bus.$on('action',this.action);
 		if(this.$root.blogin){
 			this.bshowlogin = false;
@@ -70,13 +72,22 @@ export default {
 		}else{
 			this.bshowlogin = true;
 		}
-		//console.log("user",this.$root.user);
 	},
 	methods:{
+		getpubkey:_.debounce(//typing key checks pub key string
+			async function(){
+				//console.log(this.pubkey.length);
+				if(this.pubkey.length == 87){
+					this.checkpubkey();
+				}else{
+					this.pubkeystatus = 'Not pub key and single key current!'
+				}
+			}
+		,500)
+		,
 		trustuser(){
 			console.log("trust user");
-
-			this.$root.user.trust(this.adduser);
+			//this.$root.user.trust(this.adduser);
 		},
 		async updateMessageList(){
 			//console.log("list?");
@@ -116,22 +127,44 @@ export default {
 			let what = messagedata;
 			if(!what){ return }
 
-			var pub = (this.sendername || '').trim();
+			var pub = (this.pubkey || '').trim();
 			var who = await gun.user(pub).then();
 			var sec = await Gun.SEA.secret(who.epub, user.pair()); // Diffie-Hellman
 			var enc = await Gun.SEA.encrypt(what, sec);
 			user.get('chat').get(pub).set(enc);
 		},
+		async checkpubkey(){
+			this.pubkeystatus = 'checking pub key...'
+			let user = this.$root.$gun.user();
+			let pub = (this.pubkey || '').trim();
+			if(!pub){ return }
+			let to = this.$root.$gun.user(pub);
+			let who = await to.then() || {};
+			this.pubkeystatus = who.alias || "User not found.";
+			if(!who.alias){ return }
+			console.log("who",who);
+			let dec = await Gun.SEA.secret(who.epub, user.pair()); // Diffie-Hellman
+			user.get('chat').get(pub).map().once((say,id)=>{
+				console.log("user chat");
+				this.UI(say,id,dec);
+			});
+			console.log("user.pair().pub: ",user.pair().pub);
+			to.get('chat').get(user.pair().pub).map().once((say,id)=>{
+				console.log("to chat");
+				this.UI(say,id,dec);
+			});
+
+		},
 		async checkuser(){
 			// h  // OhsmOcQu7mjfcvIqX7oaY2FhaKiXCAD6R5gGk5pln0w.P72Jf2iigd5hSlBPpeJpszItzLsO6B2ekzdQYAiZdfc
 			// test  // QCn1C2k4jzMsmYQ7XA7jczU4tACHi8dm9FxA9rwc8mc.77BoSL7zXrBCeguBDlDNy-TV8rXfS-DiA5-Psfz5a-Q
 			let user = this.$root.$gun.user();
-			console.log(this.sendername);
-			let pub = (this.sendername || '').trim();
+			console.log(this.pubkey);
+			let pub = (this.pubkey || '').trim();
 			if(!pub){ return }
 			let to = this.$root.$gun.user(pub);
 			let who = await to.then() || {};
-			this.pmusercheck = who.alias || "User not found.";
+			this.pubkeystatus = who.alias || "User not found.";
 			console.log(this.pmusercheck);
 			if(!who.alias){ return }
 			console.log("who",who);

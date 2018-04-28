@@ -3,7 +3,7 @@ const fs = require('fs');
 
 module.exports = {
     mode:'development',
-    entry: './src/client/clientEntryPoint.js',
+    entry:  ['babel-polyfill','./src/client/clientEntryPoint.js'],
     output: {
         path: path.join(__dirname, 'public'),
         filename: 'bundle.js'

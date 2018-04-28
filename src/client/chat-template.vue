@@ -1,6 +1,6 @@
 <template id="chat">
 	<div>
-		<label>Chat Actions:</label>
+		<label>Chat Room:(not public yet)</label>
 		<div v-if="!bshowlogin">
 			<!--
 			<button @click="action('home')"> Home</button>
@@ -8,7 +8,9 @@
 			<button @click="action('rooms')" > Rooms</button>
 			<button @click="action('pm')" > PM</button>
 			<button @click="action('options')" > Options</button>
-			<div style="height: 600px; overflow-y: scroll;">
+			-->
+
+			<div style="height: 300px; overflow-y: scroll;">
 				Message:
 				<a v-for="message in messages" :key="message.id" href="#" class="list-group-item clearfix">
 					{{ message.text }}
@@ -16,11 +18,11 @@
 			</div>
 
 			<div>
-				Content: <textarea v-model="sendercontent"> </textarea>
-				<br>
+				Chat: <textarea v-model="chatmessage"> </textarea>
 				<button @click="sentmessage"> Send </button>
+				<button @click="checkchatmessage"> check </button>
 			</div>
-			-->
+			
 
 		</div>
 	</div>
@@ -41,7 +43,7 @@ export default {
 			adduser:'hh',
 			sendername:'z_FDSkeRC6EyM3_Q32-mZ3DR-n5Oh-e81Nx5VoT58Eg.7bnvKTOoKq3UbtnvCpQxxmEFCkzqAxA0MzGuO4moYLA',
 			sendersubject:'tedst',
-			sendercontent:'test',
+			chatmessage:'test',
 		}
 	},
 	watch:{
@@ -70,10 +72,14 @@ export default {
 		//console.log("user",this.$root.user);
 	},
 	methods:{
-		trustuser(){
-			console.log("trust user");
-
-			this.$root.user.trust(this.adduser);
+		checkchatmessage(){
+			let user =  this.$root.$gun.user();
+			let self = this;
+			user.get('chatroom').map().once(function(data){
+				console.log("data");
+				console.log(data);
+				//self.messages.push({id:data.id,text:data.message});
+			});
 		},
 		updateMessageList(){
 			//console.log("list?");
@@ -84,21 +90,24 @@ export default {
 			//this.$root.user.get('messages').get("pub/"+user.is.pub).map().once(function(data,id){
 			console.log(this.$root.$gun.user());
 
-			this.$root.$gun.user().once(function(data){
-				console.log("data");
-				console.log(data);
-			});
-
-
-			this.$root.$gun.user().get('chat').map().once(function(data,id){
+			//this.$root.$gun.user().once(function(data){
 				//console.log("data");
 				//console.log(data);
-				if(!data.alias)
-					return;
+			//});
+			//this.$root.$gun.user().get('chat').map().once(function(data,id){
+				//console.log("data");
+				//console.log(data);
+				//if(!data.alias)
+					//return;
 				//console.log("===========data");
 				//console.log(data);
 				//console.log(id);
-				self.messages.push({id:id,text:data.message});
+				//self.messages.push({id:id,text:data.message});
+			//});
+			user.get('chatroom').map().once(function(data){
+				console.log("data");
+				console.log(data);
+				self.messages.push({id:data.id,text:data.message});
 			});
 
 		},
@@ -109,31 +118,22 @@ export default {
     	},
 		action(param){
 			console.log(param);
-			if(param == "hidelogin"){
-
-			}
-			if(param== "logout"){
-			}
 		},
 		sentmessage(){
-			console.log(this.sendername);
-			console.log(this.sendersubject);
-			console.log(this.sendercontent);
-
-			console.log(this.$root.user);
-
-			let user = this.$root.user;
-
+			//console.log(this.sendername);
+			//console.log(this.sendersubject);
+			//console.log(this.sendercontent);
+			//console.log(this.$root.user);
+			//let user = this.$root.user;
+			let user = this.$root.$gun.user();
 			var messagedata ={
 				pub:"pub/"+user.is.pub,
 				alias:user.is.alias,
-				message:this.sendercontent,
+				message:this.chatmessage,
 			};
-
-			this.$root.$gun.user().get('chat').set(messagedata,function(ack){
+			user.get('chatroom').set(messagedata, function(ack){
 				console.log(ack);
 			});
-
 		}
 	},
 	components: {

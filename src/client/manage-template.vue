@@ -38,7 +38,7 @@ export default {
 		//console.log("test posts?");
 		this.gun_posts.map().once(function(thought, id){
 			//console.log(">>",thought,":",id);
-			if (thought == null)
+			if ((thought == null) || (thought == 'null'))
 				return;
 			//console.log(thought.posttitle);
 			let textt = thought.posttitle;
@@ -55,8 +55,15 @@ export default {
 		topic_edit(id){
 			console.log("topic_edit:",id);
 		},
-		topic_delete(id){
-			console.log("topic_delete:",id);
+		topic_delete(idToRemove){
+			console.log("topic_delete:",idToRemove);
+			let gun = this.$root.user;
+			let gun_posts = gun.get('posts');
+			gun_posts.get(idToRemove).put('null');
+
+			this.posts = this.posts.filter(post => {
+				return post.id !== idToRemove
+			});
 		}
 	},
 	beforeDestroy() {

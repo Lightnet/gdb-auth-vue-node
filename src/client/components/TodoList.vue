@@ -101,7 +101,8 @@ export default {
 			//this.$root.user.get('thoughts').get(idToRemove).once(function(value){
 				//console.log(value);
 			//});
-			this.$root.user.get('thoughts').get(idToRemove).put(undefined);
+			//this.$root.user.get('thoughts').get(idToRemove).put(undefined);
+			this.$root.user.get('thoughts').get(idToRemove).put('null');
 			this.todos = this.todos.filter(todo => {
 				return todo.id !== idToRemove
 			});
