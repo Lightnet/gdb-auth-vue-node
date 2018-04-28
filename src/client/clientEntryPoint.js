@@ -1,6 +1,6 @@
 // client-side js
 
-//localStorage.clear();
+localStorage.clear();
 
 // run by the browser each time your view template referencing it is loaded
 import Vue from 'vue';

@@ -52,7 +52,7 @@ export default {
 			bshowlogin:true,
 			messages:[],
 			adduser:'hh',
-			sendername:'K-1HYpsrATRN4DmpGpfq7vjpoMHKT4Ak9F7iACKti2c.Zlfzd_ftQucLIEvyN_5JI74gSOCuMw3goFvD-18cfqY',
+			sendername:'OhsmOcQu7mjfcvIqX7oaY2FhaKiXCAD6R5gGk5pln0w.P72Jf2iigd5hSlBPpeJpszItzLsO6B2ekzdQYAiZdfc',
 			sendersubject:'tedst',
 			sendercontent:'test',
 			pmusercheck:'',
@@ -78,16 +78,23 @@ export default {
 
 			this.$root.user.trust(this.adduser);
 		},
-		updateMessageList(){
+		async updateMessageList(){
 			//console.log("list?");
+			console.log(this.$root.$gun.user());
 			let user = this.$root.user;
 			let self = this;
-			console.log(this.$root.$gun.user());
+			console.log("user.pair().pub >> ",user.pair().pub);
+			//user.get('chat').get(user.pair().pub).map().once((say,id)=>{
+				//console.log("user chat");
+				//console.log(say)
+				//this.UI(say,id,dec);
+			//});
 		},
-		updateMessage(message) {
+		async updateMessage(message) {
       		// By emitting the 'update' event in every intermediary component we can pass data
       		// from GrandchildComponent to ChildComponent and from there to the parent
       		this.$emit('update', message);
+
     	},
 		action(param){
 			console.log(param);
@@ -99,18 +106,14 @@ export default {
 			console.log(this.$root.user);
 			let gun = this.$root.$gun;
 			let user = this.$root.user;
-			/*
+			
 			var messagedata ={
-				sender:"pub/"+user.is.pub,
+				from:user.is.alias,
 				subject:this.sendersubject,
 				content:this.sendercontent,
 			};
 
-			this.$root.$gun.user().get("pub/"+this.sendername).get('messages').set(messagedata,function(ack){
-				console.log(ack);
-			});
-			*/
-			let what = this.sendercontent;
+			let what = messagedata;
 			if(!what){ return }
 
 			var pub = (this.sendername || '').trim();
@@ -120,8 +123,8 @@ export default {
 			user.get('chat').get(pub).set(enc);
 		},
 		async checkuser(){
-			// h  // K-1HYpsrATRN4DmpGpfq7vjpoMHKT4Ak9F7iACKti2c.Zlfzd_ftQucLIEvyN_5JI74gSOCuMw3goFvD-18cfqY
-			// test  // z_FDSkeRC6EyM3_Q32-mZ3DR-n5Oh-e81Nx5VoT58Eg.7bnvKTOoKq3UbtnvCpQxxmEFCkzqAxA0MzGuO4moYLA
+			// h  // OhsmOcQu7mjfcvIqX7oaY2FhaKiXCAD6R5gGk5pln0w.P72Jf2iigd5hSlBPpeJpszItzLsO6B2ekzdQYAiZdfc
+			// test  // QCn1C2k4jzMsmYQ7XA7jczU4tACHi8dm9FxA9rwc8mc.77BoSL7zXrBCeguBDlDNy-TV8rXfS-DiA5-Psfz5a-Q
 			let user = this.$root.$gun.user();
 			console.log(this.sendername);
 			let pub = (this.sendername || '').trim();
@@ -146,7 +149,8 @@ export default {
 		},
 		async UI(say, id, dec){
 			say = await Gun.SEA.decrypt(say,dec);
-			this.messages.push({id:id,text:say});
+			console.log(say);
+			this.messages.push({id:id,text:"[From:]" + say.from + " pMsg:]"  + say.content});
 		}
 	},
 	components: {

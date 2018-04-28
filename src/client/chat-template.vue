@@ -2,6 +2,7 @@
 	<div>
 		<label>Chat Actions:</label>
 		<div v-if="!bshowlogin">
+			<!--
 			<button @click="action('home')"> Home</button>
 			<button @click="action('lobby')" > Lobby</button>
 			<button @click="action('rooms')" > Rooms</button>
@@ -19,7 +20,7 @@
 				<br>
 				<button @click="sentmessage"> Send </button>
 			</div>
-
+			-->
 
 		</div>
 	</div>
