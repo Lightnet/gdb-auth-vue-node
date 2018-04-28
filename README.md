@@ -23,6 +23,8 @@ Project on glitch Link: https://glitch.com/edit/#!/gdb-auth-vue-node (Work in pr
  It very basics examples for auth, forum post, todolist, and other test builds.
 
  Check for more information on docs folder.
+
+ [Glitch Manual](docs/glitch.md)
  
 
 # Credits and links:
