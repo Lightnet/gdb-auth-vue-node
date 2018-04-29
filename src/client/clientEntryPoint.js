@@ -7,6 +7,13 @@ import Vue from 'vue';
 Vue.config.productionTip = false
 import VueGun from 'vue-gun';
 
+import './guntopic';
+
+//Gun.chain.topic = function() {
+  //console.log('gun topic');
+  //return this;
+//}
+
 //gun.js
 //import Gun from 'gun';
 //import 'gun/sea';
@@ -61,14 +68,17 @@ if(location.origin == 'http://localhost:3000'){
 }else{
   gun = Gun(location.origin + '/gun');
 }
+console.log(gun);
 
-//gun.get('test').put(true);
-//gun.get('test').put({});
-//gun.get('test').put(null);
+//gun.get('topic').put({test:'test'});
+//gun.get('topic').topic();
 
-//gun.get('test').once(function(data){
-  //console.log(data);
-//});
+var topic = gun.topic();
+console.log(topic);
+
+//console.log(gun.topic());
+//var topic = gun.topic();
+//console.log(gun.get('topic'));
 
 gun.on('auth', function(at){
   //if('sign' === c.hash){ c.hash = '' }
@@ -111,6 +121,7 @@ gun.on('secure', function(at){
     //}
   //});
 //};
+
 //https://github.com/sjones6/vue-gun
 Vue.use(VueGun, {
   gun: gun // must be passed in at `gun` key
@@ -195,5 +206,5 @@ Vue.use(VueGun, {
         }
     },
     });
-
+    
 //})()
