@@ -3,9 +3,14 @@
     	<h1>Manage Posts</h1>
     	<div class="list-group">
       		<a v-for="post in posts" :key="post.id" href="#" class="list-group-item clearfix">
+				<label v-if="!post.bedit">
         		{{ post.text }}
+				</label>
+
+				<input v-if="post.bedit" v-model="post.text" v-on:change="topiceditchange(post)">
+
         		<span class="pull-right">
-          		<button class="btn btn-xs btn-info" @click="topic_edit(post.id)">
+          		<button class="btn btn-xs btn-info" v-on:click="topic_edit(post)">
             		<span class="glyphicon glyphicon-edit" ></span>
           		</button>
           		<button class="btn btn-xs btn-warning" @click="topic_delete(post.id)">
@@ -40,20 +45,26 @@ export default {
 			//console.log(">>",thought,":",id);
 			if ((thought == null) || (thought == 'null'))
 				return;
-			//console.log(thought.posttitle);
-			let textt = thought.posttitle;
 			self.posts.push({
 					id: id,
-					text: textt
+					text: thought.posttitle,
+					bedit: false,
 			});
       	});
 	},
 	methods:{
-		removeTodo(){
-			
+		topiceditchange(post){ //press enter to finish edit
+			//console.log(post);
+			//console.log("change?");
+			let gun = this.$root.user;
+			let gun_posts = gun.get('posts');
+			gun_posts.get(post.id).put({posttitle:post.text});
+			post.bedit = false;
 		},
-		topic_edit(id){
-			console.log("topic_edit:",id);
+		topic_edit(post){
+			//console.log("topic_edit:",this.bedit);
+			console.log(this);
+			post.bedit = !post.bedit;
 		},
 		topic_delete(idToRemove){
 			console.log("topic_delete:",idToRemove);

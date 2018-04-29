@@ -8,24 +8,19 @@
 			<button @click="action('rooms')" > Rooms</button>
 			<button @click="action('pm')" > PM</button>
 			<button @click="action('options')" > Options</button>
-			-->
-
 			<button @click="genChatKey" >Gen Public Key Chat</button>
-
+			-->
 			<div style="height: 300px; overflow-y: scroll;">
 				Message:
 				<a v-for="message in messages" :key="message.id" href="#" class="list-group-item clearfix">
 					{{ message.text }}
 				</a>
 			</div>
-
 			<div>
 				Chat: <textarea v-model="chatmessage"> </textarea>
 				<button @click="sentmessage"> Send </button>
 				<button @click="checkchatmessage"> check </button>
 			</div>
-			
-
 		</div>
 	</div>
 </template>
@@ -34,18 +29,24 @@
 //event on and emit global
 import bus from './bus';
 
+function public_pair(){
+	return {
+		epriv: 'ouMEpyEGQnzCNXouQ5owt9VzuDdeoWr0H_rCyJopUWk',
+		epub: '0VhBMpjKslndJbh3BFmNWca1TeIFq4PEerZJcRmNH9k.pW-MTXsu7witNqyYLGIuguQhDpZ5TCojE87O9gOB9nc',
+		priv: 'Q2xkzpxoGtGCOR7f9SbKHVGxine9Dl57swbPUXlo2ow',
+		pub: '0CKF4mpoQ1KcQy_mNOoIgB5EjoAhPwLe49bGn5URdBY.XqRVAfqyCpyUawlUDumtMitr6IZrRIUUEwNV6z-onNM'
+	}
+};
+
 export default {
-	//props:['blogin','username'],
+	//props:['blogin'],
 	data() {
 		return{
-			username:'',
 			userpublickey:'',
 			bshowlogin:true,
 			messages:[],
-			adduser:'hh',
-			sendername:'z_FDSkeRC6EyM3_Q32-mZ3DR-n5Oh-e81Nx5VoT58Eg.7bnvKTOoKq3UbtnvCpQxxmEFCkzqAxA0MzGuO4moYLA',
-			sendersubject:'tedst',
-			chatmessage:'test',
+			sendersubject:'test subject',
+			chatmessage:'test message',
 			publickey_chat : '0CKF4mpoQ1KcQy_mNOoIgB5EjoAhPwLe49bGn5URdBY.XqRVAfqyCpyUawlUDumtMitr6IZrRIUUEwNV6z-onNM',
 			epublickey_chat : '0VhBMpjKslndJbh3BFmNWca1TeIFq4PEerZJcRmNH9k.pW-MTXsu7witNqyYLGIuguQhDpZ5TCojE87O9gOB9nc',
 		}
@@ -78,7 +79,6 @@ export default {
 	methods:{
 		genChatKey(){
 			console.log(Gun.SEA.pair());
-
 		},
 		checkchatmessage(){
 			let user =  this.$root.$gun.user();
@@ -94,45 +94,25 @@ export default {
 		},
 		async updateMessageList(){
 			//console.log("list?");
+			let gun = this.$root.$gun;
 			let user = this.$root.user;
 			let self = this;
-			//this.$root.$gun.user().get("pub/"+this.sendername).get('messages')
-			//this.$root.$gun.get("pub/"+user.is.pub).get('messages').map().once(function(data,id){
-			//this.$root.user.get('messages').get("pub/"+user.is.pub).map().once(function(data,id){
-			//console.log(this.$root.$gun.user());
 
 			let to = this.$root.$gun.user(this.publickey_chat);
-			//console.log("to");
-			//console.log(to );
-			let who = await to.then() || {};
-
-			//console.log("who");
-			//console.log(who);
-
-			//let dec = await Gun.SEA.secret(this.epublickey_chat, user.pair());
-			let dec = await Gun.SEA.secret(this.epublickey_chat,'public');
-
-			user.get('chatroom').get(this.publickey_chat).once((data)=>{
-				console.log("publickey_data");
-				console.log(data);
-			});
+			let dec = await Gun.SEA.secret(this.epublickey_chat, user.pair());
 
 			user.get('chatroom').get(this.publickey_chat).map().once((say,id)=>{
-				console.log("publickey_chat");
-				//console.log(say);
-				//console.log(id);
-				//this.UI(say,id,dec);
-				self.messages.push({id:say.id,text:say.message});
+				console.log("user chat");
+				this.UI(say,id,dec);
+				//self.messages.push({id:say.id,text:say.message});
 			});
 
 			to.get('chatroom').get(user.pair().pub).map().once((say,id)=>{
-				console.log("user >> pair");
-				//console.log(say);
-				//console.log(id);
-				//console.log("to chat");
-				//this.UI(say,id,dec);
+				console.log("to chat");
+				this.UI(say,id,dec);
+				//self.messages.push({id:say.id,text:say.message});
 			});
-
+			
 		},
 		async UI(say, id, dec){
 			say = await Gun.SEA.decrypt(say,dec);
@@ -150,23 +130,19 @@ export default {
 			console.log(param);
 		},
 		async sentmessage(){
-			//console.log(this.sendername);
-			//console.log(this.sendersubject);
-			//console.log(this.sendercontent);
+			console.log("send!");
 			//console.log(this.$root.user);
-			//let user = this.$root.user;
 			let user = this.$root.$gun.user();
 			var messagedata ={
+				//'_':{'#':public_pair().pub},
 				pub:"pub/"+user.is.pub,
 				alias:user.is.alias,
 				message:this.chatmessage,
 			};
-			//var sec = await Gun.SEA.secret(who.epub, user.pair());
-			//var sec = await Gun.SEA.secret(this.epublickey_chat, user.pair());
-			//var sec = await Gun.SEA.secret(this.epublickey_chat, 'public');
-			//var enc = await Gun.SEA.encrypt(messagedata, sec);
-			let enc = messagedata;
-
+			
+			var sec = await Gun.SEA.secret(this.epublickey_chat, user.pair());
+			var enc = await Gun.SEA.encrypt(messagedata, sec);
+			//let enc = messagedata;
 			user.get('chatroom').get(this.publickey_chat).set(enc, function(ack){
 				console.log(ack);
 			});

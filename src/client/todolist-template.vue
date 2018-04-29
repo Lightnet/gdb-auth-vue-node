@@ -1,5 +1,5 @@
 <template id="todolistapp">
-	<div>
+	<div v-if="$root.blogin">
 		<h1>My Todo List!</h1>
 		<TodoList/>
 	</div>

@@ -1,5 +1,5 @@
 <template id="create-template">
-  	<div>
+  	<div v-if="$root.blogin">
 		<h1>Create Post</h1>
 		<form class="form-horizontal" action="javascript:void(0);">
 			<div class="form-group">

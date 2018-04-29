@@ -2,9 +2,11 @@
 
 This is work in progress prototype build.
 
-To build decentralized forum is not an easy task. But it can build upon system like those role playing game with story plot branch. Like text based story to find keywords to explore open end world by typing out a question.
+This project has fews simple examples for how sea.js auth and gun database works. Todolist and private message text are simple examples to test how gun.js work in database graph style. User can create their acounts but not email. Since it cloud or peer to peer database setup. To create forget password is to develop sercet key back that has not be writen. It user can't not over ride other users data access or information.
 
-The public and private keys are not easy to build when doing web browser and not server side auth.
+To build decentralized forum is not an easy task. Since there are pros and cons to them.
+
+
 
 # Notes:
  * babel-polyfill is needed for async function to work.

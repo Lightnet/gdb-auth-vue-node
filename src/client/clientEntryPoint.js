@@ -10,7 +10,12 @@ import VueGun from 'vue-gun';
 //gun.js
 //import Gun from 'gun';
 //import 'gun/sea';
+//;(async () => {
+  //var SEA = Gun.SEA;
+  //var pair = await SEA.pair();
+  //console.log(pair);
 
+//})();
 /*
 ;(async () => {
   var SEA = Gun.SEA;
@@ -50,9 +55,12 @@ import VueGun from 'vue-gun';
 //Gun.get('node').map().once(function(data){
   //console.log('data',data);
 //});
-
-var gun = Gun('http://localhost:8080' + '/gun');
-//var gun = Gun(location.origin + '/gun');
+var gun;
+if(location.origin == 'http://localhost:3000'){
+  gun = Gun('http://localhost:8080' + '/gun');
+}else{
+  gun = Gun(location.origin + '/gun');
+}
 
 //gun.get('test').put(true);
 //gun.get('test').put({});
