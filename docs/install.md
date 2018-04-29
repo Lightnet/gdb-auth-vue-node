@@ -1,6 +1,6 @@
 # Install:
 
- You need to install nodejs to able to install packages using the npm command once nodejs is path variable to system.
+ You need to install Nodejs to able to install packages using the npm command once nodejs is path variable to system.
 
  You need to download the project. Extract the file where you wanted to put it.
 

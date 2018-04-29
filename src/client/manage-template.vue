@@ -1,7 +1,7 @@
 <template id="manage-template">
   	<div>
     	<h1>Manage Posts</h1>
-    	<div class="list-group">
+    	<div class="list-group" v-if="bcategory">
       		<a v-for="post in posts" :key="post.id" href="#" class="list-group-item clearfix">
 				<label v-if="!post.bedit">
         			{{ post.text }}
@@ -17,6 +17,12 @@
         		</span>
       		</a>
     	</div>
+
+		<div class="list-group" v-if="bcategory">
+
+
+		</div>
+
   	</div>
 </template>
 

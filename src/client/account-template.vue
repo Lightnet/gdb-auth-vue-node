@@ -74,7 +74,7 @@ export default {
       		//}
 		//}
 	},
-	created:function(){
+	created(){
 		//console.log(this.$root.blogin);
 		bus.$on('action',this.action);
 		if(this.$root.blogin){
