@@ -74,6 +74,7 @@ console.log(gun);
 //gun.get('topic').topic();
 
 var topic = gun.topic();
+topic.build();
 console.log(topic);
 
 //console.log(gun.topic());
