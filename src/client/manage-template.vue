@@ -4,18 +4,16 @@
     	<div class="list-group">
       		<a v-for="post in posts" :key="post.id" href="#" class="list-group-item clearfix">
 				<label v-if="!post.bedit">
-        		{{ post.text }}
+        			{{ post.text }}
 				</label>
-
 				<input v-if="post.bedit" v-model="post.text" v-on:change="topiceditchange(post)">
-
         		<span class="pull-right">
-          		<button class="btn btn-xs btn-info" v-on:click="topic_edit(post)">
-            		<span class="glyphicon glyphicon-edit" ></span>
-          		</button>
-          		<button class="btn btn-xs btn-warning" @click="topic_delete(post.id)">
-            		<span class="glyphicon glyphicon-trash"></span>
-          		</button>
+					<button class="btn btn-xs btn-info" v-on:click="topic_edit(post)">
+						<span class="glyphicon glyphicon-edit" ></span>
+					</button>
+					<button class="btn btn-xs btn-warning" @click="topic_delete(post.id)">
+						<span class="glyphicon glyphicon-trash"></span>
+					</button>
         		</span>
       		</a>
     	</div>
@@ -27,6 +25,7 @@ export default {
     name: 'app',
     data() {
 		return {
+			bcategory: true,
 			posts: [
         		//'Vue.js: The Basics',
         		//'Vue.js Components',

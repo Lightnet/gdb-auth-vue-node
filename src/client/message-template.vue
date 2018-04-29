@@ -31,8 +31,7 @@
 					{{ message.text }}
 				</a>
 			</div>
-
-
+			
 		</div>
 	</div>
 </template>
@@ -134,6 +133,7 @@ export default {
 			user.get('chat').get(pub).set(enc);
 		},
 		async checkpubkey(){
+			this.messages = [];
 			this.pubkeystatus = 'checking pub key...'
 			let user = this.$root.$gun.user();
 			let pub = (this.pubkey || '').trim();
@@ -158,6 +158,7 @@ export default {
 		async checkuser(){
 			// h  // OhsmOcQu7mjfcvIqX7oaY2FhaKiXCAD6R5gGk5pln0w.P72Jf2iigd5hSlBPpeJpszItzLsO6B2ekzdQYAiZdfc
 			// test  // QCn1C2k4jzMsmYQ7XA7jczU4tACHi8dm9FxA9rwc8mc.77BoSL7zXrBCeguBDlDNy-TV8rXfS-DiA5-Psfz5a-Q
+			this.messages = [];
 			let user = this.$root.$gun.user();
 			console.log(this.pubkey);
 			let pub = (this.pubkey || '').trim();
@@ -183,7 +184,7 @@ export default {
 		async UI(say, id, dec){
 			say = await Gun.SEA.decrypt(say,dec);
 			console.log(say);
-			this.messages.push({id:id,text:"[From:]" + say.from + " pMsg:]"  + say.content});
+			this.messages.push({id:id,text:"[From:]" + say.from + " [Msg:]"  + say.content});
 		}
 	},
 	components: {

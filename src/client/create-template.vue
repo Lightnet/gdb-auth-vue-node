@@ -1,7 +1,10 @@
 <template id="create-template">
   	<div v-if="$root.blogin">
-		<h1>Create Post</h1>
-		<form class="form-horizontal" action="javascript:void(0);">
+		<label>Parent:{{pubname}}</label>
+		<br><label>public key:{{pubkey}}</label>
+		<br><label>Status Post:{{poststatus}}</label>
+		<br><h1>Create Post</h1>
+		<form class="form-horizontal" action="javascript:void(0);" v-if="bpost">
 			<div class="form-group">
 				<label class="col-sm-2 control-label" >Post title</label>
 				<div class="col-sm-10">
@@ -27,6 +30,10 @@ export default {
     name: 'app',
     data() {
 		return {
+			pubname:'default',
+			pubkey:'none',
+			poststatus:'normal',
+			bpost:true,
 			topictitle:'',
 			topiccontent:'',
 		}
@@ -63,13 +70,13 @@ export default {
 			//console.log(this.topictitle);
 			//console.log(this.topiccontent);
 			//console.log("post!");
-
 			let timestamp = new Date();
 			timestamp = this.formatDate(timestamp)
 			//console.log(timestamp);
 			//console.log(this.$root);
 			console.log(this.$root.user);
 			let user = this.$root.user.is;
+			let self = this;
 			if(user){
 				var post = {
 					//pub:user.pub,
@@ -80,8 +87,18 @@ export default {
 					postdate: timestamp,
 				}
 				//this.gun_posts.get("pulbic/"+user.pub).set(post);
-				this.gun_posts.set(post);
+				this.gun_posts.set(post,function(ack){
+					console.log(ack);
+					if(ack.err){
+						self.poststatus = 'Error Post!';
+					}
+					if(ack.ok){
+						self.poststatus = 'Posted!';
+						self.bpost = false;
+					}
+				});
 			}
+			//this.bpost = false;
 		}
 	},
 	beforeDestroy() {
