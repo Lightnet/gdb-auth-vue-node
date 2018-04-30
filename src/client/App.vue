@@ -23,7 +23,7 @@
 				</li>
 			</ul>
 			</nav>
-			<h3 class="text-muted">Node Panel</h3>
+			<h3 class="text-muted">Node p2p app</h3>
 		</div>
 
 		<div class="container"  >

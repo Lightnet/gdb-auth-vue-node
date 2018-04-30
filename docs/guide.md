@@ -70,3 +70,6 @@ export default {
 
 # Notes:
  * Vuejs is easy to understand once reading the site guide references.
+
+# Links:
+ * https://gun.eco/docs/API#-code-promise-cb-code-

@@ -39,19 +39,8 @@ export default {
 		}
 	},
 	created(){
-		let gun = this.$root.user;
-		/*
-		this.gun_posts = gun.get('posts');
-		this.gun_posts.map().once(function(thought, id){
-			//console.log(">>",thought,":",id);
-			if (thought == null)
-				return;
-			self.posts.push({
-					id: id,
-					text: thought
-			});
-      	});
-		*/
+		//let gun = this.$root.user;
+		let gun = this.$root.$gun;
 		this.gun_posts = gun.get('posts');
 	},
 	

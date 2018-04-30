@@ -19,14 +19,14 @@
 			<button v-on:click="click_logout()">Logout</button>
 			<button v-on:click="setProfile()">set Profile</button>
 			<button v-on:click="getProfile()">get Profile</button>
-		</div>
-		<div v-if="!bshowlogin">
+
 			<div class="form-group">
 				<label> User Name: {{username}} </label>
 			</div>
 			<div class="form-group">
 				<label> Public Key: {{userpublickey}} </label>
 			</div>
+			
 		</div>
 	</div>
 </template>

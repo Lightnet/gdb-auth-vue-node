@@ -1,28 +1,42 @@
 <template id="messages">
 	<div>
-		<label>Actions:</label>
+		<label>Message Section:</label>
 		<div v-if="!bshowlogin">
 			<!--
-			<button @click="action('inbox')"> Inbox</button>
+			
 			<button @click="action('draft')" > Draft</button>
 			<button @click="action('compose')" > Compose</button>
 			<button @click="action('sendmail')" > Send Mail</button>
-			<button @click="action('contacts')" > Contacts</button>
+			
 			<button @click="action('options')" > Options</button>
 			<input v-model="adduser">
 			<button @click="trustuser" > Trust</button>
 			-->
+			<button @click="action('inbox')"> Inbox</button>
+			<button @click="action('contacts')" > Contacts</button>
+			<br> 
+			<br> <label>Contact:</label>
+			<select v-model="contact">
+				<option disabled value="">Please select one</option>
+				<option v-for="item in contacts" :key="item.id" >
+					{{ item.alias }}
+				</option>
+
+			</select>
+
+			<br> <label>Public Key Add:</label> <input v-model="addcontactpub"> <button @click="checkcontact"> Check </button> <label> Status: {{contactpubstatus}}</label>
+
+
+			<br>
+			<br><label>Private Message:</label>
 			<div>
-				sender: <input v-model="pubkey"><button @click="checkuser"> Check </button><label>{{pubkeystatus}}</label>
+				Send Pub Key: <input v-model="pubkey"><button @click="checkuser"> Check </button><label>{{pubkeystatus}}</label>
 				<br>
-				<!--
-				subject: <input v-model="sendersubject">
+				Subject: <input v-model="sendersubject">
 				<br>
-				-->
 				Content: <textarea v-model="sendercontent"> </textarea>
 				<br>
 				<button @click="sentmessage"> Send </button>
-
 			</div>
 
 			<div>
@@ -44,6 +58,10 @@ export default {
 	//props:['blogin','username'],
 	data() {
 		return{
+			contact:'',
+			contacts:[],
+			addcontactpub:'',
+			contactpubstatus:'Normal',
 			userpublickey:'',
 			bshowlogin:true,
 			messages:[],
@@ -59,6 +77,19 @@ export default {
 			console.log("new string?");
 			this.pubkeystatus = 'typing...';
 			this.getpubkey();
+		},
+		contact:function(newvalue,oldvalue){
+			console.log('change contact!',newvalue,oldvalue);
+			let self = this;
+
+			this.contacts.filter(contact => {
+				if(contact.alias == newvalue){
+					self.pubkey = contact.id;
+				}
+				
+				//return post.id !== idToRemove
+			});
+
 		}
 	},
 	created:function(){
@@ -84,16 +115,19 @@ export default {
 			}
 		,500)
 		,
-		trustuser(){
-			console.log("trust user");
-			//this.$root.user.trust(this.adduser);
-		},
 		async updateMessageList(){
 			//console.log("list?");
 			console.log(this.$root.$gun.user());
 			let user = this.$root.user;
 			let self = this;
-			console.log("user.pair().pub >> ",user.pair().pub);
+
+			console.log('contacts');
+			user.get('contacts').map().once((data,id)=>{
+				console.log(data);
+				console.log(id);
+				self.contacts.push({id:id,alias:data.alias});
+			});
+			//console.log("user.pair().pub >> ",user.pair().pub);
 			//user.get('chat').get(user.pair().pub).map().once((say,id)=>{
 				//console.log("user chat");
 				//console.log(say)
@@ -155,6 +189,21 @@ export default {
 			});
 
 		},
+		async checkcontact(){
+			let user = this.$root.$gun.user();
+			console.log(this.addcontactpub);
+			let pub = (this.addcontactpub || '').trim();
+			if(!pub){ return }
+			let to = this.$root.$gun.user(pub);
+			let who = await to.then() || {};
+			this.contactpubstatus = who.alias || "User not found.";
+			//console.log(this.pmusercheck);
+			if(!who.alias){ return }
+
+			user.get('contacts').get(pub).put({alias:who.alias});
+
+
+		},
 		async checkuser(){
 			// h  // OhsmOcQu7mjfcvIqX7oaY2FhaKiXCAD6R5gGk5pln0w.P72Jf2iigd5hSlBPpeJpszItzLsO6B2ekzdQYAiZdfc
 			// test  // QCn1C2k4jzMsmYQ7XA7jczU4tACHi8dm9FxA9rwc8mc.77BoSL7zXrBCeguBDlDNy-TV8rXfS-DiA5-Psfz5a-Q
@@ -179,7 +228,6 @@ export default {
 				console.log("to chat");
 				this.UI(say,id,dec);
 			});
-
 		},
 		async UI(say, id, dec){
 			say = await Gun.SEA.decrypt(say,dec);
@@ -196,3 +244,4 @@ export default {
 <style lang="scss">
 
 </style>
+

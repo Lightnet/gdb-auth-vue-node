@@ -7,16 +7,16 @@ import Vue from 'vue';
 Vue.config.productionTip = false
 import VueGun from 'vue-gun';
 
+//gun.js
+import Gun from 'gun';
+import 'gun/sea';
+//custom chain gun.js
 import './guntopic';
-
 //Gun.chain.topic = function() {
   //console.log('gun topic');
   //return this;
 //}
 
-//gun.js
-//import Gun from 'gun';
-//import 'gun/sea';
 //;(async () => {
   //var SEA = Gun.SEA;
   //var pair = await SEA.pair();
@@ -64,18 +64,24 @@ import './guntopic';
 //});
 var gun;
 if(location.origin == 'http://localhost:3000'){
-  gun = Gun('http://localhost:8080' + '/gun');
+  gun = Gun({
+      peers:['http://localhost:8080' + '/gun'],
+      secure: false, //not added?
+    });
+  console.log('local gun.js');
 }else{
   gun = Gun(location.origin + '/gun');
+  console.log('host gun.js');
 }
-console.log(gun);
+//console.log(gun);
 
 //gun.get('topic').put({test:'test'});
 //gun.get('topic').topic();
 
-var topic = gun.topic();
-topic.build();
-console.log(topic);
+//var topic = gun.topic();
+//topic.build();
+//topic.create();
+//console.log(topic);
 
 //console.log(gun.topic());
 //var topic = gun.topic();
