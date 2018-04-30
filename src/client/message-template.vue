@@ -86,7 +86,6 @@ export default {
 				if(contact.alias == newvalue){
 					self.pubkey = contact.id;
 				}
-				
 				//return post.id !== idToRemove
 			});
 
@@ -123,8 +122,10 @@ export default {
 
 			console.log('contacts');
 			user.get('contacts').map().once((data,id)=>{
-				console.log(data);
-				console.log(id);
+				if(data == 'null')
+					return;
+				//console.log(data);
+				//console.log(id);
 				self.contacts.push({id:id,alias:data.alias});
 			});
 			//console.log("user.pair().pub >> ",user.pair().pub);

@@ -26,6 +26,19 @@
 			<div class="form-group">
 				<label> Public Key: {{userpublickey}} </label>
 			</div>
+
+			<div>
+				Contacts:
+				<ul class="list-group">
+					<li class="list-group-item" v-for="item in contacts" :key="item.id">
+						[Alias Name:] {{ item.alias }} [Public Key:] {{item.id}} 
+						<span class="pull-right">
+							<button v-on:click="deletecontact(item)"> Delete </button> 
+						</span>
+					</li>
+				</ul>
+
+			</div>
 			
 		</div>
 	</div>
@@ -44,6 +57,7 @@ export default {
 			username:'',
 			userpublickey:'',
 			bshowlogin:true,
+			contacts:[],
 		}
 	},
 	watch:{
@@ -90,6 +104,7 @@ export default {
 			if(this.$root.user.is){
 				this.username = this.$root.user.is.alias;
 				this.userpublickey = this.$root.user.is.pub;
+				this.updatecontacts();
 			}
 		},
 		updateMessage(message) {
@@ -97,17 +112,39 @@ export default {
       		// from GrandchildComponent to ChildComponent and from there to the parent
       		this.$emit('update', message);
     	},
+		updatecontacts(){
+			let user = this.$root.user;
+			let self = this;
+
+			console.log('contacts');
+			user.get('contacts').map().once((data,id)=>{
+				if(data == 'null')
+					return;
+				//console.log(data);
+				//console.log(id);
+				self.contacts.push({id:id,alias:data.alias});
+			});
+		},
+		deletecontact(event){
+			console.log('event');
+			console.log(event);
+			let user = this.$root.user;
+
+			this.contacts.filter(contact => {
+				if(contact.id == event.id){
+					//self.pubkey = contact.id;
+					user.get('contacts').get(contact.id).put('null');
+
+				}
+				//return post.id !== idToRemove
+			});
+
+		},
 		setProfile:function(){
 			let gun = this.$root.$gun;
 			let user = this.$root.user;
 			console.log(user);
-
-
-			console.log(user.pair());
-
-
-
-
+			//console.log(user.pair());
 			//var test = {
 				//name: "test2",
 				//_:{soul:user['_'].soul}
@@ -130,15 +167,12 @@ export default {
 		getProfile:function(){
 			let user = this.$root.user;
 			console.log(user);
-
 			//user.get('profile').get('name').once(function(data){
   				//console.log("Name is:", data); // Alice
 			//});
-
 			//user.get('profile').once(function(data){
   				//console.log("Name is:", data.name); // Alice
 			//});
-
 			console.log(this.$root.$gun);
 			let gun = this.$root.$gun;
 			//gun.get('alias/test').get('profile').once(function(data, key){
@@ -153,7 +187,6 @@ export default {
 				//console.log("key ", key);
   				//console.log("data ", data);
 			//});
-
 			gun.get('pub/'+user.is.pub).once(function(data, key){
 				// `once` grabs the data once, no subscriptions.
 				console.log(">>key ", key);
@@ -165,7 +198,6 @@ export default {
 				//console.log("profile >key ", key);
   				//console.log("data ", data);
 			//});
-			
 		},
 		click_login:function(){
 			//console.log(this);

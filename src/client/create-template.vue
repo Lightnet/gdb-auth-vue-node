@@ -39,8 +39,8 @@ export default {
 		}
 	},
 	created(){
-		//let gun = this.$root.user;
-		let gun = this.$root.$gun;
+		let gun = this.$root.user;
+		//let gun = this.$root.$gun;
 		this.gun_posts = gun.get('posts');
 	},
 	
