@@ -3,7 +3,7 @@
     	<h1>Manage Posts</h1>
     	<div class="list-group" v-if="bcategory">
       		<a v-for="post in posts" :key="post.id" href="#" class="list-group-item clearfix">
-				<label v-if="!post.bedit">
+				<label v-if="!post.bedit"  v-on:click="viewpost(post)">
         			{{ post.text }}
 				</label>
 				<input v-if="post.bedit" v-model="post.text" v-on:change="topiceditchange(post)">
@@ -18,11 +18,14 @@
       		</a>
     	</div>
 
-		<div class="list-group" v-if="bcategory">
+		<div class="list-group" v-if="!bcategory">
 
+			<a v-for="topic in topics" :key="topic.id" href="#" class="list-group-item clearfix">
+				<p>User: {{topic.alias}}  | Title: {{ topic.posttitle }}</p>
+				<p>{{ topic.content }}</p>
+			</a>
 
 		</div>
-
   	</div>
 </template>
 
@@ -32,12 +35,8 @@ export default {
     data() {
 		return {
 			bcategory: true,
-			posts: [
-        		//'Vue.js: The Basics',
-        		//'Vue.js Components',
-        		//'Server Side Rendering with Vue',
-        		//'Vue + Firebase'
-      		]
+			posts: [],
+			topics:[],
 		}
 	},
 	created(){
@@ -58,6 +57,27 @@ export default {
       	});
 	},
 	methods:{
+		viewpost(event){
+			console.log('view?');
+			console.log('event',event);
+			this.bcategory = false;
+			this.topics = [];
+
+			let gun = this.$root.user;
+			let gun_posts = gun.get('posts');
+			console.log('data');
+			let self = this;
+			gun_posts.get(event.id).once((data)=>{
+				console.log(data);
+				self.topics.push({
+					id:event.id,
+					alias:data.alias,
+					posttitle:data.posttitle,
+					content:data.postcontent,
+					postdate:data.postdate,
+					});
+			});
+		},
 		topiceditchange(post){ //press enter to finish edit
 			//console.log(post);
 			//console.log("change?");
@@ -68,15 +88,14 @@ export default {
 		},
 		topic_edit(post){
 			//console.log("topic_edit:",this.bedit);
-			console.log(this);
+			//console.log(this);
 			post.bedit = !post.bedit;
 		},
 		topic_delete(idToRemove){
-			console.log("topic_delete:",idToRemove);
+			//console.log("topic_delete:",idToRemove);
 			let gun = this.$root.user;
 			let gun_posts = gun.get('posts');
 			gun_posts.get(idToRemove).put('null');
-
 			this.posts = this.posts.filter(post => {
 				return post.id !== idToRemove
 			});
