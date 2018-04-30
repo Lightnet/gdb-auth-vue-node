@@ -16,7 +16,7 @@
 					<a href="#" @click="currentView='todolistapp'">To Do List</a>
 				</li>
 				<li role="presentation">
-					<a href="#" @click="currentView='manage-posts'">Manage Posts</a>
+					<a href="#" @click="currentView='manage-posts'">Forum Posts</a>
 				</li>
 				<li role="presentation">
 					<a href="#" @click="currentView='create-post'">Create Post</a>

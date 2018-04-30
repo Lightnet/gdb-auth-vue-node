@@ -1,6 +1,6 @@
 <template id="manage-template">
   	<div>
-    	<h1>Manage Posts</h1>
+    	<h1>Forum Posts</h1>
     	<div class="list-group" v-if="bcategory">
       		<a v-for="post in posts" :key="post.id" href="#" class="list-group-item clearfix">
 				<label v-if="!post.bedit"  v-on:click="viewpost(post)">
@@ -19,12 +19,16 @@
     	</div>
 
 		<div class="list-group" v-if="!bcategory">
-			<div style="height:200px;">
-				<a v-for="topic in topics" :key="topic.id" href="#" class="list-group-item clearfix">
+			<div style="height:400px;overflow-y: scroll;">
+				<div v-for="topic in topics" :key="topic.id"  class="panel panel-default">
 					<p>User: {{topic.alias}}  | Title: {{ topic.posttitle }}</p>
+					
 					<p>{{ topic.content }}</p>
 					<p> Date: {{ topic.postdate }}</p>
-				</a>
+					<!--
+					<hr class="my-4">
+					-->
+				</div>
 			</div>
 			<button v-if="!bpost" v-on:click="replypost_click"> Reply Topic </button>
 
