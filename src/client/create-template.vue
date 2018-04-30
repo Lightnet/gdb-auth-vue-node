@@ -42,6 +42,8 @@ export default {
 		let gun = this.$root.user;
 		//let gun = this.$root.$gun;
 		this.gun_posts = gun.get('posts');
+
+		this.pubkey = this.$root.publickeypost;
 	},
 	
 	methods:{
@@ -76,17 +78,36 @@ export default {
 					postdate: timestamp,
 				}
 				//this.gun_posts.get("pulbic/"+user.pub).set(post);
-				this.gun_posts.set(post,function(ack){
-					console.log(ack);
-					if(ack.err){
-						self.poststatus = 'Error Post!';
-					}
-					if(ack.ok){
-						self.poststatus = 'Posted!';
-						self.bpost = false;
-					}
-				});
+
+				if(this.pubkey){
+					console.log("keyfound!");
+					let gun = this.$root.user;
+					gun.get(this.pubkey).set(post,function(ack){
+						console.log(ack);
+						if(ack.err){
+							self.poststatus = 'Error Post!';
+						}
+						if(ack.ok){
+							self.poststatus = 'Posted!';
+							self.bpost = false;
+						}
+					});
+
+				}else{
+					console.log("default!");
+					this.gun_posts.set(post,function(ack){
+						console.log(ack);
+						if(ack.err){
+							self.poststatus = 'Error Post!';
+						}
+						if(ack.ok){
+							self.poststatus = 'Posted!';
+							self.bpost = false;
+						}
+					});
+				}
 			}
+
 			//this.bpost = false;
 		}
 	},

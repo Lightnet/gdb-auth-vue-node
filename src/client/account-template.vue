@@ -84,7 +84,7 @@ export default {
         		// this.$listeners,
 				//...this.$listeners,
         		// Override input listener to work with v-model
-        		input: event => this.$emit('input', event.target.value)
+        		//input: event => this.$emit('input', event.target.value)
       		//}
 		//}
 	},

@@ -19,11 +19,19 @@
     	</div>
 
 		<div class="list-group" v-if="!bcategory">
+			<div style="height:200px;">
+				<a v-for="topic in topics" :key="topic.id" href="#" class="list-group-item clearfix">
+					<p>User: {{topic.alias}}  | Title: {{ topic.posttitle }}</p>
+					<p>{{ topic.content }}</p>
+					<p> Date: {{ topic.postdate }}</p>
+				</a>
+			</div>
+			<button v-if="!bpost" v-on:click="replypost_click"> Reply Topic </button>
 
-			<a v-for="topic in topics" :key="topic.id" href="#" class="list-group-item clearfix">
-				<p>User: {{topic.alias}}  | Title: {{ topic.posttitle }}</p>
-				<p>{{ topic.content }}</p>
-			</a>
+			<div v-if="bpost">
+
+
+			</div>
 
 		</div>
   	</div>
@@ -35,6 +43,8 @@ export default {
     data() {
 		return {
 			bcategory: true,
+			publickeypost:'',
+			bpost:false,
 			posts: [],
 			topics:[],
 		}
@@ -57,18 +67,25 @@ export default {
       	});
 	},
 	methods:{
+		replypost_click(){
+			this.$root.publickeypost = this.publickeypost;
+			//this.bpost = true;
+			console.log(this.$parent);
+			this.$parent.currentView = 'create-post';
+		},
 		viewpost(event){
-			console.log('view?');
-			console.log('event',event);
+			//console.log('view?');
+			//console.log('event',event);
 			this.bcategory = false;
 			this.topics = [];
 
 			let gun = this.$root.user;
 			let gun_posts = gun.get('posts');
-			console.log('data');
+			//console.log('data');
 			let self = this;
+			//id post
 			gun_posts.get(event.id).once((data)=>{
-				console.log(data);
+				//console.log(data);
 				self.topics.push({
 					id:event.id,
 					alias:data.alias,
@@ -77,6 +94,21 @@ export default {
 					postdate:data.postdate,
 					});
 			});
+			//get key id for map topic post list
+			gun.get(event.id).map().once((data,id)=>{
+				console.log(data);
+				console.log(id);
+				
+				self.topics.push({
+					id:id,
+					alias:data.alias,
+					posttitle:data.posttitle,
+					content:data.postcontent,
+					postdate:data.postdate,
+					});
+					
+			});
+			this.publickeypost = event.id;
 		},
 		topiceditchange(post){ //press enter to finish edit
 			//console.log(post);
