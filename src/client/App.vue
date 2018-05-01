@@ -23,7 +23,7 @@
 				</li>
 			</ul>
 			</nav>
-			<h3 class="text-muted">Node p2p app</h3>
+			<h4 class="text-muted">Node p2p app</h4>
 		</div>
 
 		<div class="container"  >

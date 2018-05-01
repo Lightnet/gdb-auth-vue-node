@@ -1,6 +1,6 @@
 <template id="manage-template">
   	<div>
-    	<h1>Forum Posts</h1>
+    	<h6>Forum Posts</h6>
     	<div class="list-group" v-if="bcategory">
       		<a v-for="post in posts" :key="post.id" href="#" class="list-group-item clearfix">
 				<label v-if="!post.bedit"  v-on:click="viewpost(post)">
@@ -18,25 +18,18 @@
       		</a>
     	</div>
 
-		<div class="list-group" v-if="!bcategory">
-			<div style="height:400px;overflow-y: scroll;">
+		<div v-if="!bcategory">
+			<div style="height:400px;overflow-y: scroll;"  class="container">
 				<div v-for="topic in topics" :key="topic.id"  class="panel panel-default">
-					<p>User: {{topic.alias}}  | Title: {{ topic.posttitle }}</p>
+					<div class="panel-heading">User: {{topic.alias}}  | Title: {{ topic.posttitle }}</div>
 					
-					<p>{{ topic.content }}</p>
-					<p> Date: {{ topic.postdate }}</p>
-					<!--
-					<hr class="my-4">
-					-->
+					<div class="panel-body">{{ topic.content }}</div>
+					<div class="panel-footer"> Date: {{ topic.postdate }}</div>
 				</div>
 			</div>
 			<button v-if="!bpost" v-on:click="replypost_click"> Reply Topic </button>
-
 			<div v-if="bpost">
-
-
 			</div>
-
 		</div>
   	</div>
 </template>
@@ -131,7 +124,17 @@ export default {
 			//console.log("topic_delete:",idToRemove);
 			let gun = this.$root.user;
 			let gun_posts = gun.get('posts');
-			gun_posts.get(idToRemove).put('null');
+			//null child key
+			gun.get(idToRemove).map().once((key,id)=>{
+				gun.get(idToRemove).get(id).put('null',function(ack){
+					console.log(ack);
+				});
+			});
+			//null key
+			gun_posts.get(idToRemove).put('null',function(ack){
+				console.log(ack);
+			});
+
 			this.posts = this.posts.filter(post => {
 				return post.id !== idToRemove
 			});
