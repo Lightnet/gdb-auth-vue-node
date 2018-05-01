@@ -6,13 +6,13 @@
 		<br><h1>Create Post</h1>
 		<form class="form-horizontal" action="javascript:void(0);" v-if="bpost">
 			<div class="form-group">
-				<label class="col-sm-2 control-label" >Post title</label>
+				<label class="col-sm-2 control-label" >Title</label>
 				<div class="col-sm-10">
 					<input type="text" class="form-control" placeholder="Post title" v-model="topictitle">
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="col-sm-2 control-label">Post body</label>
+				<label class="col-sm-2 control-label">Body</label>
 				<div class="col-sm-10">
 					<textarea class="form-control" rows="5" v-model="topiccontent"></textarea>
 				</div>

@@ -46,22 +46,25 @@ export default {
 			topics:[],
 		}
 	},
-	created(){
+	async created(){
 		//let gun = this.$root.$gun;
 		let gun = this.$root.user;
 		this.gun_posts = gun.get('posts');
 		let self = this;
 		//console.log("test posts?");
-		this.gun_posts.map().once(function(thought, id){
+		
+		this.gun_posts.map().once((thought, id)=>{
 			//console.log(">>",thought,":",id);
-			if ((thought == null) || (thought == 'null'))
+			if ((thought == null) || (thought == 'null')){
 				return;
+			}
 			self.posts.push({
-					id: id,
-					text: thought.posttitle,
-					bedit: false,
+				id: id,
+				text: thought.posttitle,
+				bedit: false
 			});
-      	});
+		});
+		
 	},
 	methods:{
 		replypost_click(){
@@ -88,8 +91,8 @@ export default {
 					alias:data.alias,
 					posttitle:data.posttitle,
 					content:data.postcontent,
-					postdate:data.postdate,
-					});
+					postdate:data.postdate
+				});
 			});
 			//get key id for map topic post list
 			gun.get(event.id).map().once((data,id)=>{
@@ -101,8 +104,8 @@ export default {
 					alias:data.alias,
 					posttitle:data.posttitle,
 					content:data.postcontent,
-					postdate:data.postdate,
-					});
+					postdate:data.postdate
+				});
 					
 			});
 			this.publickeypost = event.id;

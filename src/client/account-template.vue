@@ -17,9 +17,10 @@
 		</div>
 		<div v-if="!bshowlogin">
 			<button v-on:click="click_logout()">Logout</button>
+			<!--
 			<button v-on:click="setProfile()">set Profile</button>
 			<button v-on:click="getProfile()">get Profile</button>
-
+			-->
 			<div class="form-group">
 				<label> User Name: {{username}} </label>
 			</div>
@@ -64,29 +65,6 @@ export default {
 		//blogin(n, o) {
       		//console.log(n, o) // n is the new value, o is the old value.
     	//}
-	},
-	beforeCreate: function() {
-		//console.log("bcreated...");
-		//console.log(this);
-		//console.log(this.$parent.$parent);
-		//console.log(this.$parent.$parent.blogin);
-	},
-	computed: {
-		//displayuser:function(){
-			//console.log("this",this);
-			//console.log(this.username);
-			//return this.username + "test";
-		//},
-		//listeners () {
-        	//console.log("???");
-      		//return {
-        		// Pass all component listeners directly to input
-        		// this.$listeners,
-				//...this.$listeners,
-        		// Override input listener to work with v-model
-        		//input: event => this.$emit('input', event.target.value)
-      		//}
-		//}
 	},
 	created(){
 		//console.log(this.$root.blogin);

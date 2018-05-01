@@ -12,6 +12,7 @@ import Gun from 'gun';
 import 'gun/sea';
 //custom chain gun.js
 import './guntopic';
+import './guntoken';
 //Gun.chain.topic = function() {
 	//console.log('gun topic');
 	//return this;
@@ -189,7 +190,9 @@ Vue.use(VueGun, {
 					if(ack.err){
 						console.log("fail!");
 					}
-					console.log("created!", ack.pub);
+					if(ack.ok){
+						console.log("created!", ack.pub);
+					}
 				});
 			},
 			handler(params) {
