@@ -9,7 +9,6 @@
 			<button @click="action('sendmail')" > Send Mail</button>
 			
 			<button @click="action('options')" > Options</button>
-			<input v-model="adduser">
 			<button @click="trustuser" > Trust</button>
 			-->
 			<button @click="action('inbox')"> Inbox</button>
@@ -65,10 +64,9 @@ export default {
 			userpublickey:'',
 			bshowlogin:true,
 			messages:[],
-			adduser:'hh',
-			pubkey:'OhsmOcQu7mjfcvIqX7oaY2FhaKiXCAD6R5gGk5pln0w.P72Jf2iigd5hSlBPpeJpszItzLsO6B2ekzdQYAiZdfc',
-			sendersubject:'tedst',
-			sendercontent:'test',
+			pubkey:'',
+			sendersubject:'test subject',
+			sendercontent:'test content',
 			pubkeystatus:'none',
 		}
 	},
@@ -116,11 +114,10 @@ export default {
 		,
 		async updateMessageList(){
 			//console.log("list?");
-			console.log(this.$root.$gun.user());
+			//console.log(this.$root.$gun.user());
 			let user = this.$root.user;
 			let self = this;
-
-			console.log('contacts');
+			//console.log('contacts');
 			user.get('contacts').map().once((data,id)=>{
 				if(data == 'null')
 					return;
@@ -128,12 +125,6 @@ export default {
 				//console.log(id);
 				self.contacts.push({id:id,alias:data.alias});
 			});
-			//console.log("user.pair().pub >> ",user.pair().pub);
-			//user.get('chat').get(user.pair().pub).map().once((say,id)=>{
-				//console.log("user chat");
-				//console.log(say)
-				//this.UI(say,id,dec);
-			//});
 		},
 		async updateMessage(message) {
       		// By emitting the 'update' event in every intermediary component we can pass data
@@ -200,9 +191,7 @@ export default {
 			this.contactpubstatus = who.alias || "User not found.";
 			//console.log(this.pmusercheck);
 			if(!who.alias){ return }
-
 			user.get('contacts').get(pub).put({alias:who.alias});
-
 
 		},
 		async checkuser(){

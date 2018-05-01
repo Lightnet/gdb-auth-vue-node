@@ -17,8 +17,8 @@
 				</a>
 			</div>
 			<div>
-				Chat: <textarea v-model="chatmessage"> </textarea>
-				<button @click="sentmessage"> Send </button>
+				<textarea v-model="chatmessage"> </textarea>
+				<button @click="sentmessage"> Chat </button>
 				<button @click="checkchatmessage"> check </button>
 			</div>
 		</div>
@@ -83,14 +83,29 @@ export default {
 		checkchatmessage(){
 			let user =  this.$root.$gun.user();
 			let self = this;
-
 			//let dec = await Gun.SEA.secret(this.epublickey_chat, user.pair());
-			
-			user.get('chatroom').get(this.publickey_chat).map().once(function(data){
+			user.get('chatroom').get(this.publickey_chat).map().once((data)=>{
 				console.log("data");
 				console.log(data);
 				//self.messages.push({id:data.id,text:data.message});
 			});
+
+			//user.get('chatroom').map().once((data,id)=>{
+				//console.log("chat data");
+				//console.log(data);
+				//console.log(id);
+				//self.messages.push({id:data.id,text:data.message});
+			//});
+
+			//chatroom id key
+			//user.get('0CKF4mpoQ1KcQy_mNOoIgB5EjoAhPwLe49bGn5URdBY.XqRVAfqyCpyUawlUDumtMitr6IZrRIUUEwNV6z-onNM').map().once((data,id)=>{
+				//console.log("chat data");
+				//console.log(data);
+				//console.log(id);
+				//self.messages.push({id:data.id,text:data.message});
+			//});
+
+
 		},
 		async updateMessageList(){
 			//console.log("list?");

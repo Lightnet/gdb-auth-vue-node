@@ -52,19 +52,17 @@ export default {
 		this.gun_posts = gun.get('posts');
 		let self = this;
 		//console.log("test posts?");
-		
-		this.gun_posts.map().once((thought, id)=>{
+		this.gun_posts.map().once((post, id)=>{
 			//console.log(">>",thought,":",id);
-			if ((thought == null) || (thought == 'null')){
+			if ((post == null) || (post == 'null')){
 				return;
 			}
 			self.posts.push({
 				id: id,
-				text: thought.posttitle,
+				text: post.posttitle,
 				bedit: false
 			});
 		});
-		
 	},
 	methods:{
 		replypost_click(){
@@ -78,7 +76,6 @@ export default {
 			//console.log('event',event);
 			this.bcategory = false;
 			this.topics = [];
-
 			let gun = this.$root.user;
 			let gun_posts = gun.get('posts');
 			//console.log('data');
@@ -96,9 +93,8 @@ export default {
 			});
 			//get key id for map topic post list
 			gun.get(event.id).map().once((data,id)=>{
-				console.log(data);
-				console.log(id);
-				
+				//console.log(data);
+				//console.log(id);
 				self.topics.push({
 					id:id,
 					alias:data.alias,
@@ -127,7 +123,7 @@ export default {
 			//console.log("topic_delete:",idToRemove);
 			let gun = this.$root.user;
 			let gun_posts = gun.get('posts');
-			//null child key
+			//null child keys
 			gun.get(idToRemove).map().once((key,id)=>{
 				gun.get(idToRemove).get(id).put('null',function(ack){
 					console.log(ack);
@@ -137,7 +133,7 @@ export default {
 			gun_posts.get(idToRemove).put('null',function(ack){
 				console.log(ack);
 			});
-
+			//remove item from list
 			this.posts = this.posts.filter(post => {
 				return post.id !== idToRemove
 			});
