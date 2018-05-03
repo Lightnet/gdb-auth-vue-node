@@ -22,13 +22,30 @@
 			<button v-on:click="getProfile()">get Profile</button>
 			-->
 			<div class="form-group">
-				<label> User Name: {{username}} </label>
+				<label> Alias Name: {{username}} </label>
 			</div>
 			<div class="form-group">
 				<label> Public Key: {{userpublickey}} </label>
 			</div>
 
 			<div>
+				Alias: <input v-model="pubname" placeholder="name"> <button v-on:click="grantaccess('pubname')">+</button>
+				<br><input v-model="pubborn" placeholder="born"> <button  v-on:click="grantaccess('pubborn')">+</button>
+				<br><input v-model="pubeducation" placeholder="education"> <button  v-on:click="grantaccess('pubeducation')">+</button>
+				<br><input v-model="pubskills" placeholder="skills"> <button  v-on:click="grantaccess('pubskills')">+</button>
+				<br>
+				<br>
+			</div>
+
+			<div>
+				Other : <input  placeholder="profile key">
+				<br><input v-model="pubname" placeholder="name"> 
+				<br><input v-model="pborn" placeholder="born"> 
+				<br><input v-model="peducation" placeholder="education">
+				<br><input v-model="pskills" placeholder="skills">
+			</div>
+
+			<div style="height:500px;">
 				Contacts:
 				<ul class="list-group">
 					<li class="list-group-item" v-for="item in contacts" :key="item.id">
@@ -40,6 +57,8 @@
 				</ul>
 
 			</div>
+
+			
 			
 		</div>
 	</div>
@@ -57,14 +76,26 @@ export default {
 			ipassphrase:'test',
 			username:'',
 			userpublickey:'',
+
+			pubname:'',
+			pubborn:'',
+			pubeducation:'',
+			pubskills:'',
+
+			pubname:'',
+			pborn:'',
+			peducation:'',
+			pskills:'',
+
 			bshowlogin:true,
 			contacts:[],
 		}
 	},
 	watch:{
-		//blogin(n, o) {
-      		//console.log(n, o) // n is the new value, o is the old value.
-    	//}
+		pubname(n, o) {
+			//console.log(n, o) // n is the new value, o is the old value.
+			this.setprofilevar('pubname', n);
+    	}
 	},
 	created(){
 		//console.log(this.$root.blogin);
@@ -78,6 +109,22 @@ export default {
 		//console.log("user",this.$root.user);
 	},
 	methods:{
+		setprofilevar(name,value){
+			if(!this.$root.user.is){ return }
+			let user = this.$root.user;
+			//user.get('profile').get(name).secret(value);
+		},
+		async grantaccess(event){
+			if(!this.$root.user.is){ return }
+			let id;
+			//console.log(event);
+			var pub = prompt("What is the Public Key or DID you want to give read access to?");
+			//console.log(pub);
+			var to = this.$root.$gun.user(pub);
+			var who = await to.get('alias').then();
+			if(!confirm("You want to give access to " + who + "?")){ return }
+			user.get('profile').get(event).grant(to);
+		},
 		updateprofile:function(){
 			if(this.$root.user.is){
 				this.username = this.$root.user.is.alias;

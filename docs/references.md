@@ -3,7 +3,7 @@
 # Gun js:
  * https://gun.eco/docs/API#-a-name-bye-a-gun-bye-
  * https://github.com/amark/gun/wiki/API-(v0.2.x)
- * 
+ * https://github.com/lmangani/gun-scape viusal graph node.
 
 # Links:
  * https://scrimba.com/c/c2gBgt4
@@ -24,3 +24,10 @@
  * https://jsfiddle.net/tiagomatosweb/vqtnpyzw/ 
  * https://jsfiddle.net/dangvanthanh/3m6s54qx/
 
+
+# Link Other:
+ * https://github.com/Lightnet/bes-threejs/blob/62172d10b6db7f176c8e87de1bd0977c273946e8/src/html/networkg.html
+
+
+ * http://jsbin.com/pedezafomi/edit?js,console 
+ * - object array map convert to non gun.

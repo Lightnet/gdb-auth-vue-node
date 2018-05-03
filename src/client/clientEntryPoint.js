@@ -10,6 +10,7 @@ import VueGun from 'vue-gun';
 //gun.js
 import Gun from 'gun';
 import 'gun/sea';
+import 'gun/lib/open';
 //custom chain gun.js
 import './guntopic';
 import './guntoken';
