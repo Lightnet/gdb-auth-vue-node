@@ -15,47 +15,43 @@ function gSetup(withRemotePeer, killLocalStorage) {
         console.log("Remote!");
     }
     else {
-        function security(msg){
-            console.log('security');
-            //console.log(msg);
+        function gput(request){
+            console.log('gput');
+            console.log(request);
             
-            if(msg.put){
-                console.log(msg);
-                for(let o in msg.put ){
-                    let po = msg.put[o];
-                    
+            if(request.put){
+                //console.log(request);
+                for(let o in request.put ){
+                    let po = request.put[o];                    
                     let ap = {};
                     for(let v in po){
                         if(v != '_'){
                             ap[v] = po[v];
                         }
-                        console.log('var >> ',v);
+                        //console.log('var >> ',v);
                     }
-
                     if(window.g){
-                        console.log("insert?");
-                        console.log(msg.put[o]);
-                        //delete msg.put[o]._;
-                        //window.g.get(o).put(msg.put[o]);
+                        //console.log("insert?");
+                        //console.log(request.put[o]);
                         window.g.get(o).put(ap);
                         window.renderGraph();
                     }
                 }
             }
-            return this.to.next(msg);
+            
+            return this.to.next(request);
         }
 
-        Gun.on('opt', function(at){
-            //if(!at.token){ // only add SEA once per instance, on the "at" context.
-                at.on('in', security, at); // now listen to all input data, acting as a firewall.
-                //at.on('out', signature, at); // and output listeners, to encrypt outgoing data.
-                //at.on('node', neach, at);
-            //}
-            this.to.next(at); // make sure to call the "next" middleware adapter.
-        });
+        //var gunl = Gun('http://127.0.0.1:8080'+ '/gun');
+        var gunl = Gun(location.origin + '/gun');
+        gunl.on('put', gput);
+        gunl.get('data').once(()=>{}); //init connnect
         
         //window.g = Gun(); // volatile demo
-        window.g = Gun(location.origin + '/gun'); // sync with server peer
+        //window.g = Gun(location.origin + '/gun'); // sync with server peer
+        window.g = Gun(); // instance
+        //window.g.get('data').put('alert(1)');
+        window.g.get('data').once(function(){});
         console.log("default!",location.origin);
     }
 }

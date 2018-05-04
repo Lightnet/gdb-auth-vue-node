@@ -31,3 +31,6 @@
 
  * http://jsbin.com/pedezafomi/edit?js,console 
  * - object array map convert to non gun.
+
+
+ http://jsbin.com/yagezefepo/1/edit?html,js,console,output
