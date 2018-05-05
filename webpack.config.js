@@ -11,7 +11,22 @@ module.exports = {
     //watch: true,
     module: {
       rules: [
-            { test: /\.css$/, loader: 'style!css' },
+            //{ test: /\.css$/, loader: 'style!css' },
+            //{
+                //test: /\.scss$/,
+                //loaders: ['style-loader', 'raw-loader', 'sass-loader']
+            //},
+            {
+                test:/\.css$/,
+                use:['style-loader','css-loader']
+            },
+            {
+                test: /\.(ttf|eot|woff|woff2)$/,
+                loader: "file-loader",
+                options: {
+                  name: "fonts/[name].[ext]",
+                },
+            },
             {
                 test: /\.scss$/,
                 loaders: ['style-loader', 'raw-loader', 'sass-loader']
