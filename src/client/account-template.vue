@@ -1,7 +1,7 @@
 <template id="Account">
 	<div>
 		<div v-if="!blogin">
-			<el-button size="mini" style="float: right;" v-on:click="click_logout()">Logout</el-button>
+			<el-button type="primary" size="mini" style="float: right;" v-on:click="click_logout()">Logout</el-button>
 			<el-button size="mini" v-on:click="setview('profile')">Profile</el-button>
 			<el-button size="mini" v-on:click="setview('contacts')">Contacts</el-button>
 		</div>
@@ -28,17 +28,14 @@ export default {
 			//ipassphrase:'test',
 			username:'',
 			userpublickey:'',
-
 			//pubname:'',
 			//pubborn:'',
 			//pubeducation:'',
 			//pubskills:'',
-
 			//pubname:'',
 			//pborn:'',
 			//peducation:'',
 			//pskills:'',
-
 			blogin:true,
 			contacts:[],
 		}

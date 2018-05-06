@@ -28,7 +28,7 @@
 			<br>
 			<br><label>Private Message:</label>
 			<div>
-				Send Pub Key: <input v-model="pubkey"><el-button size="mini" @click="checkuser"> Check </el-button><label>{{pubkeystatus}}</label>
+				Send Pub Key: <input v-model="pubkey"> <el-button size="mini" @click="checkuser">Check</el-button> <label>{{pubkeystatus}}</label>
 				<br>
 				Subject: <input v-model="sendersubject">
 				<br>
@@ -178,7 +178,6 @@ export default {
 				console.log("to chat");
 				this.UI(say,id,dec);
 			});
-
 		},
 		async checkcontact(){
 			let user = this.$root.$gun.user();

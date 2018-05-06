@@ -1,10 +1,11 @@
 <template>
 	<div>
 
-
         <el-form ref="form" label-width="128px">
 				<el-form-item label="Profile key">
-					<el-input  placeholder="profile key"></el-input> 
+					<el-input v-model="pubkey" placeholder="profile key"></el-input>
+					<el-button type="primary" size="mini" @click="addcontact" style="float: right;">Add</el-button>
+					<label> Status: {{pubkeystatus}}</label>
 				</el-form-item>
 				<el-form-item label="Name">
 					<el-input v-model="pubname" placeholder="name"> </el-input> 
@@ -22,14 +23,15 @@
 
 			<div style="height:500px;">
 				Contacts:
-				<ul>
-					<li v-for="item in contacts" :key="item.id">
-						[Alias Name:] {{ item.alias }} [Public Key:] {{item.id}} 
-						<span class="pull-right">
-							<button v-on:click="deletecontact(item)"> Delete </button> 
-						</span>
-					</li>
-				</ul>
+				<el-card class="box-card" v-for="item in contacts" :key="item.id">
+					<div slot="header" class="clearfix">
+						Alias Name: {{ item.alias }} 
+						<el-button style="float: right;" v-on:click="deletecontact(item)" type="danger" icon="el-icon-delete" circle></el-button> 
+					</div>
+					<div>
+					Public Key: {{item.id}}
+					</div>
+				</el-card>
 			</div>
 
     </div>
@@ -38,19 +40,67 @@
 import bus from '../bus';
 
 export default {
-	props:['blogin','contacts'],
+	//props:['blogin','contacts'],
+	props:['blogin'],
 	data() {
 		return{
+			pubkeystatus:'Normal',
+			pubkey:'',
 			pubname:'',
 			pborn:'',
 			peducation:'',
 			pskills:'',
+			contacts:[],
 		}
     },
     created(){
-		
+		this.updatecontacts();
+	},
+	watch: {
+		pubkey:function(newvalue,oldvalue){
+			console.log("new string?");
+			this.pubkeystatus = 'typing...';
+			this.getpubkey();
+		},
 	},
 	methods:{
+		async addcontact(){
+			let user = this.$root.$gun.user();
+			console.log(this.pubkey);
+			let pub = (this.pubkey || '').trim();
+			if(!pub){ return }
+			let to = this.$root.$gun.user(pub);
+			let who = await to.then() || {};
+			this.contactpubstatus = who.alias || "User not found.";
+			//console.log(this.pmusercheck);
+			if(!who.alias){ return }
+			user.get('contacts').get(pub).put({alias:who.alias});
+			console.log('added contact!');
+
+		},
+		getpubkey:_.debounce(//typing key checks pub key string
+			async function(){
+				//console.log(this.pubkey.length);
+				if(this.pubkey.length == 87){
+					this.checkpubkey();
+				}else{
+					this.pubkeystatus = 'Not pub key and single key current!'
+				}
+			}
+		,500)
+		,
+		async checkpubkey(){
+			this.messages = [];
+			this.pubkeystatus = 'checking pub key...'
+			let user = this.$root.$gun.user();
+			let pub = (this.pubkey || '').trim();
+			if(!pub){ return }
+			let to = this.$root.$gun.user(pub);
+			let who = await to.then() || {};
+			this.pubkeystatus = 'Name: '+ who.alias || "User not found.";
+			if(!who.alias){ return }
+			console.log("who",who);
+		},
 		updatecontacts(){
 			let user = this.$root.user;
 			let self = this;
