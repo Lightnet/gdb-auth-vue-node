@@ -1,22 +1,29 @@
 <template id="Account">
 	<div>
-		<label>My Account!</label>
+		
 		<div v-if="bshowlogin">
-			<div class="form-group">
-				<label> User: </label>
-				<input type="text" class="input" v-model="iusername">
-			</div>
-			<div class="form-group">
-				<label> Passphrase: </label>
-				<input type="text" class="input" v-model="ipassphrase">
-			</div>
-			<div class="form-group">
-				<button v-on:click="click_login()">Login</button>
-				<button v-on:click="click_siginup()">Sign Up</button>
-			</div>
+			<label>Login:</label>	
+			<el-form>
+				<el-form-item label="User">
+					<el-col :span="8">
+						<el-input placeholder="alias" v-model="iusername" size="mini"></el-input>
+					</el-col>
+				</el-form-item>
+				<el-form-item label="Passphrase">
+					<el-col :span="8">
+						<el-input placeholder="password" v-model="ipassphrase" size="mini"></el-input>
+					</el-col>
+				</el-form-item>
+				<el-form-item>
+					<el-button type="primary" size="mini" v-on:click="click_login()">Login</el-button>
+					<el-button size="mini" v-on:click="click_siginup()">Sign Up</el-button>
+				</el-form-item>
+			</el-form>
+
 		</div>
+
 		<div v-if="!bshowlogin">
-			<button v-on:click="click_logout()">Logout</button>
+			<el-button size="mini" v-on:click="click_logout()">Logout</el-button >
 			<!--
 			<button v-on:click="setProfile()">set Profile</button>
 			<button v-on:click="getProfile()">get Profile</button>

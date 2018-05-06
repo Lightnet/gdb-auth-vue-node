@@ -1,32 +1,27 @@
 <template id="manage-template">
   	<div>
     	<h6>Forum Posts</h6>
-    	<div class="list-group" v-if="bcategory">
-      		<a v-for="post in posts" :key="post.id" href="#" class="list-group-item clearfix">
-				<label v-if="!post.bedit"  v-on:click="viewpost(post)">
-        			{{ post.text }}
-				</label>
-				<input v-if="post.bedit" v-model="post.text" v-on:change="topiceditchange(post)">
-        		<span class="pull-right">
-					<button class="btn btn-xs btn-info" v-on:click="topic_edit(post)">
-						<span class="glyphicon glyphicon-edit" ></span>
-					</button>
-					<button class="btn btn-xs btn-warning" @click="topic_delete(post.id)">
-						<span class="glyphicon glyphicon-trash"></span>
-					</button>
+    	<div v-if="bcategory">
+      		<el-card class="box-card" v-for="post in posts" :key="post.id" href="#">
+				<label v-if="!post.bedit"  v-on:click="viewpost(post)"> {{ post.text }} </label>
+				<el-input v-if="post.bedit" v-model="post.text" v-on:change="topiceditchange(post)"></el-input>
+        		<span style="float: right; padding: 3px 0">
+					<el-button icon="el-icon-edit" v-on:click="topic_edit(post)"></el-button>
+					<el-button icon="el-icon-delete"  @click="topic_delete(post.id)"></el-button>
         		</span>
-      		</a>
+      		</el-card>
     	</div>
 
 		<div v-if="!bcategory">
-			<div style="height:400px;overflow-y: scroll;"  class="container">
-				<div v-for="topic in topics" :key="topic.id"  class="panel panel-default">
-					<div class="panel-heading">User: {{topic.alias}}  | Title: {{ topic.posttitle }}</div>
+			<div style="height:400px;overflow-y: scroll;">
+				<el-card class="box-card" v-for="topic in topics" :key="topic.id">
+					<div slot="header" class="clearfix">User: {{topic.alias}}  | Title: {{ topic.posttitle }}</div>
 					
-					<div class="panel-body">{{ topic.content }}</div>
-					<div class="panel-footer"> Date: {{ topic.postdate }}</div>
-				</div>
+					<el-main>{{ topic.content }}</el-main>
+					<el-footer> Date: {{ topic.postdate }}</el-footer>
+				</el-card>
 			</div>
+
 			<button v-if="!bpost" v-on:click="replypost_click"> Reply Topic </button>
 			<div v-if="bpost">
 			</div>
@@ -144,3 +139,21 @@ export default {
     },
 }
 </script>
+
+<style lang="scss">
+ .el-header, .el-footer {
+    background-color: #B3C0D1;
+	color: #333;
+	height: 25px !important;
+	margin-top: 0;
+	margin-bottom: 0;
+	line-height: 20px;
+	font-size: 1.5em;
+  }
+
+  .el-main {
+    //background-color: #E9EEF3;
+    //color: #333;
+  }
+  
+</style>

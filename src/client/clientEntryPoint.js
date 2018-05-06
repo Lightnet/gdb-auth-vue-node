@@ -5,6 +5,11 @@ localStorage.clear();
 // run by the browser each time your view template referencing it is loaded
 import Vue from 'vue';
 Vue.config.productionTip = false
+import Element from 'element-ui';
+//import 'element-ui/lib/theme-chalk/index.css';
+import './element-variables.scss';
+
+Vue.use(Element);
 import VueGun from 'vue-gun';
 
 //gun.js

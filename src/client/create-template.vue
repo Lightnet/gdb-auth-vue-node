@@ -3,28 +3,25 @@
 		<label>Parent:{{pubname}}</label>
 		<br><label>public key:{{pubkey}}</label>
 		<br><label>Status Post:{{poststatus}}</label>
-		<br><h1>Create Post</h1>
-		<form class="form-horizontal" action="javascript:void(0);" v-if="bpost">
-			<div class="form-group">
-				<label class="col-sm-2 control-label" >Title</label>
+		<br><label>Create Post</label>
+		<el-form ref="form" action="javascript:void(0);" v-if="bpost">
+			<el-form-item label="Title">
 				<div class="col-sm-10">
-					<input type="text" class="form-control" placeholder="Post title" v-model="topictitle">
+					<el-input placeholder="Post title Topic:" v-model="topictitle"></el-input>
 				</div>
-			</div>
-			<div class="form-group">
-				<label class="col-sm-2 control-label">Body</label>
+			</el-form-item>
+			<el-form-item  label="Body:">
 				<div class="col-sm-10">
-					<textarea class="form-control" rows="5" v-model="topiccontent"></textarea>
+					<el-input type="textarea" rows="5" v-model="topiccontent"></el-input>
 				</div>
-			</div>
-			<div class="form-group">
-				<div class="col-sm-offset-2 col-sm-10">
-					<button class="btn btn-primary" @click="topicpost">Create</button>
-				</div>
-			</div>
-		</form>
+			</el-form-item>
+			<el-form-item>
+				<el-button size="mini" type="primary" @click="topicpost">Create</el-button>
+			</el-form-item>
+		</el-form>
   	</div>
 </template>
+
 <script>
 export default {
     name: 'app',

@@ -4,3 +4,5 @@ backend.js
 package-lock.json
 .env
 data.json
+public/fonts/element-icons.ttf
+public/fonts/element-icons.woff

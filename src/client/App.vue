@@ -1,29 +1,15 @@
 <template>
 	<div id="app">
-		<div class="header clearfix">
-			<nav>
-			<ul class="nav nav-pills pull-right">
-				<li role="presentation">
-					<a href="#" @click="currentView='account'">Account</a>
-				</li>
-				<li role="presentation">
-					<a href="#" @click="currentView='messages'">Messages</a>
-				</li>
-				<li role="presentation">
-					<a href="#" @click="currentView='chat'">Chat</a>
-				</li>
-				<li role="presentation">
-					<a href="#" @click="currentView='todolistapp'">To Do List</a>
-				</li>
-				<li role="presentation">
-					<a href="#" @click="currentView='manage-posts'">Forum Posts</a>
-				</li>
-				<li role="presentation">
-					<a href="#" @click="currentView='create-post'">Create Post</a>
-				</li>
-			</ul>
-			</nav>
-			<h4 class="text-muted">Node p2p app</h4>
+		<div>
+			<el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
+				<el-menu-item index="home">Home</el-menu-item>
+				<el-menu-item index="account">Account</el-menu-item>
+				<el-menu-item index="messages">Messages</el-menu-item>
+				<el-menu-item index="chat">Chat</el-menu-item>
+				<el-menu-item index="todolistapp">To Do List</el-menu-item>
+				<el-menu-item index="manage-posts">Forum Posts</el-menu-item>
+				<el-menu-item index="create-post">Create Post</el-menu-item>
+			</el-menu>
 		</div>
 
 		<div class="container"  >
@@ -34,6 +20,7 @@
 
 <script>
 import Vue from 'vue';
+import hometemplate from './home-template.vue';
 import managetemplate from './manage-template.vue';
 import createtemplate from './create-template.vue';
 import toDoListTemplate from './todolist-template.vue';
@@ -45,6 +32,8 @@ export default {
     name: 'app',
     data() {
 		return {
+			activeIndex:'account',
+			activeName: 'Account',
 			username:'none',
 			//currentView: 'manage-posts'
 			currentView: 'account',
@@ -61,6 +50,7 @@ export default {
 		});
 	},
 	components: {
+		'home':hometemplate,
 		'manage-posts':managetemplate,
 		'create-post': createtemplate,
 		'todolistapp':toDoListTemplate,
@@ -69,6 +59,11 @@ export default {
 		'chat':chatTemplate,
 	},
 	methods: {
+		handleSelect(key, keyPath) {
+			this.currentView = key;
+			//console.log(key);
+        	//console.log(key, keyPath);
+      	},
 		updateMessage (message) {
       		// By emitting the 'update' event in every intermediary component we can pass data
       		// from GrandchildComponent to ChildComponent and from there to the parent
