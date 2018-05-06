@@ -2,6 +2,7 @@
 // where your node app starts
 
 // init project
+var fs = require('fs');
 var express = require('express');
 var bodyParser = require('body-parser');
 var app = express();
@@ -35,17 +36,25 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
 // init sqlite db
-var fs = require('fs');
+
 //var dbFile = './.data/sqlite.db';
-var dbFile = process.env.DatabaseFile;// './.data/data.json';
-console.log("database path:", process.env.DatabaseFile);
-var exists = fs.existsSync(dbFile);
+//var dbFile = process.env.DatabaseFile;// './.data/data.json';
+//console.log("database path:", process.env.DatabaseFile);
+//var exists = fs.existsSync(dbFile);
 // if ./.data/sqlite.db does not exist, create it, otherwise print records to console
-if(!exists){
-  console.log("file not exist!");
-}else{
-  console.log("file exist!");
-}
+//if(!exists){
+  //console.log("file not exist!");
+//}else{
+  //console.log("file exist!");
+//}
+
+//https://cdn.glitch.com/94ca57e3-7116-4770-8a69-e0034c332f65%2Felement-icons.ttf?1525640363315
+//https://cdn.glitch.com/94ca57e3-7116-4770-8a69-e0034c332f65%2Felement-icons.woff?1525640368138
+//assets redirect
+app.get("/fonts/element-icons.woff", function (request, response) {
+  response.redirect("https://cdn.glitch.com/94ca57e3-7116-4770-8a69-e0034c332f65%2Felement-icons.woff?1525640368138");
+});
+
 
 // http://expressjs.com/en/starter/basic-routing.html
 app.get("/", function (request, response) {
