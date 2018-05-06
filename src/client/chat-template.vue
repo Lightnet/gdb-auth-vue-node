@@ -1,6 +1,6 @@
 <template id="chat">
 	<div>
-		<label>Chat Room:(not public yet)</label>
+		<label>Chat Room:(Not public yet!)</label>
 		<div v-if="!bshowlogin">
 			<!--
 			<button @click="action('home')"> Home</button>
@@ -11,10 +11,13 @@
 			<button @click="genChatKey" >Gen Public Key Chat</button>
 			-->
 			<div style="height: 300px; overflow-y: scroll;">
-				Message:
-				<a v-for="message in messages" :key="message.id" href="#" class="list-group-item clearfix">
-					{{ message.text }}
-				</a>
+				<el-card class="box-card" v-for="message in messages" :key="message.id">
+					<div>
+					Alias:{{ message.from }}
+					<br>
+					{{ message.message }}
+					</div>
+				</el-card >
 			</div>
 			<div>
 				<textarea v-model="chatmessage"> </textarea>
@@ -134,7 +137,7 @@ export default {
 			console.log(say);
 			if(!say)
 				return;
-			this.messages.push({id:id,text:"[From:]" + say.alias + " pMsg:]"  + say.message});
+			this.messages.push({id:id,from:say.alias,message:say.message});
 		},
 		updateMessage(message) {
       		// By emitting the 'update' event in every intermediary component we can pass data
