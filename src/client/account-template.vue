@@ -1,72 +1,13 @@
 <template id="Account">
 	<div>
-		
-		<div v-if="bshowlogin">
-			<label>Login:</label>	
-			<el-form>
-				<el-form-item label="User">
-					<el-col :span="8">
-						<el-input placeholder="alias" v-model="iusername" size="mini"></el-input>
-					</el-col>
-				</el-form-item>
-				<el-form-item label="Passphrase">
-					<el-col :span="8">
-						<el-input placeholder="password" v-model="ipassphrase" size="mini"></el-input>
-					</el-col>
-				</el-form-item>
-				<el-form-item>
-					<el-button type="primary" size="mini" v-on:click="click_login()">Login</el-button>
-					<el-button size="mini" v-on:click="click_siginup()">Sign Up</el-button>
-				</el-form-item>
-			</el-form>
-
+		<div v-if="!blogin">
+			<el-button size="mini" style="float: right;" v-on:click="click_logout()">Logout</el-button>
+			<el-button size="mini" v-on:click="setview('profile')">Profile</el-button>
+			<el-button size="mini" v-on:click="setview('contacts')">Contacts</el-button>
 		</div>
 
-		<div v-if="!bshowlogin">
-			<el-button size="mini" v-on:click="click_logout()">Logout</el-button >
-			<!--
-			<button v-on:click="setProfile()">set Profile</button>
-			<button v-on:click="getProfile()">get Profile</button>
-			-->
-			<div class="form-group">
-				<label> Alias Name: {{username}} </label>
-			</div>
-			<div class="form-group">
-				<label> Public Key: {{userpublickey}} </label>
-			</div>
-
-			<div>
-				Alias: <input v-model="pubname" placeholder="name"> <button v-on:click="grantaccess('pubname')">+</button>
-				<br><input v-model="pubborn" placeholder="born"> <button  v-on:click="grantaccess('pubborn')">+</button>
-				<br><input v-model="pubeducation" placeholder="education"> <button  v-on:click="grantaccess('pubeducation')">+</button>
-				<br><input v-model="pubskills" placeholder="skills"> <button  v-on:click="grantaccess('pubskills')">+</button>
-				<br>
-				<br>
-			</div>
-
-			<div>
-				Other : <input  placeholder="profile key">
-				<br><input v-model="pubname" placeholder="name"> 
-				<br><input v-model="pborn" placeholder="born"> 
-				<br><input v-model="peducation" placeholder="education">
-				<br><input v-model="pskills" placeholder="skills">
-			</div>
-
-			<div style="height:500px;">
-				Contacts:
-				<ul class="list-group">
-					<li class="list-group-item" v-for="item in contacts" :key="item.id">
-						[Alias Name:] {{ item.alias }} [Public Key:] {{item.id}} 
-						<span class="pull-right">
-							<button v-on:click="deletecontact(item)"> Delete </button> 
-						</span>
-					</li>
-				</ul>
-
-			</div>
-
-			
-			
+		<div class="container">
+			<component :is="currentView" :username=username :userpublickey=userpublickey></component>
 		</div>
 	</div>
 </template>
@@ -74,27 +15,31 @@
 <script>
 //event on and emit global
 import bus from './bus';
+import logintemplate from './components/login-template.vue';
+import profiletemplate from './components/profile-template.vue';
+import contactstemplate from './components/contacts-template.vue';
 
 export default {
 	//props:['blogin','username'],
 	data() {
 		return{
-			iusername:'test',
-			ipassphrase:'test',
+			currentView: 'login',
+			//iusername:'test',
+			//ipassphrase:'test',
 			username:'',
 			userpublickey:'',
 
-			pubname:'',
-			pubborn:'',
-			pubeducation:'',
-			pubskills:'',
+			//pubname:'',
+			//pubborn:'',
+			//pubeducation:'',
+			//pubskills:'',
 
-			pubname:'',
-			pborn:'',
-			peducation:'',
-			pskills:'',
+			//pubname:'',
+			//pborn:'',
+			//peducation:'',
+			//pskills:'',
 
-			bshowlogin:true,
+			blogin:true,
 			contacts:[],
 		}
 	},
@@ -108,14 +53,18 @@ export default {
 		//console.log(this.$root.blogin);
 		bus.$on('action',this.action);
 		if(this.$root.blogin){
-			this.bshowlogin = false;
+			this.blogin = false;
 			this.updateprofile();
+			this.currentView = 'profile';
 		}else{
-			this.bshowlogin = true;
+			this.blogin = true;
 		}
 		//console.log("user",this.$root.user);
 	},
 	methods:{
+		setview(value){
+			this.currentView = value;
+		},
 		setprofilevar(name,value){
 			if(!this.$root.user.is){ return }
 			let user = this.$root.user;
@@ -136,7 +85,8 @@ export default {
 			if(this.$root.user.is){
 				this.username = this.$root.user.is.alias;
 				this.userpublickey = this.$root.user.is.pub;
-				this.updatecontacts();
+				console.log(this.username );
+				//this.updatecontacts();
 			}
 		},
 		updateMessage(message) {
@@ -166,105 +116,42 @@ export default {
 				if(contact.id == event.id){
 					//self.pubkey = contact.id;
 					user.get('contacts').get(contact.id).put('null');
-
 				}
 				//return post.id !== idToRemove
 			});
-
-		},
-		setProfile:function(){
-			let gun = this.$root.$gun;
-			let user = this.$root.user;
-			console.log(user);
-			//console.log(user.pair());
-			//var test = {
-				//name: "test2",
-				//_:{soul:user['_'].soul}
-			//};
-			//user.get('profile').put(test);
-			//gun.get('jgb7yy7ust~pm718zNKuDKlpVp_mi6Q1XKIl39wrYsGnLnEJY1QiYg.guaxTitPCqEwGRCIrGsR9gbaFN6RdyPYp7AWF7QyLeE').put(test);
-			//gun.get('test').once(function(data,key){
-  				//console.log("data:", data,key); // Alice
-			//});
-			//profile id {profile:#key}
-			//gun.get('jgb7yy7ust~pm718zNKuDKlpVp_mi6Q1XKIl39wrYsGnLnEJY1QiYg.guaxTitPCqEwGRCIrGsR9gbaFN6RdyPYp7AWF7QyLeE').once(function(data, key){
-				// `once` grabs the data once, no subscriptions.
-				//console.log("profile >key ", key);
-  				//console.log("data ", data);
-			//});
-			//user.once(function(data){
-  				//console.log("data:", data); // Alice
-			//});
 		},
 		getProfile:function(){
 			let user = this.$root.user;
 			console.log(user);
-			//user.get('profile').get('name').once(function(data){
-  				//console.log("Name is:", data); // Alice
-			//});
-			//user.get('profile').once(function(data){
-  				//console.log("Name is:", data.name); // Alice
-			//});
-			console.log(this.$root.$gun);
 			let gun = this.$root.$gun;
-			//gun.get('alias/test').get('profile').once(function(data, key){
-				// `once` grabs the data once, no subscriptions.
-				//console.log("key ", key);
-  				//console.log("data ", data);
-			//});
-
-			//public user access?
-			//gun.get('alias/test').once(function(data, key){
-				// `once` grabs the data once, no subscriptions.
-				//console.log("key ", key);
-  				//console.log("data ", data);
-			//});
-			gun.get('pub/'+user.is.pub).once(function(data, key){
-				// `once` grabs the data once, no subscriptions.
-				console.log(">>key ", key);
-  				console.log("data ", data);
-			});
-			//profile id {profile:#key}
-			//gun.get('jgb7yy7ust~pm718zNKuDKlpVp_mi6Q1XKIl39wrYsGnLnEJY1QiYg.guaxTitPCqEwGRCIrGsR9gbaFN6RdyPYp7AWF7QyLeE').once(function(data, key){
-				// `once` grabs the data once, no subscriptions.
-				//console.log("profile >key ", key);
-  				//console.log("data ", data);
-			//});
-		},
-		click_login:function(){
-			//console.log(this);
-			//console.log("this.username",this.username);
-			//console.log("this.passphrase",this.passphrase);
-			bus.$emit('userlogin',{username:this.iusername,passphrase:this.ipassphrase});
-			this._passphrase = '';
-			//bus.$emit('userlogin',{username:'test',passphrase:'test'});
-			//console.log("login...");
-		},
-		click_siginup:function(){
-			bus.$emit('usersiginup',{username:this.iusername,passphrase:this.ipassphrase});
-			this.ipassphrase = '';
 		},
 		click_logout:function(){
 			bus.$emit('userlogout');
 		},
 		action:function(params){
 			if(params == "hidelogin"){
-				this.bshowlogin = false;
+				this.blogin = false;
 				this.$root.blogin = true;
 				this.updateprofile();
+				this.currentView = 'profile';
+				console.log('login >> account');
 			}
 			if(params == "logout"){
-				//this.bshowlogin = true;
+				//this.blogin = true;
 				this.$root.blogin = false;
 			}
 		}
 	},
 	components: {
-		//TodoList
+		'login':logintemplate,
+		'profile':profiletemplate,
+		'contacts':contactstemplate,
 	}
 }
 </script>
 
 <style lang="scss">
-
+.el-form{
+	width:512px;
+}
 </style>

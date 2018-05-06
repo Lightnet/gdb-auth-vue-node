@@ -12,7 +12,7 @@
 			</el-menu>
 		</div>
 
-		<div class="container"  >
+		<div class="container">
 			<component :is="currentView" @update="updateMessage"></component>
 		</div>
 	</div>
@@ -74,6 +74,13 @@ export default {
 </script>
 
 <style lang="scss">
+.el-menu{
+	//padding: 0px 0px 0px 0px;
+}
+.el-menu-item{
+	//padding: 4px 4px 10px 10px;
+	//height:30px !important;
+}
 .header {
   padding: 15px 15px 20px 15px;
   border-bottom: 1px solid #e5e5e5;

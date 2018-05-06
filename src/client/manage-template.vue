@@ -1,13 +1,15 @@
 <template id="manage-template">
   	<div>
     	<h6>Forum Posts</h6>
+		
     	<div v-if="bcategory">
+			<el-button type="primary" size="mini" v-on:click="replypost_click">New Post</el-button>
       		<el-card class="box-card" v-for="post in posts" :key="post.id" href="#">
 				<label v-if="!post.bedit"  v-on:click="viewpost(post)"> {{ post.text }} </label>
 				<el-input v-if="post.bedit" v-model="post.text" v-on:change="topiceditchange(post)"></el-input>
         		<span style="float: right; padding: 3px 0">
-					<el-button icon="el-icon-edit" v-on:click="topic_edit(post)"></el-button>
-					<el-button icon="el-icon-delete"  @click="topic_delete(post.id)"></el-button>
+					<el-button type="primary" icon="el-icon-edit" v-on:click="topic_edit(post)" circle></el-button>
+					<el-button type="danger" icon="el-icon-delete" @click="topic_delete(post.id)" circle></el-button>
         		</span>
       		</el-card>
     	</div>
@@ -22,7 +24,7 @@
 				</el-card>
 			</div>
 
-			<button v-if="!bpost" v-on:click="replypost_click"> Reply Topic </button>
+			<el-button type="primary" size="mini" v-if="!bpost" v-on:click="replypost_click"> Reply Topic </el-button>
 			<div v-if="bpost">
 			</div>
 		</div>
@@ -142,18 +144,18 @@ export default {
 
 <style lang="scss">
  .el-header, .el-footer {
-    background-color: #B3C0D1;
+    //background-color: #B3C0D1;
 	color: #333;
 	height: 25px !important;
 	margin-top: 0;
 	margin-bottom: 0;
-	line-height: 20px;
-	font-size: 1.5em;
+	//line-height: 20px;
+	//font-size: 1.5em;
   }
 
   .el-main {
-    //background-color: #E9EEF3;
-    //color: #333;
+    background-color: #E9EEF3;
+    color: #333;
   }
   
 </style>

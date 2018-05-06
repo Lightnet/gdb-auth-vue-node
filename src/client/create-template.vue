@@ -4,7 +4,7 @@
 		<br><label>public key:{{pubkey}}</label>
 		<br><label>Status Post:{{poststatus}}</label>
 		<br><label>Create Post</label>
-		<el-form ref="form" action="javascript:void(0);" v-if="bpost">
+		<el-form ref="form" action="javascript:void(0);" v-if="bpost" label-width="120px" style="width:500px;">
 			<el-form-item label="Title">
 				<div class="col-sm-10">
 					<el-input placeholder="Post title Topic:" v-model="topictitle"></el-input>

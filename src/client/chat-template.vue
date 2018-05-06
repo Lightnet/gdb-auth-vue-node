@@ -18,8 +18,8 @@
 			</div>
 			<div>
 				<textarea v-model="chatmessage"> </textarea>
-				<button @click="sentmessage"> Chat </button>
-				<button @click="checkchatmessage"> check </button>
+				<el-button type="primary" @click="sentmessage"> Chat </el-button>
+				<el-button @click="checkchatmessage"> check </el-button>
 			</div>
 		</div>
 	</div>

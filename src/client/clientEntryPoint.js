@@ -1,34 +1,31 @@
 // client-side js
 
-localStorage.clear();
+localStorage.clear(); //clea database for gun
 
 // run by the browser each time your view template referencing it is loaded
 import Vue from 'vue';
 Vue.config.productionTip = false
-import Element from 'element-ui';
-//import 'element-ui/lib/theme-chalk/index.css';
-import './element-variables.scss';
 
+import Element from 'element-ui'; // ui components
+//import 'element-ui/lib/theme-chalk/index.css'; //css
+import './element-variables.scss'; //css
 Vue.use(Element);
+
 import VueGun from 'vue-gun';
 
 //gun.js
 import Gun from 'gun';
 import 'gun/sea';
-import 'gun/lib/open';
+
 //custom chain gun.js
-import './guntopic';
-import './guntoken';
-//Gun.chain.topic = function() {
-	//console.log('gun topic');
-	//return this;
-//}
+//import './forum/guntopic';
+//import './guntoken/guntoken';
+import 'gun/lib/open';
 
 //;(async () => {
 	//var SEA = Gun.SEA;
 	//var pair = await SEA.pair();
 	//console.log(pair);
-
 //})();
 /*
 ;(async () => {
@@ -81,28 +78,17 @@ if(location.origin == 'http://localhost:3000'){
 	console.log('host gun.js');
 }
 //console.log(gun);
+gun.get('data').put(function(){});//init connection
 
-//gun.get('topic').put({test:'test'});
-//gun.get('topic').topic();
-
-//var topic = gun.topic();
-//topic.build();
-//topic.create();
-//console.log(topic);
-
-//console.log(gun.topic());
-//var topic = gun.topic();
-//console.log(gun.get('topic'));
-
-gun.on('auth', function(at){
+//gun.on('auth', function(at){
 	//if('sign' === c.hash){ c.hash = '' }
 	//as.route(c.hash || 'people');
-	console.log('auth');
-});
+	//console.log('auth');
+//});
 
-gun.on('secure', function(at){
-	console.log('secure');
-});
+//gun.on('secure', function(at){
+	//console.log('secure');
+//});
 
 //var c = window.c = {};
 //c.hash = location.hash.slice(1);
@@ -112,12 +98,7 @@ gun.on('secure', function(at){
 	//console.log("update:", data);
 //});
 
-//Gun.on(function(data){
-	//console.log("update:", data);
-//});
 //https://stackoverflow.com/questions/49519571/gun-v0-9-92-using-sea-cant-put-nested-data-when-not-logged-in
-
-//console.log('data...');
 
 //console.log(gun);
 //window.onload = function() {
@@ -145,8 +126,8 @@ Vue.use(VueGun, {
 //});
 
 //(function(){
-		//console.log('hello world :o');
-		//console.log('GunDB and Vue?');
+	//console.log('hello world :o');
+	//console.log('GunDB and Vue?');
 		
 	import bus from "./bus.js"; //var eventHub = new Vue();
 	import App from "./App.vue";

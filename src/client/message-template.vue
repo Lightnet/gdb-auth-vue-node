@@ -1,9 +1,8 @@
 <template id="messages">
 	<div>
-		<label>Message Section:</label>
 		<div v-if="!bshowlogin">
 			<!--
-			
+			<label>Message Section:</label>
 			<button @click="action('draft')" > Draft</button>
 			<button @click="action('compose')" > Compose</button>
 			<button @click="action('sendmail')" > Send Mail</button>
@@ -11,8 +10,8 @@
 			<button @click="action('options')" > Options</button>
 			<button @click="trustuser" > Trust</button>
 			-->
-			<button @click="action('inbox')"> Inbox</button>
-			<button @click="action('contacts')" > Contacts</button>
+			<el-button size="mini" @click="action('inbox')"> Inbox</el-button>
+			<el-button size="mini" @click="action('contacts')" > Contacts</el-button>
 			<br> 
 			<br> <label>Contact:</label>
 			<select v-model="contact">
@@ -23,19 +22,19 @@
 
 			</select>
 
-			<br> <label>Public Key Add:</label> <input v-model="addcontactpub"> <button @click="checkcontact"> Check </button> <label> Status: {{contactpubstatus}}</label>
+			<br> <label>Public Key Add:</label> <input v-model="addcontactpub"> <el-button size="mini" @click="checkcontact"> Check </el-button> <label> Status: {{contactpubstatus}}</label>
 
 
 			<br>
 			<br><label>Private Message:</label>
 			<div>
-				Send Pub Key: <input v-model="pubkey"><button @click="checkuser"> Check </button><label>{{pubkeystatus}}</label>
+				Send Pub Key: <input v-model="pubkey"><el-button size="mini" @click="checkuser"> Check </el-button><label>{{pubkeystatus}}</label>
 				<br>
 				Subject: <input v-model="sendersubject">
 				<br>
 				Content: <textarea v-model="sendercontent"> </textarea>
 				<br>
-				<button @click="sentmessage"> Send </button>
+				<el-button size="mini" @click="sentmessage"> Send </el-button>
 			</div>
 
 			<div>
