@@ -160,12 +160,16 @@ Vue.use(VueGun, {
 				//console.log(params);
 				//console.log(this);
 				//let blogin = false;
+				let self = this;
+
 				this.user.auth(params.username, params.passphrase,function(ack){
 					//console.log(ack);
 					if(ack.err){
 						console.log("fail!");
+						self.$message('Auth attempt failed!');
 					}else{
 						console.log("Authorized!");
+						self.$message({message:'Authorized!',type: 'success',duration:800});
 						bus.$emit('action','hidelogin');
 				}
 				//console.log("test?");
@@ -186,10 +190,12 @@ Vue.use(VueGun, {
 				console.log(params);
 			},
 			handler_logout:function(){
-				console.log("event logout");
+				let self = this;
+				//console.log("event logout");
 				this.user.leave(function(ack){ 
 					console.log("ack",ack);
 					console.log("Logout Finish");
+					self.$message('Auth attempt failed!');
 				});
 				//console.log(this.user);
 				bus.$emit('action','logout');

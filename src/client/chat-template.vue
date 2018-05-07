@@ -13,9 +13,16 @@
 			<div style="height: 300px; overflow-y: scroll;">
 				<el-card class="box-card" v-for="message in messages" :key="message.id">
 					<div>
-					Alias:{{ message.from }}
-					<br>
+					<el-tag>{{ message.from }}</el-tag>
+					<el-button style="float: right;" type="danger" icon="el-icon-delete" circle v-on:click="deletechat(message)"></el-button>
+					
+					<el-tag type="info" v-if="!message.bedit">
 					{{ message.message }}
+					</el-tag>
+
+					<el-input v-if="message.bedit" v-model="message.message" v-on:change="chateditchange(message)">
+
+					</el-input>
 					</div>
 				</el-card >
 			</div>
@@ -83,6 +90,16 @@ export default {
 		genChatKey(){
 			console.log(Gun.SEA.pair());
 		},
+		chateditchange(event){
+			console.log('event',event);
+			console.log(event.id);
+			console.log(event.message);
+
+			let user = this.$root.$gun.user();
+			user.get('chatroom').get(this.publickey_chat).get(event.id).put({message:event.message});
+			event.bedit = false;
+
+		},
 		checkchatmessage(){
 			let user =  this.$root.$gun.user();
 			let self = this;
@@ -107,8 +124,6 @@ export default {
 				//console.log(id);
 				//self.messages.push({id:data.id,text:data.message});
 			//});
-
-
 		},
 		async updateMessageList(){
 			//console.log("list?");
@@ -137,7 +152,7 @@ export default {
 			console.log(say);
 			if(!say)
 				return;
-			this.messages.push({id:id,from:say.alias,message:say.message});
+			this.messages.push({id:id,from:say.alias,message:say.message,bedit:false});
 		},
 		updateMessage(message) {
       		// By emitting the 'update' event in every intermediary component we can pass data
@@ -156,6 +171,7 @@ export default {
 				pub:"pub/"+user.is.pub,
 				alias:user.is.alias,
 				message:this.chatmessage,
+				bedit:false,
 			};
 			
 			var sec = await Gun.SEA.secret(this.epublickey_chat, user.pair());
@@ -164,7 +180,22 @@ export default {
 			user.get('chatroom').get(this.publickey_chat).set(enc, function(ack){
 				console.log(ack);
 			});
-		}
+		},
+		editchat(event){
+			console.log("edit",event);
+			event.bedit = event.bedit != true;
+
+			console.log(event.bedit);
+		},
+		deletechat(event){
+			console.log("delete",event);
+			let user = this.$root.$gun.user();
+			user.get('chatroom').get(this.publickey_chat).get(event.id).put('null');
+
+			this.messages = this.messages.filter(todo => {
+				return todo.id !== event.id;
+			});
+		},
 	},
 	components: {
 		//TodoList

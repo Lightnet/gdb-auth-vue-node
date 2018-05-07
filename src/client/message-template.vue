@@ -8,10 +8,9 @@
 			<button @click="action('sendmail')" > Send Mail</button>
 			<button @click="action('options')" > Options</button>
 			<button @click="trustuser" > Trust</button>
-			-->
-
 			<el-button size="mini" @click="action('inbox')"> Inbox</el-button>
 			<el-button size="mini" @click="action('contacts')" > Contacts</el-button>
+			-->
 			<br><label>Private Message:</label>
 			<br><label>Contacts:</label>
 			<select v-model="contact">
@@ -39,7 +38,11 @@
 			<div style="height:400px;overflow-y: scroll;">
 				Messages:
 				<el-card class="box-card" v-for="message in messages" :key="message.id">
-					<div>[From: {{ message.from }} ] > {{ message.message }} </div>
+					<div
+					><el-tag>From: {{ message.from }} </el-tag>
+					<el-tag type="info"> {{ message.message }} </el-tag>
+					<el-button type="danger" style="float: right; padding: 3px" icon="el-icon-delete" circle></el-button>
+					</div>
 				</el-card>
 			</div>
 			
