@@ -5,9 +5,19 @@
 # License: MIT
 
 # Information:
- The project is about peer to peer access auth build database by using web socket network.
+ The project is about peer to peer access authority build database by using web socket network and graph node. Gun.js is an database real time and off/online graph engine.
 
- Prototype builds for gun.js, vue.js and babel.js setup stand alone decentralized database for the project. The code language is Babel es6 javascript, Vue.js and other loader support to build in to javascript html readable format. It very basics examples for auth, forum post, todolist, and other test builds.
+ Prototype builds for gun.js, vue.js and babel.js setup stand alone decentralized database. The code language is Babel es6 javascript, Vue.js and other loader support to build in to javascript html readable format. It very basics examples for authority, forum post, todolist, and other test builds.
+
+# Gun.js:
+ * https://gun.eco/
+ * https://github.com/amark/gun
+
+# SEA (Security, Encryption, Authorization) API
+ This project used SEA.js for authority peer to peer graph node. 
+
+ * https://gun.eco/docs/SEA
+ * https://github.com/amark/gun/wiki/auth
 
 # Features:
  * Auth sea.js peer to peer access database
