@@ -51,11 +51,10 @@ export default {
 		this.gun_posts = gun.get('posts');
 		if(gun.is){
 			this.blogin = true;
+			this.updateforum();
 		}
-
-		console.log(gun.is);
-
-		this.updateforum();
+		//console.log(gun.is);
+		
 	},
 	methods:{
 		updateforum(){

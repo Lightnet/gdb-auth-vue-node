@@ -153,6 +153,10 @@ export default {
 			if(!what){ return }
 
 			var pub = (this.pubkey || '').trim();
+			if(!pub) {
+				this.$message('Send failed!');
+				return 
+			}
 			var who = await gun.user(pub).then();
 			var sec = await Gun.SEA.secret(who.epub, user.pair()); // Diffie-Hellman
 			var enc = await Gun.SEA.encrypt(what, sec);
@@ -182,7 +186,7 @@ export default {
 		},
 		async addcontact(){
 			let user = this.$root.$gun.user();
-			console.log(this.pubkey);
+			//console.log(this.pubkey);
 			let pub = (this.pubkey || '').trim();
 			if(!pub){ return }
 			let to = this.$root.$gun.user(pub);
@@ -195,8 +199,8 @@ export default {
 
 		},
 		async checkuser(){
-			// h  // OhsmOcQu7mjfcvIqX7oaY2FhaKiXCAD6R5gGk5pln0w.P72Jf2iigd5hSlBPpeJpszItzLsO6B2ekzdQYAiZdfc
-			// test  // QCn1C2k4jzMsmYQ7XA7jczU4tACHi8dm9FxA9rwc8mc.77BoSL7zXrBCeguBDlDNy-TV8rXfS-DiA5-Psfz5a-Q
+			// h  // 
+			// test // 
 			this.messages = [];
 			let user = this.$root.$gun.user();
 			console.log(this.pubkey);

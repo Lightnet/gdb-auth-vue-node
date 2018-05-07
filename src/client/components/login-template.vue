@@ -1,16 +1,15 @@
 <template>
 	<div v-if="!blogin">
+		<!--
 		<label>Login:</label>	
-		<el-form>
+		-->
+		<br>
+		<el-form ref="form" label-width="128px">
 			<el-form-item label="User">
-				<el-col :span="8">
-					<el-input placeholder="alias" v-model="iusername"></el-input>
-				</el-col>
+				<el-input placeholder="alias" v-model="iusername"></el-input>
 			</el-form-item>
 			<el-form-item label="Passphrase">
-				<el-col :span="8">
-					<el-input placeholder="password" v-model="ipassphrase"></el-input>
-				</el-col>
+				<el-input placeholder="password" v-model="ipassphrase"></el-input>
 			</el-form-item>
 			<el-form-item>
 				<el-button type="primary" size="mini" v-on:click="click_login()">Login</el-button>

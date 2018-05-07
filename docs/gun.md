@@ -22,3 +22,29 @@ $("#clickMeIfYouAreBored").on('click', async function(){
 });
 ```
 init connect to peers
+
+```
+var gun = Gun(); gun.on('bye', function(peer){ console.log('disconnected from', peer) })
+
+```
+'bye' gets triggered when the connectiong ets closed
+
+var peers = gun.back('opt.peers'); peers['http://localhost:8080/gun'].wire.close()
+
+clearTimeout(peer.defer); //clear timer
+
+
+# Gun Disconnect
+```
+let peers = this.$root.$gun.back('opt.peers');//get list of peers.
+peers['http://localhost:8080/gun'].wire.close(); //close connection
+peers['http://localhost:8080/gun'].url = null; //null for delete
+clearTimeout(peers['http://localhost:8080/gun'].defer); //clear loop
+```
+
+# Gun Connect
+```
+gun.on('hi', peer => {
+
+});
+```

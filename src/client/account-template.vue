@@ -1,9 +1,14 @@
 <template id="Account">
 	<div>
+		<div v-if="blogin">
+			<el-button size="mini" v-on:click="cleardata()">Clear Local Database</el-button>
+		</div>	
 		<div v-if="!blogin">
 			<el-button type="primary" size="mini" style="float: right;" v-on:click="click_logout()">Logout</el-button>
 			<el-button size="mini" v-on:click="setview('profile')">Profile</el-button>
 			<el-button size="mini" v-on:click="setview('contacts')">Contacts</el-button>
+
+			<el-button size="mini" v-on:click="Disconnect">Disconnect</el-button>
 		</div>
 
 		<div class="container">
@@ -59,6 +64,17 @@ export default {
 		//console.log("user",this.$root.user);
 	},
 	methods:{
+		Disconnect(){
+			let peers = this.$root.$gun.back('opt.peers');
+			//console.log(peers);
+			peers['http://localhost:8080/gun'].wire.close();
+			peers['http://localhost:8080/gun'].url = null;
+			clearTimeout(peers['http://localhost:8080/gun'].defer);
+		},
+		cleardata(){
+			localStorage.clear(); //clear database for gun
+			this.$message({message:'Clear Database!',type: 'success',duration:800});
+		},
 		setview(value){
 			this.currentView = value;
 		},

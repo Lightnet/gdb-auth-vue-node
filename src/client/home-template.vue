@@ -1,6 +1,15 @@
 <template id="home">
 	<div>
-        <p>Welcome to peer to peer database decentralized forum prototype build. This is just a project to run some simple examples.</p>
+        <p>Welcome to peer to peer database decentralized prototype build. This is just a project to run some simple examples.</p>
+
+        <ul id="example-1">
+            <li v-for="item in items" :key="item.id">
+                {{ item.name }}
+            </li>
+        </ul>
+
+        <p> Notes: Sea.js (Security, Encryption, Authorization, Javascript) is being worked on by Amark from github as well gun.js to build database peer to peer graph engine.  </p>
+
     </div>
 </template>
 
@@ -9,7 +18,16 @@ export default {
     name: 'home',
     data() {
 		return {
+            items:[
+                {name:'Peer to peer Security, Encryption, Authorization, and Database.'},
+                {name:'Simple profile (Name, Born, Education, Skills)'},
+                {name:'Cantact (Add / Remove / View Profile of other users public key)'},
+                {name:'Private message (Public Key)'},
+                {name:'Chat (Add / Remove)'},
+                {name:'To Do List (Add / Edit /Remove)'},
+                {name:'Simple (Post / Create Post / Reply) Topic'},
 
+            ]
         }
     }
 }

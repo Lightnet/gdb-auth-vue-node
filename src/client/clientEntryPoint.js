@@ -1,6 +1,6 @@
 // client-side js
 
-localStorage.clear(); //clea database for gun
+localStorage.clear(); //clear database for gun
 
 // run by the browser each time your view template referencing it is loaded
 import Vue from 'vue';
@@ -81,6 +81,17 @@ if(location.origin == 'http://localhost:3000'){
 	gun = Gun(location.origin + '/gun');
 	console.log('host gun.js');
 }
+//console.log(peers);
+
+//gun.on('hi', peer => {
+	//console.log('connect peer to',peer);
+//});
+
+//gun.on('bye', function(peer){// peer disconnect.
+	//console.log('disconnected from', peer);
+//});
+
+//console.log(gun);
 //console.log(gun);
 gun.get('data').put(function(){});//init connection
 
@@ -147,6 +158,7 @@ Vue.use(VueGun, {
 		},
 		created:function(){
 			this.user = this.$gun.user();
+			this.setup_gunsocket();
 			//console.log(this.user);
 			bus.$on('event', this.handler);
 			bus.$on('userlogin', this.handler_login);
@@ -159,6 +171,17 @@ Vue.use(VueGun, {
 			//console.log(this);
 		//},
 		methods: {
+			setup_gunsocket(){
+				this.$gun.on('hi', peer => {//peer connect
+					console.log('connect peer to',peer);
+					this.$message({message:'Connected!',type: 'success',duration:2000});
+				});
+
+				this.$gun.on('bye', (peer)=>{// peer disconnect
+					console.log('disconnected from', peer);
+					this.$message({message:'Disconnected!',type:'warning',duration:800});
+				});
+			},
 			handler_login(params){
 				//this.user = this.$gun.user();
 				//console.log(params);
