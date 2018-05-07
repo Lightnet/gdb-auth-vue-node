@@ -6,42 +6,41 @@
 			<button @click="action('draft')" > Draft</button>
 			<button @click="action('compose')" > Compose</button>
 			<button @click="action('sendmail')" > Send Mail</button>
-			
 			<button @click="action('options')" > Options</button>
 			<button @click="trustuser" > Trust</button>
 			-->
+
 			<el-button size="mini" @click="action('inbox')"> Inbox</el-button>
 			<el-button size="mini" @click="action('contacts')" > Contacts</el-button>
-			<br> 
-			<br> <label>Contact:</label>
+			<br><label>Private Message:</label>
+			<br><label>Contacts:</label>
 			<select v-model="contact">
 				<option disabled value="">Please select one</option>
 				<option v-for="item in contacts" :key="item.id" >
 					{{ item.alias }}
 				</option>
-
 			</select>
-
-			<br> <label>Public Key Add:</label> <input v-model="addcontactpub"> <el-button size="mini" @click="checkcontact"> Check </el-button> <label> Status: {{contactpubstatus}}</label>
-
-
-			<br>
-			<br><label>Private Message:</label>
+			<!--
+			<br> <label>Public Key:</label> <input v-model="addcontactpub">
+			<el-button size="mini" @click="checkcontact">Add</el-button>
+			<label>Status:{{contactpubstatus}}</label>
+			-->
 			<div>
-				Send Pub Key: <input v-model="pubkey"> <el-button size="mini" @click="checkuser">Check</el-button> <label>{{pubkeystatus}}</label>
+				Public Key: <input v-model="pubkey">
+				<el-button size="mini" @click="addcontact">Add</el-button>
+				<label>{{pubkeystatus}}</label>
 				<br>
 				Subject: <input v-model="sendersubject">
 				<br>
 				Content: <textarea v-model="sendercontent"> </textarea>
-				<br>
 				<el-button size="mini" @click="sentmessage"> Send </el-button>
 			</div>
 
-			<div>
-				Message:
-				<a v-for="message in messages" :key="message.id" href="#" class="list-group-item clearfix">
-					{{ message.text }}
-				</a>
+			<div style="height:400px;overflow-y: scroll;">
+				Messages:
+				<el-card class="box-card" v-for="message in messages" :key="message.id">
+					<div>[From: {{ message.from }} ] > {{ message.message }} </div>
+				</el-card>
 			</div>
 			
 		</div>
@@ -66,7 +65,7 @@ export default {
 			pubkey:'',
 			sendersubject:'test subject',
 			sendercontent:'test content',
-			pubkeystatus:'none',
+			pubkeystatus:'Status:Normal',
 		}
 	},
 	watch: {
@@ -85,7 +84,6 @@ export default {
 				}
 				//return post.id !== idToRemove
 			});
-
 		}
 	},
 	created:function(){
@@ -157,7 +155,7 @@ export default {
 			var enc = await Gun.SEA.encrypt(what, sec);
 			user.get('chat').get(pub).set(enc);
 		},
-		async checkpubkey(){
+		async checkpubkey(){//needed
 			this.messages = [];
 			this.pubkeystatus = 'checking pub key...'
 			let user = this.$root.$gun.user();
@@ -179,17 +177,18 @@ export default {
 				this.UI(say,id,dec);
 			});
 		},
-		async checkcontact(){
+		async addcontact(){
 			let user = this.$root.$gun.user();
-			console.log(this.addcontactpub);
-			let pub = (this.addcontactpub || '').trim();
+			console.log(this.pubkey);
+			let pub = (this.pubkey || '').trim();
 			if(!pub){ return }
 			let to = this.$root.$gun.user(pub);
 			let who = await to.then() || {};
-			this.contactpubstatus = who.alias || "User not found.";
+			this.pubkeystatus = who.alias || "User not found.";
 			//console.log(this.pmusercheck);
 			if(!who.alias){ return }
 			user.get('contacts').get(pub).put({alias:who.alias});
+			console.log('added');
 
 		},
 		async checkuser(){
@@ -220,7 +219,7 @@ export default {
 		async UI(say, id, dec){
 			say = await Gun.SEA.decrypt(say,dec);
 			console.log(say);
-			this.messages.push({id:id,text:"[From:]" + say.from + " [Msg:]"  + say.content});
+			this.messages.push({id:id,from:say.from, subject:say.subject , message:say.content});
 		}
 	},
 	components: {
