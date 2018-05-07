@@ -20,7 +20,11 @@ import 'gun/sea';
 //custom chain gun.js
 //import './forum/guntopic';
 //import './guntoken/guntoken';
+import 'gun/lib/path';
+import 'gun/lib/load';
 import 'gun/lib/open';
+import 'gun/lib/then';
+import 'gun/lib/unset';
 
 //;(async () => {
 	//var SEA = Gun.SEA;

@@ -29,7 +29,8 @@
 					<el-button style="float: right;" v-on:click="deletecontact(item)" type="danger" icon="el-icon-delete" circle></el-button> 
 				</div>
 				<div>
-				Public Key: {{item.id}}
+				<el-button icon="el-icon-edit-outline"  v-on:click="copypubkey(item.id)" circle style="float: right;"></el-button>
+				Public Key:<el-input :id="item.id" v-model="item.id" readonly="readonly"> </el-input>
 				</div>
 			</el-card>
 		</div>
@@ -64,6 +65,18 @@ export default {
 		},
 	},
 	methods:{
+		copypubkey(publicid){
+			/* Get the text field */
+			var copyText = document.getElementById(publicid);
+			//console.log(copyText);
+			/* Select the text field */
+			copyText.select();  
+			/* Copy the text inside the text field */
+			document.execCommand("Copy");  
+			/* Alert the copied text */
+			//alert("Copied the text: " + copyText.value);
+			this.$message({message:'Public Key Copy:' + copyText.value ,type: 'success',duration:800});
+		},
 		async addcontact(){
 			let user = this.$root.$gun.user();
 			console.log(this.pubkey);

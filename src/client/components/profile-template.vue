@@ -3,9 +3,11 @@
 		<el-card class="box-card" style="width:900px;">
 			<div slot="header" class="clearfix">
 			<span>Alias Name: {{username}}</span>
-			<el-button icon="el-icon-edit-outline" circle style="float: right;"></el-button>
+			
 			</div><div>
-			<label>Public Key: {{userpublickey}} </label>
+			<el-button icon="el-icon-edit-outline"  v-on:click="copypubkey" circle style="float: right;"></el-button>
+			<label>Public Key: <el-input id="pubkey" v-model="userpublickey" readonly="readonly"></el-input> </label>
+			
 			</div>
 		</el-card>
 
@@ -45,29 +47,34 @@ export default {
 			pubskills:'',
 		}
     },
-    created(){
+    async created(){
 		//console.log(this.username);
 		if(this.$root.user.is){
-			this.$root.user.get('profile').get('name').once((data)=>{
+			let user = this.$root.user;
+			//user.get('profile').get('name').once((data)=>{
 				//console.log(data);
-				this.pubname = data;
-			});
-			this.$root.user.get('profile').get('born').once((data)=>{
-				//console.log(data);
-				this.pubborn = data;
-			});
-			this.$root.user.get('profile').get('education').once((data)=>{
-				//console.log(data);
-				this.pubeducation = data;
-			});
-			this.$root.user.get('profile').get('skills').once((data)=>{
-				//console.log(data);
-				this.pubskills = data;
-			});
+				//this.pubname = data;
+			//});
+			this.pubname = await user.get('profile').get('name').then();
+			this.pubborn = await user.get('profile').get('born').then();
+			this.pubeducation = await user.get('profile').get('education').then();
+			this.pubskills = await user.get('profile').get('skills').then();
 
 		}
 	},
 	methods:{
+		copypubkey(){
+			/* Get the text field */
+			var copyText = document.getElementById("pubkey");
+			//console.log(copyText);
+			/* Select the text field */
+			copyText.select();  
+			/* Copy the text inside the text field */
+			document.execCommand("Copy");  
+			/* Alert the copied text */
+			//alert("Copied the text: " + copyText.value);
+			this.$message({message:'Public Key Copy:' + copyText.value ,type: 'success',duration:800});
+		},
 		updateprofiledata(value,key){
 			//console.log(value);
 			this.$root.user.get('profile').get(value).put(key,(ack)=>{
