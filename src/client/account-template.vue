@@ -66,10 +66,17 @@ export default {
 	methods:{
 		Disconnect(){
 			let peers = this.$root.$gun.back('opt.peers');
+			let url;
+			if(location.origin == 'http://localhost:3000'){
+				url ='http://localhost:8080' + '/gun';
+			}else{
+				url = location.origin + '/gun';
+			}
+			
 			//console.log(peers);
-			peers['http://localhost:8080/gun'].wire.close();
-			peers['http://localhost:8080/gun'].url = null;
-			clearTimeout(peers['http://localhost:8080/gun'].defer);
+			peers[url].wire.close();
+			peers[url].url = null;
+			clearTimeout(peers[url].defer);
 		},
 		cleardata(){
 			localStorage.clear(); //clear database for gun
