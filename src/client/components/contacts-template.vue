@@ -2,37 +2,37 @@
 	<div>
 
         <el-form ref="form" label-width="128px">
-				<el-form-item label="Profile key">
-					<el-input v-model="pubkey" placeholder="profile key"></el-input>
-					<el-button type="primary" size="mini" @click="addcontact" style="float: right;">Add</el-button>
-					<label> Status: {{pubkeystatus}}</label>
-				</el-form-item>
-				<el-form-item label="Name">
-					<el-input v-model="pubname" placeholder="name"> </el-input> 
-				</el-form-item>
-				<el-form-item label="Born">
-					<el-input v-model="pborn" placeholder="born"> </el-input> 
-				</el-form-item>
-				<el-form-item label="Education">
-					<el-input v-model="peducation" placeholder="education"></el-input> 
-				</el-form-item>
-				<el-form-item label="Skills">
-					<el-input v-model="pskills" placeholder="skills"></el-input> 
-				</el-form-item>
-			</el-form>
+			<el-form-item label="Profile key">
+				<el-input v-model="pubkey" placeholder="profile key"></el-input>
+				<el-button type="primary" size="mini" @click="addcontact" style="float: right;">Add</el-button>
+				<label> Status: {{pubkeystatus}}</label>
+			</el-form-item>
+			<el-form-item label="Name">
+				<el-input v-model="pubname" placeholder="name"> </el-input> 
+			</el-form-item>
+			<el-form-item label="Born">
+				<el-input v-model="pborn" placeholder="born"> </el-input> 
+			</el-form-item>
+			<el-form-item label="Education">
+				<el-input v-model="peducation" placeholder="education"></el-input> 
+			</el-form-item>
+			<el-form-item label="Skills">
+				<el-input v-model="pskills" placeholder="skills"></el-input> 
+			</el-form-item>
+		</el-form>
 
-			<div style="height:500px;">
-				Contacts:
-				<el-card class="box-card" v-for="item in contacts" :key="item.id">
-					<div slot="header" class="clearfix">
-						Alias Name: {{ item.alias }} 
-						<el-button style="float: right;" v-on:click="deletecontact(item)" type="danger" icon="el-icon-delete" circle></el-button> 
-					</div>
-					<div>
-					Public Key: {{item.id}}
-					</div>
-				</el-card>
-			</div>
+		<div style="height:500px;">
+			Contacts:
+			<el-card class="box-card" v-for="item in contacts" :key="item.id">
+				<div slot="header" class="clearfix">
+					Alias Name: {{ item.alias }} 
+					<el-button style="float: right;" v-on:click="deletecontact(item)" type="danger" icon="el-icon-delete" circle></el-button> 
+				</div>
+				<div>
+				Public Key: {{item.id}}
+				</div>
+			</el-card>
+		</div>
 
     </div>
 </template>
@@ -75,8 +75,8 @@ export default {
 			//console.log(this.pmusercheck);
 			if(!who.alias){ return }
 			user.get('contacts').get(pub).put({alias:who.alias});
-			console.log('added contact!');
-
+			this.$message({message:'Contacts Added!',type: 'success',duration:800});
+			//console.log('added contact!');
 		},
 		getpubkey:_.debounce(//typing key checks pub key string
 			async function(){
@@ -100,6 +100,32 @@ export default {
 			this.pubkeystatus = 'Name: '+ who.alias || "User not found.";
 			if(!who.alias){ return }
 			console.log("who",who);
+			console.log("profile");
+			//to.get('profile').get(user.pair().pub).map().once((data,id)=>{
+				//console.log("profile");
+				//console.log(data);
+				//console.log(id);
+				//this.UI(say,id,dec);
+			//});
+
+			to.get('profile').map().once((data,id)=>{
+				console.log("profile");
+				console.log(data);
+				console.log(id);
+				if(id == 'name'){
+					this.pubname = data;
+				}
+				if(id == 'born'){
+					this.pborn = data;
+				}
+				if(id == 'education'){
+					this.peducation = data;
+				}
+				if(id == 'skills'){
+					this.pskills = data;
+				}
+				//this.UI(say,id,dec);
+			});
 		},
 		updatecontacts(){
 			let user = this.$root.user;

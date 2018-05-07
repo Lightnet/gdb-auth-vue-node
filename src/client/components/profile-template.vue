@@ -69,8 +69,7 @@ export default {
 	},
 	methods:{
 		updateprofiledata(value,key){
-			console.log(value);
-
+			//console.log(value);
 			this.$root.user.get('profile').get(value).put(key,(ack)=>{
 				console.log(ack);
 				if(ack.ok){
@@ -79,7 +78,23 @@ export default {
 			});
 		},
 		grantaccess(event){
+			console.log(event);
 			console.log("test");
+			this.$prompt('Grant Access Public Key:', 'Tip', {
+				confirmButtonText: 'OK',
+				cancelButtonText: 'Cancel',
+			}).then(event => {
+				console.log(event.value);
+				 this.$message({
+					type: 'success',
+					message: 'Pub key:' + event.value
+				});
+			}).catch(() => {
+          		this.$message({
+            		type: 'info',
+            		message: 'Public key canceled!'
+          		});       
+        	});
 		}
     },
 }
