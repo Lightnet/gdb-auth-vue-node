@@ -7,13 +7,13 @@
 				<el-menu-item index="messages">Messages</el-menu-item>
 				<el-menu-item index="chat">Chat</el-menu-item>
 				<el-menu-item index="todolistapp">To Do List</el-menu-item>
-				<el-menu-item index="manage-posts">Forum Posts</el-menu-item>
+				<el-menu-item index="forum">Forum</el-menu-item>
 				<el-menu-item index="create-post">Create Post</el-menu-item>
 			</el-menu>
 		</div>
 
 		<div class="container">
-			<component :is="currentView" @update="updateMessage"></component>
+			<component :is="currentView" @update="updateMessage" ></component>
 		</div>
 	</div>
 </template>
@@ -21,7 +21,7 @@
 <script>
 import Vue from 'vue';
 import hometemplate from './home-template.vue';
-import managetemplate from './manage-template.vue';
+import forumtemplate from './forum-template.vue';
 import createtemplate from './create-template.vue';
 import toDoListTemplate from './todolist-template.vue';
 import accountTemplate from './account-template.vue';
@@ -51,7 +51,7 @@ export default {
 	},
 	components: {
 		'home':hometemplate,
-		'manage-posts':managetemplate,
+		'forum':forumtemplate,
 		'create-post': createtemplate,
 		'todolistapp':toDoListTemplate,
 		'account':accountTemplate,
@@ -74,13 +74,13 @@ export default {
 </script>
 
 <style lang="scss">
-.el-menu{
+//.el-menu{
 	//padding: 0px 0px 0px 0px;
-}
-.el-menu-item{
+//}
+//.el-menu-item{
 	//padding: 4px 4px 10px 10px;
 	//height:30px !important;
-}
+//}
 .header {
   padding: 15px 15px 20px 15px;
   border-bottom: 1px solid #e5e5e5;

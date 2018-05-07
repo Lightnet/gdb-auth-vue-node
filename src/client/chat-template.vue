@@ -1,7 +1,7 @@
 <template id="chat">
 	<div>
-		<label>Chat Room:(Not public yet!)</label>
-		<div v-if="!bshowlogin">
+		<div v-if="blogin">
+			<label>Chat Room:(Not public yet!)</label>
 			<!--
 			<button @click="action('home')"> Home</button>
 			<button @click="action('lobby')" > Lobby</button>
@@ -39,21 +39,12 @@
 //event on and emit global
 import bus from './bus';
 
-function public_pair(){
-	return {
-		epriv: 'ouMEpyEGQnzCNXouQ5owt9VzuDdeoWr0H_rCyJopUWk',
-		epub: '0VhBMpjKslndJbh3BFmNWca1TeIFq4PEerZJcRmNH9k.pW-MTXsu7witNqyYLGIuguQhDpZ5TCojE87O9gOB9nc',
-		priv: 'Q2xkzpxoGtGCOR7f9SbKHVGxine9Dl57swbPUXlo2ow',
-		pub: '0CKF4mpoQ1KcQy_mNOoIgB5EjoAhPwLe49bGn5URdBY.XqRVAfqyCpyUawlUDumtMitr6IZrRIUUEwNV6z-onNM'
-	}
-};
-
 export default {
 	//props:['blogin'],
 	data() {
 		return{
 			userpublickey:'',
-			bshowlogin:true,
+			blogin:false,
 			messages:[],
 			sendersubject:'test subject',
 			chatmessage:'test message',
@@ -66,7 +57,7 @@ export default {
       		//console.log(n, o) // n is the new value, o is the old value.
     	//}
 	},
-	beforeCreate: function() {
+	beforeCreate() {
 		//console.log("bcreated...");
 		//console.log(this);
 		//console.log(this.$parent.$parent);
@@ -75,14 +66,12 @@ export default {
 	computed: {
 
 	},
-	created:function(){
+	created(){
 		//console.log(this.$root.blogin);
 		bus.$on('action',this.action);
-		if(this.$root.blogin){
-			this.bshowlogin = false;
+		if(this.$root.user.is){
+			this.blogin = true;
 			this.updateMessageList();
-		}else{
-			this.bshowlogin = true;
 		}
 		//console.log("user",this.$root.user);
 	},
@@ -104,18 +93,18 @@ export default {
 			let user =  this.$root.$gun.user();
 			let self = this;
 			//let dec = await Gun.SEA.secret(this.epublickey_chat, user.pair());
-			user.get('chatroom').get(this.publickey_chat).map().once((data)=>{
-				console.log("data");
-				console.log(data);
-				//self.messages.push({id:data.id,text:data.message});
-			});
-
-			//user.get('chatroom').map().once((data,id)=>{
-				//console.log("chat data");
+			//user.get('chatroom').get(this.publickey_chat).map().once((data)=>{
+				//console.log("data");
 				//console.log(data);
-				//console.log(id);
 				//self.messages.push({id:data.id,text:data.message});
 			//});
+
+			user.get('chatroom').map().once((data,id)=>{
+				console.log("chat data");
+				//console.log(data);
+				//console.log(id);
+				self.messages.push({id:data.id,text:data.message});
+			});
 
 			//chatroom id key
 			//user.get('0CKF4mpoQ1KcQy_mNOoIgB5EjoAhPwLe49bGn5URdBY.XqRVAfqyCpyUawlUDumtMitr6IZrRIUUEwNV6z-onNM').map().once((data,id)=>{
@@ -131,20 +120,29 @@ export default {
 			let user = this.$root.user;
 			let self = this;
 
-			let to = this.$root.$gun.user(this.publickey_chat);
-			let dec = await Gun.SEA.secret(this.epublickey_chat, user.pair());
+			//let to = this.$root.$gun.user(this.publickey_chat);
+			//let dec = await Gun.SEA.secret(this.epublickey_chat, user.pair());
 
-			user.get('chatroom').get(this.publickey_chat).map().once((say,id)=>{
-				console.log("user chat");
-				this.UI(say,id,dec);
-				//self.messages.push({id:say.id,text:say.message});
+			user.get('chatroom').map().once((data,id)=>{
+				console.log("chat data");
+				console.log("data",data);
+				console.log('id',id);
+				if((data == null)||(data == 'null'))
+					return;
+				self.messages.push({id:id,from:data.alias,message:data.message,bedit:false});
 			});
 
-			to.get('chatroom').get(user.pair().pub).map().once((say,id)=>{
-				console.log("to chat");
-				this.UI(say,id,dec);
+			//user.get('chatroom').get(this.publickey_chat).map().once((say,id)=>{
+				//console.log("user chat");
+				//this.UI(say,id,dec);
 				//self.messages.push({id:say.id,text:say.message});
-			});
+			//});
+
+			//to.get('chatroom').get(user.pair().pub).map().once((say,id)=>{
+				//console.log("to chat");
+				//this.UI(say,id,dec);
+				//self.messages.push({id:say.id,text:say.message});
+			//});
 			
 		},
 		async UI(say, id, dec){
@@ -168,29 +166,33 @@ export default {
 			let user = this.$root.$gun.user();
 			var messagedata ={
 				//'_':{'#':public_pair().pub},
-				pub:"pub/"+user.is.pub,
+				pub:user.is.pub,
 				alias:user.is.alias,
 				message:this.chatmessage,
-				bedit:false,
+				bedit:'none',
 			};
 			
-			var sec = await Gun.SEA.secret(this.epublickey_chat, user.pair());
-			var enc = await Gun.SEA.encrypt(messagedata, sec);
-			//let enc = messagedata;
-			user.get('chatroom').get(this.publickey_chat).set(enc, function(ack){
+			//var sec = await Gun.SEA.secret(this.epublickey_chat, user.pair());
+			//var enc = await Gun.SEA.encrypt(messagedata, sec);
+			let enc = messagedata;
+			user.get('chatroom').set(enc, function(ack){
 				console.log(ack);
 			});
+			//user.get('chatroom').get(this.publickey_chat).set(enc, function(ack){
+				//console.log(ack);
+			//});
 		},
 		editchat(event){
 			console.log("edit",event);
 			event.bedit = event.bedit != true;
-
 			console.log(event.bedit);
 		},
 		deletechat(event){
 			console.log("delete",event);
 			let user = this.$root.$gun.user();
-			user.get('chatroom').get(this.publickey_chat).get(event.id).put('null');
+
+			//user.get('chatroom').get(this.publickey_chat).get(event.id).put('null');
+			user.get('chatroom').get(event.id).put('null');
 
 			this.messages = this.messages.filter(todo => {
 				return todo.id !== event.id;

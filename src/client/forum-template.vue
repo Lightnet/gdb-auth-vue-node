@@ -1,7 +1,8 @@
-<template id="manage-template">
-  	<div>
+<template>
+  	<div v-if="blogin">
+		<!--
     	<h6>Forum Posts</h6>
-		
+		-->
     	<div v-if="bcategory">
 			<el-button type="primary" size="mini" v-on:click="replypost_click">New Post</el-button>
       		<el-card class="box-card" v-for="post in posts" :key="post.id" href="#">
@@ -41,27 +42,37 @@ export default {
 			bpost:false,
 			posts: [],
 			topics:[],
+			blogin:false,
 		}
 	},
 	async created(){
 		//let gun = this.$root.$gun;
 		let gun = this.$root.user;
 		this.gun_posts = gun.get('posts');
-		let self = this;
-		//console.log("test posts?");
-		this.gun_posts.map().once((post, id)=>{
-			//console.log(">>",thought,":",id);
-			if ((post == null) || (post == 'null')){
-				return;
-			}
-			self.posts.push({
-				id: id,
-				text: post.posttitle,
-				bedit: false
-			});
-		});
+		if(gun.is){
+			this.blogin = true;
+		}
+
+		console.log(gun.is);
+
+		this.updateforum();
 	},
 	methods:{
+		updateforum(){
+			let self = this;
+			//console.log("test posts?");
+			this.gun_posts.map().once((post, id)=>{
+				//console.log(">>",thought,":",id);
+				if ((post == null) || (post == 'null')){
+					return;
+				}
+				self.posts.push({
+					id: id,
+					text: post.posttitle,
+					bedit: false
+				});
+			});
+		},
 		replypost_click(){
 			this.$root.publickeypost = this.publickeypost;
 			//this.bpost = true;

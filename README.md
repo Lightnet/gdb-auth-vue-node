@@ -18,6 +18,7 @@
 
  * https://gun.eco/docs/SEA
  * https://github.com/amark/gun/wiki/auth
+ * https://gun.eco/docs/Security
 
 # Features:
  * Auth sea.js peer to peer access database

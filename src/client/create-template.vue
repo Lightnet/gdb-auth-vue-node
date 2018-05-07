@@ -87,9 +87,9 @@ export default {
 						if(ack.ok){
 							self.poststatus = 'Posted!';
 							self.bpost = false;
+							self.$message({message:'Posted!',type: 'success',duration:800});
 						}
 					});
-
 				}else{
 					console.log("default!");
 					this.gun_posts.set(post,function(ack){
@@ -100,6 +100,7 @@ export default {
 						if(ack.ok){
 							self.poststatus = 'Posted!';
 							self.bpost = false;
+							self.$message({message:'Posted!',type: 'success',duration:800});
 						}
 					});
 				}
