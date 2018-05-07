@@ -38,8 +38,8 @@
 			<div style="height:400px;overflow-y: scroll;">
 				Messages:
 				<el-card class="box-card" v-for="message in messages" :key="message.id">
-					<div
-					><el-tag>From: {{ message.from }} </el-tag>
+					<div>
+					<el-tag>From: {{ message.from }} </el-tag>
 					<el-tag type="info"> {{ message.message }} </el-tag>
 					<el-button type="danger" style="float: right; padding: 3px" icon="el-icon-delete" circle></el-button>
 					</div>
