@@ -62,7 +62,7 @@ export default {
 		let self = this;
 		this.gun_todolist.map().once(function(data, id){
 			//console.log(">>",thought,":",id);
-			console.log('id: ',id);
+			//console.log('id: ',id);
 			if ((data == null)||(data == 'null'))
 				return;
 			self.todos.push({
@@ -77,7 +77,7 @@ export default {
 		console.log("unmounted");
 	},
 	destroyed(){
-		console.log("destroy");
+		//console.log("destroy");
 	},
 	methods: {
 		fetchTodo() {
@@ -90,7 +90,7 @@ export default {
         },
 		addTodo () {
 			const trimmedText = this.newTodoText.trim();
-			console.log('trimmedText',trimmedText);
+			//console.log('trimmedText',trimmedText);
 			if (trimmedText) {
 				//this.todos.push({
 					//id: nextTodoId++,
@@ -104,11 +104,11 @@ export default {
 			}
 		},
 		editTodo(id){
-			console.log('edit',id);
+			//console.log('edit',id);
 			this.todos.filter(todo => {
 				if(todo.id == id){
 					todo.bedit = todo.bedit != true;
-					console.log(todo.bedit);
+					//console.log(todo.bedit);
 				}
 			});
 		},
@@ -125,7 +125,8 @@ export default {
 
 			//console.log(this.isEmpty(str_text));
 			if(this.isEmpty(str_text)){
-				console.log('empty string...');
+				//console.log('empty string...');
+				this.$message('Empty!');
 				return;
 			}
 			//this.gun_todolist.get(id).once(function(data){
@@ -133,13 +134,13 @@ export default {
 				//console.log(data);
 			//});
 
-			console.log('string...');
-			console.log(id);
-			console.log(str_text);
+			//console.log('string...');
+			//console.log(id);
+			//console.log(str_text);
 			//this.$root.user.get('todolist')
 
 			this.$root.user.get('todolist').get(id).put({text:str_text},function(ack){
-				console.log(ack);
+				//console.log(ack);
 			});
 
 			this.todos.filter(todo => {
@@ -150,7 +151,7 @@ export default {
 			});
 		},
 		removeTodo (idToRemove) {
-			console.log("idToRemove:",idToRemove);
+			//console.log("idToRemove:",idToRemove);
 			//this.$root.$gun.get('thoughts').get(idToRemove).put(null);
 			//this.gun_thoughts.get(idToRemove).put(null);
 			//this.$root.user.get('thoughts').get(idToRemove).once(function(value){

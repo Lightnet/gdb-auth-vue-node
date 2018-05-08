@@ -2,7 +2,7 @@
 	<div>
 		<el-button type="primary" size="mini" @click="$emit('newpost')">New Post</el-button>
 		<el-card class="box-card" v-for="post in posts" :key="post.id" href="#">
-			<label v-if="!post.bedit"  v-on:click="$emit('topicview',post)"> {{ post.text }} </label>
+			<label v-if="!post.bedit"  v-on:click="$emit('topicview',post)" class="wrap"> {{ post.text }} </label>
 			<el-input v-if="post.bedit" v-model="post.text" v-on:change="$emit('topicchange',post)"></el-input>
 			<span style="float: right; padding: 3px 0">
 				<el-button type="primary" icon="el-icon-edit" @click="$emit('topicedit',post)" circle></el-button>

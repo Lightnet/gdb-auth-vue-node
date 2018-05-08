@@ -9,6 +9,12 @@
 				<el-menu-item index="todolistapp">To Do List</el-menu-item>
 				<el-menu-item index="forum">Forum</el-menu-item>
 				<el-menu-item index="create-post">Create Post</el-menu-item>
+
+				<el-submenu index="theme">
+					<template slot="title">Theme</template>
+					<el-menu-item index='light'>Light</el-menu-item>
+					<el-menu-item index='dark'>Dark</el-menu-item>
+				</el-submenu>
 			</el-menu>
 		</div>
 
@@ -33,7 +39,7 @@ export default {
     data() {
 		return {
 			activeIndex:'account',
-			activeName: 'Account',
+			//activeName: 'Account',
 			username:'none',
 			//currentView: 'manage-posts'
 			currentView: 'account',
@@ -44,7 +50,10 @@ export default {
 			postlistid:'default'
 		}
 	},
-	created:function(){
+	watch:{
+
+	},
+	created(){
 		this.$on('update:username',(event)=>{
 			console.log("data child?");
 		});
@@ -60,9 +69,25 @@ export default {
 	},
 	methods: {
 		handleSelect(key, keyPath) {
-			this.currentView = key;
+			//console.log(key, keyPath);
 			//console.log(key);
-        	//console.log(key, keyPath);
+			if(key == 'light'){
+				//require('./element-light.scss');
+				//console.log(document);
+				document.querySelector('body').classList.remove("dark");
+				document.querySelector('body').classList.add("light");
+				return;
+			}
+			if(key == 'dark'){
+				//require('./element-dark.scss');
+				document.querySelector('body').classList.remove("light");
+				document.querySelector('body').classList.add("dark");
+				return;
+			}
+			//check if string is empty incase it goes blank.
+			if(key != ''){
+				this.currentView = key;
+			}
       	},
 		updateMessage (message) {
       		// By emitting the 'update' event in every intermediary component we can pass data
@@ -74,13 +99,25 @@ export default {
 </script>
 
 <style lang="scss">
-//.el-menu{
-	//padding: 0px 0px 0px 0px;
-//}
-//.el-menu-item{
-	//padding: 4px 4px 10px 10px;
-	//height:30px !important;
-//}
+
+//theme light
+body.light {
+	--text-color: white;
+	--bg-color: black;
+	$--color-primary: #409EFF;
+}
+//theme dark
+body.dark {
+	--text-color: black;
+	--bg-color: white;
+	$--color-primary: rgb(10, 10, 10);
+}
+
+body {
+	background-color: var(--text-color);
+	color: var(--bg-color);
+}
+
 .header {
   padding: 15px 15px 20px 15px;
   border-bottom: 1px solid #e5e5e5;

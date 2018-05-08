@@ -5,7 +5,7 @@
 				<div slot="header" class="clearfix">User: {{topic.alias}}  | Title: {{ topic.posttitle }}</div>
 				
 				<el-main>
-				<span v-if="!topic.bedit">{{ topic.content }}</span>
+				<span v-if="!topic.bedit" class="wrap">{{ topic.content }}</span>
 				<textarea v-if="topic.bedit" v-model="topic.content"></textarea>
 
 				<span v-if="!topic.isParent" style="float: right; padding: 3px 0">
@@ -38,7 +38,7 @@ export default {
 		replypost_click(){
 			this.$root.publickeypost = this.topicpubkey;
 			//this.bpost = true;
-			console.log(this.$parent);
+			//console.log(this.$parent);
 			this.$parent.$parent.currentView = 'create-post';
 		},
 		topic_edit(post){
@@ -49,8 +49,8 @@ export default {
 		topic_delete(event){
 			//console.log("topic_delete:",idToRemove);
 			let gun = this.$root.user;
-			console.log('this.topicpubkey',this.topicpubkey);
-			console.log('idToRemove',event.id);
+			//console.log('this.topicpubkey',this.topicpubkey);
+			//console.log('idToRemove',event.id);
 			
 			//let gun_posts = gun.get('posts').get(this.topicpubkey);
 			//null child keys
@@ -62,7 +62,7 @@ export default {
 
 			//null key
 			gun.get(this.topicpubkey).get(event.id).put('null',function(ack){
-				console.log(ack);
+				//console.log(ack);
 			});
 			//remove item from list
 			let topics = this.mtopics;
@@ -76,5 +76,16 @@ export default {
 }
 </script>
 <style lang="scss">
+.wrap{
+	content: "HTML";
+}
 
+code {
+  white-space:no-wrap;
+  word-break: break-all;
+  word-wrap: break-word;
+  display:block;
+  margin:6px 0;
+  color:#af7aa5;
+}
 </style>

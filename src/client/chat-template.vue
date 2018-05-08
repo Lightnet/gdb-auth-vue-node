@@ -13,7 +13,7 @@
 			<div style="height: 300px; overflow-y: scroll;">
 				<el-card class="box-card" v-for="message in messages" :key="message.id">
 					<div>
-					<el-tag>{{ message.from }}</el-tag>
+					<el-tag class="wrap">{{ message.from }}</el-tag>
 					<el-button style="float: right;" type="danger" icon="el-icon-delete" circle v-on:click="deletechat(message)"></el-button>
 					
 					<el-tag type="info" v-if="!message.bedit">
@@ -80,9 +80,9 @@ export default {
 			console.log(Gun.SEA.pair());
 		},
 		chateditchange(event){
-			console.log('event',event);
-			console.log(event.id);
-			console.log(event.message);
+			//console.log('event',event);
+			//console.log(event.id);
+			//console.log(event.message);
 
 			let user = this.$root.$gun.user();
 			user.get('chatroom').get(this.publickey_chat).get(event.id).put({message:event.message});
@@ -100,7 +100,7 @@ export default {
 			//});
 
 			user.get('chatroom').map().once((data,id)=>{
-				console.log("chat data");
+				//console.log("chat data");
 				//console.log(data);
 				//console.log(id);
 				self.messages.push({id:data.id,text:data.message});
@@ -124,9 +124,9 @@ export default {
 			//let dec = await Gun.SEA.secret(this.epublickey_chat, user.pair());
 
 			user.get('chatroom').map().once((data,id)=>{
-				console.log("chat data");
-				console.log("data",data);
-				console.log('id',id);
+				//console.log("chat data");
+				//console.log("data",data);
+				//console.log('id',id);
 				if((data == null)||(data == 'null'))
 					return;
 				self.messages.push({id:id,from:data.alias,message:data.message,bedit:false});
@@ -147,7 +147,7 @@ export default {
 		},
 		async UI(say, id, dec){
 			say = await Gun.SEA.decrypt(say,dec);
-			console.log(say);
+			//console.log(say);
 			if(!say)
 				return;
 			this.messages.push({id:id,from:say.alias,message:say.message,bedit:false});
@@ -158,10 +158,10 @@ export default {
       		this.$emit('update', message);
     	},
 		action(param){
-			console.log(param);
+			//console.log(param);
 		},
 		async sentmessage(){
-			console.log("send!");
+			//console.log("send!");
 			//console.log(this.$root.user);
 			let user = this.$root.$gun.user();
 			var messagedata ={
@@ -176,19 +176,19 @@ export default {
 			//var enc = await Gun.SEA.encrypt(messagedata, sec);
 			let enc = messagedata;
 			user.get('chatroom').set(enc, function(ack){
-				console.log(ack);
+				//console.log(ack);
 			});
 			//user.get('chatroom').get(this.publickey_chat).set(enc, function(ack){
 				//console.log(ack);
 			//});
 		},
 		editchat(event){
-			console.log("edit",event);
+			//console.log("edit",event);
 			event.bedit = event.bedit != true;
-			console.log(event.bedit);
+			//console.log(event.bedit);
 		},
 		deletechat(event){
-			console.log("delete",event);
+			//console.log("delete",event);
 			let user = this.$root.$gun.user();
 
 			//user.get('chatroom').get(this.publickey_chat).get(event.id).put('null');
@@ -206,5 +206,7 @@ export default {
 </script>
 
 <style lang="scss">
-
+.wrap{
+	content: "HTML";
+}
 </style>

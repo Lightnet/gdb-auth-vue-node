@@ -7,8 +7,9 @@ import Vue from 'vue';
 Vue.config.productionTip = false
 
 import Element from 'element-ui'; // ui components
-//import 'element-ui/lib/theme-chalk/index.css'; //css
-import './element-variables.scss'; //css
+import 'element-ui/lib/theme-chalk/index.css'; //css
+//import './element-variables.scss'; //css
+
 Vue.use(Element);
 
 import VueGun from 'vue-gun';
@@ -196,10 +197,10 @@ Vue.use(VueGun, {
 				this.user.auth(params.username, params.passphrase,function(ack){
 					//console.log(ack);
 					if(ack.err){
-						console.log("fail!");
+						//console.log("fail!");
 						self.$message('Auth attempt failed!');
 					}else{
-						console.log("Authorized!");
+						//console.log("Authorized!");
 						self.$message({message:'Authorized!',type: 'success',duration:800});
 						bus.$emit('action','hidelogin');
 				}
@@ -207,25 +208,28 @@ Vue.use(VueGun, {
 				});
 			},
 			usersiginup(params){
+				let self = this;
 				this.user.create(params.username, params.passphrase, function(ack){
 					//console.log(ack);
 					if(ack.err){
-						console.log("fail!");
+						//console.log("fail!");
+						self.$message({message:ack.err ,type: 'warning',duration:2000});
 					}
-					if(ack.ok){
-						console.log("created!", ack.pub);
+					if(ack.pub){
+						//console.log("created!", ack.pub);
+						self.$message({message:'Alias Created: ' + params.username +'!',type: 'success',duration:2000});
 					}
 				});
 			},
 			handler(params) {
-				console.log(params);
+				//console.log(params);
 			},
 			handler_logout:function(){
 				let self = this;
 				//console.log("event logout");
 				this.user.leave(function(ack){ 
-					console.log("ack",ack);
-					console.log("Logout Finish");
+					//console.log("ack",ack);
+					//console.log("Logout Finish");
 					self.$message('Auth attempt failed!');
 				});
 				//console.log(this.user);

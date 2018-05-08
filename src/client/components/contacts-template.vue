@@ -59,7 +59,7 @@ export default {
 	},
 	watch: {
 		pubkey:function(newvalue,oldvalue){
-			console.log("new string?");
+			//console.log("new string?");
 			this.pubkeystatus = 'typing...';
 			this.getpubkey();
 		},
@@ -79,7 +79,7 @@ export default {
 		},
 		async addcontact(){
 			let user = this.$root.$gun.user();
-			console.log(this.pubkey);
+			//console.log(this.pubkey);
 			let pub = (this.pubkey || '').trim();
 			if(!pub){ return }
 			let to = this.$root.$gun.user(pub);
@@ -112,8 +112,8 @@ export default {
 			let who = await to.then() || {};
 			this.pubkeystatus = 'Name: '+ who.alias || "User not found.";
 			if(!who.alias){ return }
-			console.log("who",who);
-			console.log("profile");
+			//console.log("who",who);
+			//console.log("profile");
 			//to.get('profile').get(user.pair().pub).map().once((data,id)=>{
 				//console.log("profile");
 				//console.log(data);
@@ -122,9 +122,9 @@ export default {
 			//});
 
 			to.get('profile').map().once((data,id)=>{
-				console.log("profile");
-				console.log(data);
-				console.log(id);
+				//console.log("profile");
+				//console.log(data);
+				//console.log(id);
 				if(id == 'name'){
 					this.pubname = data;
 				}
@@ -144,7 +144,7 @@ export default {
 			let user = this.$root.user;
 			let self = this;
 
-			console.log('contacts');
+			//console.log('contacts');
 			user.get('contacts').map().once((data,id)=>{
 				if(data == 'null')
 					return;
@@ -154,10 +154,9 @@ export default {
 			});
 		},
 		deletecontact(event){
-			console.log('event');
-			console.log(event);
+			//console.log('event');
+			//console.log(event);
 			let user = this.$root.user;
-
 			this.contacts.filter(contact => {
 				if(contact.id == event.id){
 					//self.pubkey = contact.id;

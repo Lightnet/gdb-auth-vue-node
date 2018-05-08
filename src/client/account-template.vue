@@ -105,7 +105,7 @@ export default {
 			if(this.$root.user.is){
 				this.username = this.$root.user.is.alias;
 				this.userpublickey = this.$root.user.is.pub;
-				console.log(this.username );
+				//console.log(this.username );
 				//this.updatecontacts();
 			}
 		},
@@ -118,7 +118,7 @@ export default {
 			let user = this.$root.user;
 			let self = this;
 
-			console.log('contacts');
+			//console.log('contacts');
 			user.get('contacts').map().once((data,id)=>{
 				if(data == 'null')
 					return;
@@ -128,8 +128,8 @@ export default {
 			});
 		},
 		deletecontact(event){
-			console.log('event');
-			console.log(event);
+			//console.log('event');
+			//console.log(event);
 			let user = this.$root.user;
 
 			this.contacts.filter(contact => {
@@ -142,7 +142,7 @@ export default {
 		},
 		getProfile:function(){
 			let user = this.$root.user;
-			console.log(user);
+			//console.log(user);
 			let gun = this.$root.$gun;
 		},
 		click_logout:function(){
@@ -154,7 +154,7 @@ export default {
 				this.$root.blogin = true;
 				this.updateprofile();
 				this.currentView = 'profile';
-				console.log('login >> account');
+				//console.log('login >> account');
 			}
 			if(params == "logout"){
 				//this.blogin = true;

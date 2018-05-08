@@ -59,7 +59,7 @@ export default {
 		replypost_click(){
 			this.$root.publickeypost = this.publickeypost;
 			//this.bpost = true;
-			console.log(this.$parent);
+			//console.log(this.$parent);
 			this.$parent.currentView = 'create-post';
 		},
 		updateforum(){
@@ -131,7 +131,7 @@ export default {
 			post.bedit = false;
 		},
 		topic_edit(post){
-			console.log("topic_edit:",this.bedit);
+			//console.log("topic_edit:",this.bedit);
 			//console.log(this);
 			post.bedit = !post.bedit;
 		},
@@ -142,12 +142,12 @@ export default {
 			//null child keys
 			gun.get(event.id).map().once((key,id)=>{
 				gun.get(event.id).get(id).put('null',function(ack){
-					console.log(ack);
+					//console.log(ack);
 				});
 			});
 			//null key
 			gun_posts.get(event.id).put('null',function(ack){
-				console.log(ack);
+				//console.log(ack);
 			});
 			//remove item from list
 			this.posts = this.posts.filter(post => {
@@ -163,18 +163,22 @@ export default {
 
 <style lang="scss">
  .el-header, .el-footer {
-    //background-color: #B3C0D1;
+	//background-color: #B3C0D1;
 	color: #333;
 	height: 25px !important;
 	margin-top: 0;
 	margin-bottom: 0;
 	//line-height: 20px;
 	//font-size: 1.5em;
-  }
+}
 
-  .el-main {
-    background-color: #E9EEF3;
+.el-main {
+	background-color: #E9EEF3;
     color: #333;
-  }
+}
+
+.wrap{
+	content: "HTML";
+}
   
 </style>

@@ -77,20 +77,20 @@ export default {
 		updateprofiledata(value,key){
 			//console.log(value);
 			this.$root.user.get('profile').get(value).put(key,(ack)=>{
-				console.log(ack);
+				//console.log(ack);
 				if(ack.ok){
 					this.$message({message:'Update ' + value + '!',type: 'success',duration:800});
 				}
 			});
 		},
 		async access_pubkey(event){
-			console.log(event);
-			console.log("test");
+			//console.log(event);
+			//console.log("test");
 			this.$prompt('Alias Public Key:', 'Tip', {
 				confirmButtonText: 'OK',
 				cancelButtonText: 'Cancel',
 			}).then(event => {
-				console.log(event.value);
+				//console.log(event.value);
 
 				var pub = (event.value || '').trim();
 
@@ -110,7 +110,7 @@ export default {
 						});
 						return;
 					}
-					console.log(who);
+					//console.log(who);
 
 					this.grantaccess_user(who,to);
 				})();
