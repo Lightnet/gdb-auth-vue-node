@@ -35,7 +35,7 @@
 				<el-button size="mini" @click="sentmessage"> Send </el-button>
 			</div>
 
-			<div style="height:400px;overflow-y: scroll;">
+			<div id="messagescroll" style="overflow-y: scroll;">
 				Messages:
 				<el-card class="box-card" v-for="message in messages" :key="message.id">
 					<div>
@@ -45,6 +45,7 @@
 					</div>
 				</el-card>
 			</div>
+			End..
 			
 		</div>
 	</div>
@@ -69,6 +70,7 @@ export default {
 			sendersubject:'test subject',
 			sendercontent:'test content',
 			pubkeystatus:'Status:Normal',
+			messagescrollid:'messagescroll',
 		}
 	},
 	watch: {
@@ -99,8 +101,22 @@ export default {
 		}else{
 			this.bshowlogin = true;
 		}
+		window.addEventListener('resize', this.handleResize);
+	},
+	mounted(){
+		this.handleResize();
 	},
 	methods:{
+		handleResize(event){
+			//console.log('resize');
+			//console.log(window.innerHeight);
+			//console.log(document.getElementById(this.topicidhandle).clientHeight);
+			//document.getElementById(this.topicidhandle).clientHeight = window.innerHeight;//read only
+			if(window.innerHeight > 400){
+				let scrollheight = window.innerHeight - 250;
+				document.getElementById(this.messagescrollid).style.height = scrollheight + 'px';
+			}
+		},
 		getpubkey:_.debounce(//typing key checks pub key string
 			async function(){
 				//console.log(this.pubkey.length);
@@ -243,6 +259,10 @@ export default {
 	},
 	components: {
 		//TodoList
+	},
+	beforeDestroy() {
+		console.log('beforeDestroy');
+  		window.removeEventListener('resize', this.handleResize);
 	}
 }
 </script>

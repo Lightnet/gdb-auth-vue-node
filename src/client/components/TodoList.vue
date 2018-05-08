@@ -5,19 +5,21 @@
 			placeholder="New todo"
 			@keydown.enter.native="addTodo"
 		/>
-		<ul v-if="todos.length">
-			<TodoListItem
-				v-for="todo in todos"
-				:key="todo.id"
-				:todo="todo"
-				@keydown.enter.native="editchange"
-				@edit="editTodo"
-				@remove="removeTodo"
-			/>
-		</ul>
-		<p v-else>
-			Nothing left in the list. Add a new todo in the input above.
-		</p>
+		<div id="todolistscroll" style="overflow:auto;">
+			<ul v-if="todos.length">
+				<TodoListItem
+					v-for="todo in todos"
+					:key="todo.id"
+					:todo="todo"
+					@keydown.enter.native="editchange"
+					@edit="editTodo"
+					@remove="removeTodo"
+				/>
+			</ul>
+			<p v-else>
+				Nothing left in the list. Add a new todo in the input above.
+			</p>
+		</div>
 	</div>
 </template>
 
@@ -35,22 +37,8 @@ export default {
 		return {
 			newTodoText: '',
 			todoid:'',
-			todos: [
-				/*
-				{
-					id: nextTodoId++,
-					text: 'Learn Vue'
-				},
-				{
-					id: nextTodoId++,
-					text: 'Learn about single-file components'
-				},
-				{
-					id: nextTodoId++,
-					text: 'Fall in love'
-				}
-				*/
-			]
+			todos: [],
+			todolistidhandle:'todolistscroll',
 		}
   	},
 	created() { // get todo items and start listening to events once component is created
@@ -73,13 +61,28 @@ export default {
       	});
 		//this.listenToEvents();
 	},
+	mounted(){
+		window.addEventListener('resize', this.handleResize);
+		this.handleResize();
+	},
 	unmounted(){
 		console.log("unmounted");
+	},
+	beforeDestroy: function () {
+		console.log('beforeDestroy');
+  		window.removeEventListener('resize', this.handleResize);
 	},
 	destroyed(){
 		//console.log("destroy");
 	},
 	methods: {
+		handleResize(event){
+			//console.log('resize');
+			if(window.innerHeight > 200){
+				let scrollheight = window.innerHeight - 200;
+				document.getElementById(this.todolistidhandle).style.height = scrollheight + 'px';
+			}
+		},
 		fetchTodo() {
 			//let uri = 'http://localhost:4000/api/all';
 			//axios.get(uri).then((response) => {
@@ -133,7 +136,6 @@ export default {
 				//console.log('data');
 				//console.log(data);
 			//});
-
 			//console.log('string...');
 			//console.log(id);
 			//console.log(str_text);

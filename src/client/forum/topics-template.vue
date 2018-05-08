@@ -34,10 +34,10 @@ export default {
     },
     created(){
 		//console.log('ready...');
-		window.addEventListener('resize', this.handleResize);
-		
+		//window.addEventListener('resize', this.handleResize);
 	},
 	mounted(){
+		window.addEventListener('resize', this.handleResize);
 		this.handleResize();
 	},
 	methods:{

@@ -10,7 +10,7 @@
 			<button @click="action('options')" > Options</button>
 			<button @click="genChatKey" >Gen Public Key Chat</button>
 			-->
-			<div style="height: 300px; overflow-y: scroll;">
+			<div id="chatscroll" style="overflow-y: scroll;">
 				<el-card class="box-card" v-for="message in messages" :key="message.id">
 					<div>
 					<el-tag class="wrap">{{ message.from }}</el-tag>
@@ -50,7 +50,11 @@ export default {
 			chatmessage:'test message',
 			publickey_chat : '0CKF4mpoQ1KcQy_mNOoIgB5EjoAhPwLe49bGn5URdBY.XqRVAfqyCpyUawlUDumtMitr6IZrRIUUEwNV6z-onNM',
 			epublickey_chat : '0VhBMpjKslndJbh3BFmNWca1TeIFq4PEerZJcRmNH9k.pW-MTXsu7witNqyYLGIuguQhDpZ5TCojE87O9gOB9nc',
+			chatidhandle:'chatscroll'
 		}
+	},
+	components: {
+		//TodoList
 	},
 	watch:{
 		//blogin(n, o) {
@@ -63,9 +67,6 @@ export default {
 		//console.log(this.$parent.$parent);
 		//console.log(this.$parent.$parent.blogin);
 	},
-	computed: {
-
-	},
 	created(){
 		//console.log(this.$root.blogin);
 		bus.$on('action',this.action);
@@ -73,9 +74,27 @@ export default {
 			this.blogin = true;
 			this.updateMessageList();
 		}
+		window.addEventListener('resize', this.handleResize);
 		//console.log("user",this.$root.user);
 	},
+	mounted(){
+		
+		this.handleResize();
+	},
+	computed: {
+
+	},
 	methods:{
+		handleResize(event){
+			//console.log('resize');
+			//console.log(window.innerHeight);
+			//console.log(document.getElementById(this.topicidhandle).clientHeight);
+			//document.getElementById(this.topicidhandle).clientHeight = window.innerHeight;//read only
+			if(window.innerHeight > 300){
+				let scrollheight = window.innerHeight - 150;
+				document.getElementById(this.chatidhandle).style.height = scrollheight + 'px';
+			}
+		},
 		genChatKey(){
 			console.log(Gun.SEA.pair());
 		},
@@ -199,8 +218,9 @@ export default {
 			});
 		},
 	},
-	components: {
-		//TodoList
+	beforeDestroy: function () {
+		console.log('beforeDestroy');
+  		window.removeEventListener('resize', this.handleResize);
 	}
 }
 </script>

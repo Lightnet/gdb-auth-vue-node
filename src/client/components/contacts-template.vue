@@ -21,18 +21,21 @@
 			</el-form-item>
 		</el-form>
 
-		<div style="height:500px;">
+		<div>
 			Contacts:
-			<el-card class="box-card" v-for="item in contacts" :key="item.id">
-				<div slot="header" class="clearfix">
-					Alias Name: {{ item.alias }} 
-					<el-button style="float: right;" v-on:click="deletecontact(item)" type="danger" icon="el-icon-delete" circle></el-button> 
-				</div>
-				<div>
-				<el-button icon="el-icon-edit-outline"  v-on:click="copypubkey(item.id)" circle style="float: right;"></el-button>
-				Public Key:<el-input :id="item.id" v-model="item.id" readonly="readonly"> </el-input>
-				</div>
-			</el-card>
+			<div id="contactscroll" style="overflow:auto;">
+				<el-card class="box-card" v-for="item in contacts" :key="item.id">
+					<div slot="header" class="clearfix">
+						Alias Name: {{ item.alias }} 
+						<el-button style="float: right;" v-on:click="deletecontact(item)" type="danger" icon="el-icon-delete" circle></el-button> 
+					</div>
+					<div>
+					<el-button icon="el-icon-edit-outline"  v-on:click="copypubkey(item.id)" circle style="float: right;"></el-button>
+					Public Key:<el-input :id="item.id" v-model="item.id" readonly="readonly"> </el-input>
+					</div>
+				</el-card>
+			</div>
+			End...
 		</div>
 
     </div>
@@ -52,10 +55,15 @@ export default {
 			peducation:'',
 			pskills:'',
 			contacts:[],
+			contactscrollid:'contactscroll',
 		}
     },
     created(){
 		this.updatecontacts();
+		window.addEventListener('resize', this.handleResize);
+	},
+	mounted(){
+		this.handleResize();
 	},
 	watch: {
 		pubkey:function(newvalue,oldvalue){
@@ -65,6 +73,16 @@ export default {
 		},
 	},
 	methods:{
+		handleResize(event){
+			//console.log('resize');
+			//console.log(window.innerHeight);
+			//console.log(document.getElementById(this.topicidhandle).clientHeight);
+			//document.getElementById(this.topicidhandle).clientHeight = window.innerHeight;//read only
+			if(window.innerHeight > 300){
+				let scrollheight = window.innerHeight - 200;
+				document.getElementById(this.contactscrollid).style.height = scrollheight + 'px';
+			}
+		},
 		copypubkey(publicid){
 			/* Get the text field */
 			var copyText = document.getElementById(publicid);
@@ -167,6 +185,10 @@ export default {
 			});
 		},
     },
+	beforeDestroy() {
+		console.log('beforeDestroy');
+  		window.removeEventListener('resize', this.handleResize);
+	}
 }
 </script>
 
