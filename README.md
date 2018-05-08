@@ -27,6 +27,7 @@
  * Contact (user access public key)
  * Private Message (Work in progress)
  * To Do List (Add/Edit/Remove)
+ * Theme Change (Work in progress)
 
  Check for more information on docs folder.
 

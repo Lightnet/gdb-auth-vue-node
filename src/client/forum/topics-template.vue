@@ -1,6 +1,7 @@
 <template>
 	<div>
-		<div style="height:400px;overflow-y: scroll;">
+	<div>
+		<div id="topicscroll" style="overflow:auto;">
 			<el-card class="box-card" v-for="topic in mtopics" :key="topic.id">
 				<div slot="header" class="clearfix">User: {{topic.alias}}  | Title: {{ topic.posttitle }}</div>
 				
@@ -15,10 +16,9 @@
 				<el-footer> Date: {{ topic.postdate }}</el-footer>
 			</el-card>
 		</div>
-
 		<el-button type="primary" size="mini" v-if="!bpost" v-on:click="replypost_click"> Reply Topic </el-button>
-
     </div>
+	</div>
 </template>
 <script>
 import bus from '../bus';
@@ -29,12 +29,28 @@ export default {
 		return{
 			bpost:false,
 			mtopics: this.topics,
+			topicidhandle:'topicscroll',
 		}
     },
     created(){
+		//console.log('ready...');
+		window.addEventListener('resize', this.handleResize);
 		
 	},
+	mounted(){
+		this.handleResize();
+	},
 	methods:{
+		handleResize(event){
+			//console.log('resize');
+			//console.log(window.innerHeight);
+			//console.log(document.getElementById(this.topicidhandle).clientHeight);
+			//document.getElementById(this.topicidhandle).clientHeight = window.innerHeight;//read only
+			if(window.innerHeight > 300){
+				let scrollheight = window.innerHeight - 120;
+				document.getElementById(this.topicidhandle).style.height = scrollheight + 'px';
+			}
+		},
 		replypost_click(){
 			this.$root.publickeypost = this.topicpubkey;
 			//this.bpost = true;
@@ -72,6 +88,10 @@ export default {
 
 			this.mtopics = topics;
 		},
+	},
+	beforeDestroy: function () {
+		console.log('beforeDestroy');
+  		window.removeEventListener('resize', this.handleResize);
 	}
 }
 </script>
