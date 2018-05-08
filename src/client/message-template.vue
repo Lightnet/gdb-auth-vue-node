@@ -130,7 +130,6 @@ export default {
       		// By emitting the 'update' event in every intermediary component we can pass data
       		// from GrandchildComponent to ChildComponent and from there to the parent
       		this.$emit('update', message);
-
     	},
 		action(param){
 			console.log(param);
@@ -157,6 +156,7 @@ export default {
 				this.$message('Send failed!');
 				return 
 			}
+			console.log(SEA);
 			var who = await gun.user(pub).then();
 			var sec = await Gun.SEA.secret(who.epub, user.pair()); // Diffie-Hellman
 			var enc = await Gun.SEA.encrypt(what, sec);
@@ -173,6 +173,14 @@ export default {
 			this.pubkeystatus = who.alias || "User not found.";
 			if(!who.alias){ return }
 			console.log("who",who);
+
+			console.log("SEA?");
+			if(!Gun.SEA){
+				Gun.SEA = SEA;	
+			}
+			//console.log(SEA);
+			//Gun.SEA = SEA;
+			
 			let dec = await Gun.SEA.secret(who.epub, user.pair()); // Diffie-Hellman
 			user.get('chat').get(pub).map().once((say,id)=>{
 				console.log("user chat");
@@ -196,6 +204,10 @@ export default {
 			if(!who.alias){ return }
 			user.get('contacts').get(pub).put({alias:who.alias});
 			console.log('added');
+			this.$message({
+				type: 'success',
+				message: 'Added contact!'
+			});
 
 		},
 		async checkuser(){

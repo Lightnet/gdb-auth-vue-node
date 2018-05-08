@@ -16,23 +16,14 @@
     	</div>
 
 		<div v-if="!bcategory">
-			<div style="height:400px;overflow-y: scroll;">
-				<el-card class="box-card" v-for="topic in topics" :key="topic.id">
-					<div slot="header" class="clearfix">User: {{topic.alias}}  | Title: {{ topic.posttitle }}</div>
-					
-					<el-main>{{ topic.content }}</el-main>
-					<el-footer> Date: {{ topic.postdate }}</el-footer>
-				</el-card>
-			</div>
-
-			<el-button type="primary" size="mini" v-if="!bpost" v-on:click="replypost_click"> Reply Topic </el-button>
-			<div v-if="bpost">
-			</div>
+			<topics :topics="topics" :publickeypost="publickeypost"></topics>
 		</div>
   	</div>
 </template>
 
 <script>
+import topics from './components/topics-template.vue';
+
 export default {
     name: 'app',
     data() {
@@ -44,6 +35,9 @@ export default {
 			topics:[],
 			blogin:false,
 		}
+	},
+	components: {
+		'topics':topics,
 	},
 	async created(){
 		//let gun = this.$root.$gun;
@@ -57,6 +51,12 @@ export default {
 		
 	},
 	methods:{
+		replypost_click(){
+			this.$root.publickeypost = this.publickeypost;
+			//this.bpost = true;
+			console.log(this.$parent);
+			this.$parent.currentView = 'create-post';
+		},
 		updateforum(){
 			let self = this;
 			//console.log("test posts?");
@@ -71,12 +71,6 @@ export default {
 					bedit: false
 				});
 			});
-		},
-		replypost_click(){
-			this.$root.publickeypost = this.publickeypost;
-			//this.bpost = true;
-			console.log(this.$parent);
-			this.$parent.currentView = 'create-post';
 		},
 		viewpost(event){
 			//console.log('view?');
@@ -95,7 +89,8 @@ export default {
 					alias:data.alias,
 					posttitle:data.posttitle,
 					content:data.postcontent,
-					postdate:data.postdate
+					postdate:data.postdate,
+					bedit:false
 				});
 			});
 			//get key id for map topic post list
@@ -107,7 +102,8 @@ export default {
 					alias:data.alias,
 					posttitle:data.posttitle,
 					content:data.postcontent,
-					postdate:data.postdate
+					postdate:data.postdate,
+					bedit:false
 				});
 					
 			});

@@ -26,6 +26,10 @@ import 'gun/lib/open';
 import 'gun/lib/then';
 import 'gun/lib/unset';
 
+var SEA = Gun.SEA;
+window.SEA = SEA;
+//console.log(SEA);
+
 //;(async () => {
 	//var SEA = Gun.SEA;
 	//var pair = await SEA.pair();
