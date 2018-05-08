@@ -178,7 +178,7 @@ Vue.use(VueGun, {
 			setup_gunsocket(){
 				this.$gun.on('hi', peer => {//peer connect
 					console.log('connect peer to',peer);
-					this.$message({message:'Connected!',type: 'success',duration:2000});
+					this.$message({message:'Connected!',type: 'success',duration:1000});
 				});
 
 				this.$gun.on('bye', (peer)=>{// peer disconnect

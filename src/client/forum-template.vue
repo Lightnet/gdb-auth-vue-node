@@ -4,25 +4,29 @@
     	<h6>Forum Posts</h6>
 		-->
     	<div v-if="bcategory">
-			<el-button type="primary" size="mini" v-on:click="replypost_click">New Post</el-button>
-      		<el-card class="box-card" v-for="post in posts" :key="post.id" href="#">
-				<label v-if="!post.bedit"  v-on:click="viewpost(post)"> {{ post.text }} </label>
-				<el-input v-if="post.bedit" v-model="post.text" v-on:change="topiceditchange(post)"></el-input>
-        		<span style="float: right; padding: 3px 0">
-					<el-button type="primary" icon="el-icon-edit" v-on:click="topic_edit(post)" circle></el-button>
-					<el-button type="danger" icon="el-icon-delete" @click="topic_delete(post.id)" circle></el-button>
-        		</span>
-      		</el-card>
+			<topiccategory 
+				:posts="posts" 
+				@newpost="replypost_click" 
+				@topicedit="topic_edit" 
+				@topicdelete="topic_delete"
+				@topicchange="topic_editchange"
+				@topicview="viewpost"
+			></topiccategory>
     	</div>
 
 		<div v-if="!bcategory">
-			<topics :topics="topics" :publickeypost="publickeypost"></topics>
+			<topics 
+				:topics="topics" 
+				:publickeypost="publickeypost" 
+				:topicpubkey="topicpubkey"
+			></topics>
 		</div>
   	</div>
 </template>
 
 <script>
-import topics from './components/topics-template.vue';
+import topics from './forum/topics-template.vue';
+import topiccategory from './forum/topiccategory-template.vue';
 
 export default {
     name: 'app',
@@ -30,6 +34,7 @@ export default {
 		return {
 			bcategory: true,
 			publickeypost:'',
+			topicpubkey:'',
 			bpost:false,
 			posts: [],
 			topics:[],
@@ -38,6 +43,7 @@ export default {
 	},
 	components: {
 		'topics':topics,
+		'topiccategory':topiccategory,
 	},
 	async created(){
 		//let gun = this.$root.$gun;
@@ -48,7 +54,6 @@ export default {
 			this.updateforum();
 		}
 		//console.log(gun.is);
-		
 	},
 	methods:{
 		replypost_click(){
@@ -84,32 +89,40 @@ export default {
 			//id post
 			gun_posts.get(event.id).once((data)=>{
 				//console.log(data);
+				if((data == null)||(data == 'null'))
+					return;
 				self.topics.push({
 					id:event.id,
 					alias:data.alias,
 					posttitle:data.posttitle,
 					content:data.postcontent,
 					postdate:data.postdate,
-					bedit:false
+					bedit:false,
+					isParent:true,
 				});
 			});
 			//get key id for map topic post list
 			gun.get(event.id).map().once((data,id)=>{
 				//console.log(data);
 				//console.log(id);
+				if((data == null)||(data == 'null'))
+					return;
+
 				self.topics.push({
 					id:id,
 					alias:data.alias,
 					posttitle:data.posttitle,
 					content:data.postcontent,
 					postdate:data.postdate,
-					bedit:false
+					bedit:false,
+					isparent:false,
 				});
 					
 			});
+			this.topicpubkey = event.id;
 			this.publickeypost = event.id;
 		},
-		topiceditchange(post){ //press enter to finish edit
+		topic_editchange(post){ //press enter to finish edit
 			//console.log(post);
 			//console.log("change?");
 			let gun = this.$root.user;
@@ -118,27 +131,27 @@ export default {
 			post.bedit = false;
 		},
 		topic_edit(post){
-			//console.log("topic_edit:",this.bedit);
+			console.log("topic_edit:",this.bedit);
 			//console.log(this);
 			post.bedit = !post.bedit;
 		},
-		topic_delete(idToRemove){
+		topic_delete(event){
 			//console.log("topic_delete:",idToRemove);
 			let gun = this.$root.user;
 			let gun_posts = gun.get('posts');
 			//null child keys
-			gun.get(idToRemove).map().once((key,id)=>{
-				gun.get(idToRemove).get(id).put('null',function(ack){
+			gun.get(event.id).map().once((key,id)=>{
+				gun.get(event.id).get(id).put('null',function(ack){
 					console.log(ack);
 				});
 			});
 			//null key
-			gun_posts.get(idToRemove).put('null',function(ack){
+			gun_posts.get(event.id).put('null',function(ack){
 				console.log(ack);
 			});
 			//remove item from list
 			this.posts = this.posts.filter(post => {
-				return post.id !== idToRemove
+				return post.id !== event.id
 			});
 		}
 	},
