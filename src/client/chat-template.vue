@@ -10,6 +10,30 @@
 			<button @click="action('options')" > Options</button>
 			<button @click="genChatKey" >Gen Public Key Chat</button>
 			-->
+			<el-switch 
+			v-model="bchatlistselect"
+			active-text="Chat Public Key List"
+			>List</el-switch>
+			<div v-if="bchatlistselect">
+			<el-dropdown size="mini">
+				<el-button type="primary">
+					Chats<i class="el-icon-arrow-down el-icon--right"></i>
+				</el-button>
+				<el-dropdown-menu slot="dropdown">
+					<el-dropdown-item>Action 1</el-dropdown-item>
+				</el-dropdown-menu>
+			<span> unknown chat </span>
+			</el-dropdown>
+			<el-button>
+				Remove
+			</el-button>
+			<span >
+				<el-input style="width:200px;"> </el-input>
+			</span>
+			<el-button>
+				Add
+			</el-button>
+			</div>
 			<div id="chatscroll" style="overflow-y: scroll;">
 				<el-card class="box-card" v-for="message in messages" :key="message.id">
 					<div>
@@ -27,7 +51,13 @@
 				</el-card >
 			</div>
 			<div>
-				<textarea v-model="chatmessage"> </textarea>
+				<el-col :span="16">
+				<el-input
+					type="textarea"
+					autosize
+					v-model="chatmessage"
+				></el-input>
+				</el-col>
 				<el-button type="primary" @click="sentmessage"> Chat </el-button>
 				<el-button @click="checkchatmessage"> check </el-button>
 			</div>
@@ -43,6 +73,7 @@ export default {
 	//props:['blogin'],
 	data() {
 		return{
+			bchatlistselect:false,
 			userpublickey:'',
 			blogin:false,
 			messages:[],

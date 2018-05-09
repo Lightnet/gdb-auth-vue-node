@@ -99,23 +99,21 @@ export default {
 </script>
 
 <style lang="scss">
-
 //theme light
 body.light {
 	--text-color: white;
 	--bg-color: black;
-	$--color-primary: #409EFF;
 }
 //theme dark
 body.dark {
 	--text-color: black;
 	--bg-color: white;
-	$--color-primary: rgb(10, 10, 10);
 }
 
 body {
 	background-color: var(--text-color);
 	color: var(--bg-color);
+	--color-primary: rgb(10, 10, 10);
 }
 
 .header {

@@ -1,6 +1,30 @@
 <template>
 	<div>
 		<el-button type="primary" size="mini" @click="$emit('newpost')">New Post</el-button>
+		<el-switch 
+		v-model="bforumlistselect"
+		active-text="Forum Public Key List"
+		>List</el-switch>
+		<div v-if="bforumlistselect">
+		<el-dropdown size="mini">
+			<el-button type="primary">
+				Forums<i class="el-icon-arrow-down el-icon--right"></i>
+			</el-button>
+			<el-dropdown-menu slot="dropdown">
+				<el-dropdown-item>Action 1</el-dropdown-item>
+			</el-dropdown-menu>
+		<span> unknown forum </span>
+		</el-dropdown>
+		<el-button>
+			Remove
+		</el-button>
+		<span >
+			<el-input style="width:200px;"> </el-input>
+		</span>
+		<el-button>
+			Add
+		</el-button>
+		</div>
 		<div id="topicscroll" style="overflow-y:scroll;">
 			<el-card class="box-card" v-for="post in posts" :key="post.id" href="#">
 				<label v-if="!post.bedit"  v-on:click="$emit('topicview',post)" class="wrap"> {{ post.text }} </label>
@@ -21,6 +45,7 @@ export default {
 	data() {
 		return{
 			topicidhandle:'topicscroll',
+			bforumlistselect:false,
 			//bpost:false,
 			//mtopics: this.topics,
 		}

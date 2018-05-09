@@ -4,9 +4,14 @@
         <el-form ref="form" label-width="128px">
 			<el-form-item label="Profile key">
 				<el-input v-model="pubkey" placeholder="profile key"></el-input>
-				<el-button type="primary" size="mini" @click="addcontact" style="float: right;">Add</el-button>
-				<label> Status: {{pubkeystatus}}</label>
 			</el-form-item>
+			<el-form-item label="Profile Info:">
+				<el-switch v-model="bprofileinfo"></el-switch>
+				<el-button type="primary" size="mini" @click="addcontact">Add</el-button>
+				<label> Status: {{pubkeystatus}}</label>
+				
+			</el-form-item>
+			<span v-if="bprofileinfo">
 			<el-form-item label="Name">
 				<el-input v-model="pubname" placeholder="name"> </el-input> 
 			</el-form-item>
@@ -19,6 +24,7 @@
 			<el-form-item label="Skills">
 				<el-input v-model="pskills" placeholder="skills"></el-input> 
 			</el-form-item>
+			</span>
 		</el-form>
 
 		<div>
@@ -56,6 +62,7 @@ export default {
 			pskills:'',
 			contacts:[],
 			contactscrollid:'contactscroll',
+			bprofileinfo:false,
 		}
     },
     created(){

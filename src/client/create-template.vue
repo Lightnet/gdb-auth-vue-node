@@ -1,8 +1,11 @@
 <template id="create-template">
   	<div v-if="$root.blogin">
+		Debug: <el-switch v-model="bdebugpost"></el-switch>
+		<div v-if="bdebugpost">
 		<label>Parent:{{pubname}}</label>
 		<br><label>public key:{{pubkey}}</label>
 		<br><label>Status Post:{{poststatus}}</label>
+		</div>
 		<br><label>Create Post</label>
 		<el-form ref="form" action="javascript:void(0);" v-if="bpost" label-width="120px" style="width:500px;">
 			<el-form-item label="Title">
@@ -33,6 +36,7 @@ export default {
 			bpost:true,
 			topictitle:'',
 			topiccontent:'',
+			bdebugpost:false,
 		}
 	},
 	created(){

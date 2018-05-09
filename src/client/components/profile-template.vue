@@ -11,7 +11,9 @@
 			</div>
 		</el-card>
 
-		<el-form ref="form" label-width="64px">
+		Profile Info: <el-switch v-model="bprofileinfo"></el-switch>
+
+		<el-form ref="form" label-width="64px" v-if="bprofileinfo">
 			<el-form-item label="Alias">
 				<el-input v-model="pubname" placeholder="name" v-on:change="updateprofiledata('name',pubname)"></el-input>
 				<el-button v-on:click="access_pubkey('pubname')" icon="el-icon-plus" circle></el-button>
@@ -45,6 +47,7 @@ export default {
 			pubborn:'',
 			pubeducation:'',
 			pubskills:'',
+			bprofileinfo:false,
 		}
     },
     async created(){
