@@ -45,7 +45,6 @@
 					</div>
 				</el-card>
 			</div>
-			End..
 			
 		</div>
 	</div>
@@ -101,17 +100,15 @@ export default {
 		}else{
 			this.bshowlogin = true;
 		}
-		window.addEventListener('resize', this.handleResize);
 	},
 	mounted(){
+		window.addEventListener('resize', this.handleResize);
 		this.handleResize();
 	},
 	methods:{
 		handleResize(event){
-			//console.log('resize');
-			//console.log(window.innerHeight);
-			//console.log(document.getElementById(this.topicidhandle).clientHeight);
-			//document.getElementById(this.topicidhandle).clientHeight = window.innerHeight;//read only
+			if(!document.getElementById(this.messagescrollid))
+				return;
 			if(window.innerHeight > 400){
 				let scrollheight = window.innerHeight - 250;
 				document.getElementById(this.messagescrollid).style.height = scrollheight + 'px';
@@ -261,7 +258,7 @@ export default {
 		//TodoList
 	},
 	beforeDestroy() {
-		console.log('beforeDestroy');
+		//console.log('beforeDestroy');
   		window.removeEventListener('resize', this.handleResize);
 	}
 }

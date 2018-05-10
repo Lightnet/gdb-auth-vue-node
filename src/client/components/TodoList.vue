@@ -69,7 +69,7 @@ export default {
 		console.log("unmounted");
 	},
 	beforeDestroy: function () {
-		console.log('beforeDestroy');
+		//console.log('beforeDestroy');
   		window.removeEventListener('resize', this.handleResize);
 	},
 	destroyed(){

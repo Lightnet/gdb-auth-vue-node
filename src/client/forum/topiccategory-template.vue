@@ -70,7 +70,7 @@ export default {
 		}
 	},
 	beforeDestroy: function () {
-		console.log('beforeDestroy');
+		//console.log('beforeDestroy');
   		window.removeEventListener('resize', this.handleResize);
 	}
 }

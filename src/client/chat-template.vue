@@ -99,17 +99,15 @@ export default {
 		//console.log(this.$parent.$parent.blogin);
 	},
 	created(){
-		//console.log(this.$root.blogin);
 		bus.$on('action',this.action);
+		//check if user exist to load page
 		if(this.$root.user.is){
 			this.blogin = true;
 			this.updateMessageList();
 		}
-		window.addEventListener('resize', this.handleResize);
-		//console.log("user",this.$root.user);
 	},
 	mounted(){
-		
+		window.addEventListener('resize', this.handleResize);
 		this.handleResize();
 	},
 	computed: {
@@ -117,10 +115,8 @@ export default {
 	},
 	methods:{
 		handleResize(event){
-			//console.log('resize');
-			//console.log(window.innerHeight);
-			//console.log(document.getElementById(this.topicidhandle).clientHeight);
-			//document.getElementById(this.topicidhandle).clientHeight = window.innerHeight;//read only
+			if(!document.getElementById(this.chatidhandle))
+				return;
 			if(window.innerHeight > 300){
 				let scrollheight = window.innerHeight - 150;
 				document.getElementById(this.chatidhandle).style.height = scrollheight + 'px';
@@ -250,7 +246,7 @@ export default {
 		},
 	},
 	beforeDestroy: function () {
-		console.log('beforeDestroy');
+		//console.log('beforeDestroy');
   		window.removeEventListener('resize', this.handleResize);
 	}
 }
