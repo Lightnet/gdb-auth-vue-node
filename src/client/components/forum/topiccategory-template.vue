@@ -38,7 +38,7 @@
 	</div>
 </template>
 <script>
-import bus from '../bus';
+import bus from '../../bus';
 
 export default {
 	props:['posts','topicpubkey'],

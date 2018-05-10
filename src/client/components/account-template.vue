@@ -20,11 +20,11 @@
 
 <script>
 //event on and emit global
-import bus from './bus';
-import logintemplate from './components/login-template.vue';
-import profiletemplate from './components/profile-template.vue';
-import contactstemplate from './components/contacts-template.vue';
-import profileoptionstemplate from './components/profile-options-template.vue';
+import bus from '../bus';
+import logintemplate from './account/login-template.vue';
+import profiletemplate from './account/profile-template.vue';
+import contactstemplate from './account/contacts-template.vue';
+import profileoptionstemplate from './account/profile-options-template.vue';
 
 export default {
 	//props:['blogin','username'],

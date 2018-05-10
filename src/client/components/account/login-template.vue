@@ -18,32 +18,16 @@
 			</el-form-item>
 		</el-form>
 
-		<el-form ref="form" label-width="128px" v-if="bforgetpassword">
-			
-			<el-form-item>
-				Forget Password
-			</el-form-item>
-			<el-form-item label="Alias">
-				<el-input placeholder="alias" v-model="aliasname"></el-input>
-			</el-form-item>
-			<el-form-item label="Q1:">
-				<el-input placeholder="Question1" v-model="question1"></el-input>
-			</el-form-item>
-			<el-form-item label="Q2:">
-				<el-input placeholder="Question2" v-model="question2"></el-input>
-			</el-form-item>
-			<el-form-item label="Answer:">
-				<el-input placeholder="Hint" v-model="hint"></el-input>
-			</el-form-item>
-			<el-form-item>
-				<el-button type="primary" size="mini" v-on:click="forgotpassword_aliascheck">Get Hint</el-button>
-			</el-form-item>
-		</el-form>
+		<div v-if="bforgetpassword">
+			<forgotpassword></forgotpassword>
+		</div>
 
 	</div>
 </template>
 <script>
-import bus from '../bus';
+import bus from '../../bus';
+
+import forgotpassword from './forgotpassword-template.vue'
 
 export default {
 	props:['blogin'],
@@ -58,11 +42,13 @@ export default {
 			hint:'',
 		}
     },
+	components:{
+		'forgotpassword':forgotpassword,
+	},
     async created(){
 		if(Gun.SEA == null){
 			Gun.SEA = SEA;
 		}
-		
 	},
 	methods:{
 		click_login:function(){

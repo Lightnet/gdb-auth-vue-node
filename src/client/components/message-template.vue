@@ -1,16 +1,6 @@
 <template id="messages">
 	<div>
 		<div v-if="!bshowlogin">
-			<!--
-			<label>Message Section:</label>
-			<button @click="action('draft')" > Draft</button>
-			<button @click="action('compose')" > Compose</button>
-			<button @click="action('sendmail')" > Send Mail</button>
-			<button @click="action('options')" > Options</button>
-			<button @click="trustuser" > Trust</button>
-			<el-button size="mini" @click="action('inbox')"> Inbox</el-button>
-			<el-button size="mini" @click="action('contacts')" > Contacts</el-button>
-			-->
 			<br><label>Private Message:</label>
 			<br><label>Contacts:</label>
 			<select v-model="contact">
@@ -19,11 +9,7 @@
 					{{ item.alias }}
 				</option>
 			</select>
-			<!--
-			<br> <label>Public Key:</label> <input v-model="addcontactpub">
-			<el-button size="mini" @click="checkcontact">Add</el-button>
-			<label>Status:{{contactpubstatus}}</label>
-			-->
+
 			<div>
 				Public Key: <input v-model="pubkey">
 				<el-button size="mini" @click="addcontact">Add</el-button>
@@ -52,7 +38,7 @@
 
 <script>
 //event on and emit global
-import bus from './bus';
+import bus from '../bus';
 
 export default {
 	//props:['blogin','username'],

@@ -26,13 +26,13 @@
 
 <script>
 import Vue from 'vue';
-import hometemplate from './home-template.vue';
-import forumtemplate from './forum-template.vue';
-import createtemplate from './create-template.vue';
-import toDoListTemplate from './todolist-template.vue';
-import accountTemplate from './account-template.vue';
-import messagesTemplate from './message-template.vue';
-import chatTemplate from './chat-template.vue';
+import hometemplate from './components/home-template.vue';
+import forumtemplate from './components/forum-template.vue';
+import createtemplate from './components/forum/create-template.vue';
+import toDoListTemplate from './components/todolist-template.vue';
+import accountTemplate from './components/account-template.vue';
+import messagesTemplate from './components/message-template.vue';
+import chatTemplate from './components/chat-template.vue';
 
 export default {
     name: 'app',
