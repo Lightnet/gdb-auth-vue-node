@@ -18,7 +18,7 @@ To build decentralized forum is not an easy task. Since there are pros and cons 
 
  Here simple example setup.
 
-``` 
+``` vue
 //src/client/clientEntryPoint.js //entry point browser
 //babel javascript
 import Vue from 'vue';
@@ -49,7 +49,7 @@ var app = new Vue({
 ```
 
 Child for render.
-```
+```vue
 <template>
 </template>
 <script>

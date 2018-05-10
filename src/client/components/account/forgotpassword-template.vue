@@ -18,7 +18,7 @@
 			</el-form-item>
 			<el-form-item>
 				<el-button type="primary" size="mini" v-on:click="forgotpassword_aliascheck">Get Hint</el-button>
-				<el-button size="mini" v-on:click="bforgetpassword=false">Back</el-button>
+				<el-button size="mini" v-on:click="$parent.bforgetpassword=false">Back</el-button>
 			</el-form-item>
 		</el-form>
 

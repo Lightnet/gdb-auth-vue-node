@@ -10,8 +10,37 @@
  * SEA.decrypt(data, pair)
  * SEA.work(data, pair)
 
+# Basics:
+```javascript
+;(async () => {
+    var SEA = Gun.SEA;
+    var pair = await SEA.pair();
+    var enc = await SEA.encrypt('hello self', pair);
+    var data = await SEA.sign(enc, pair);
+    console.log(data);
+})();
+
+```
+
+```javascript
+
+async function Test(){
+    var SEA = Gun.SEA;
+    var pair = await SEA.pair();
+    var enc = await SEA.encrypt('hello self', pair);
+    var data = await SEA.sign(enc, pair);
+    console.log(data);
+}
+
+Test();
+```
+
+Two example how to get sea.js to work. Read more on link.
+
+
 
 # Notes:
+ * You might need to setup sync for wait load variables.
  * Testing script here.
 
 ```

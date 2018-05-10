@@ -98,7 +98,7 @@ if(location.origin == 'http://localhost:3000'){
 
 //console.log(gun);
 //console.log(gun);
-gun.get('data').put(function(){});//init connection
+gun.get('data').once(function(){});//init connection
 
 //gun.on('auth', function(at){
 	//if('sign' === c.hash){ c.hash = '' }
