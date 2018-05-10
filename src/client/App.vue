@@ -34,6 +34,13 @@ import accountTemplate from './components/account-template.vue';
 import messagesTemplate from './components/message-template.vue';
 import chatTemplate from './components/chat-template.vue';
 
+import './components/scss/element-variables.scss'; //css
+
+//import light from './components/scss/element-light.scss';
+//console.log(light);
+//var dark = require('./components/scss/element-dark.scss');
+//console.log(dark);
+
 export default {
     name: 'app',
     data() {
@@ -76,12 +83,20 @@ export default {
 				//console.log(document);
 				document.querySelector('body').classList.remove("dark");
 				document.querySelector('body').classList.add("light");
+				require('./components/scss/element-light.scss');
 				return;
 			}
 			if(key == 'dark'){
 				//require('./element-dark.scss');
 				document.querySelector('body').classList.remove("light");
 				document.querySelector('body').classList.add("dark");
+
+				//document.querySelector('body').classList.add("theme_dark");
+				//dark();
+				require('./components/scss/element-dark.scss');
+
+				document.querySelector('body').classList.add("theme_dark");
+
 				return;
 			}
 			//check if string is empty incase it goes blank.
@@ -96,9 +111,13 @@ export default {
     	}
 	}
 }
+console.log('app gunjs');
 </script>
 
 <style lang="scss">
+//$--font-path: '~element-ui/lib/theme-chalk/fonts/element-icons.woff';
+//@import './components/scss/element-variables.scss'; //css
+
 //theme light
 body.light {
 	--text-color: white;
@@ -110,10 +129,14 @@ body.dark {
 	--bg-color: white;
 }
 
+.theme_dark {
+	--color-primary: rgb(255, 0, 0);
+	--text-color: black;
+}
+
 body {
 	background-color: var(--text-color);
 	color: var(--bg-color);
-	--color-primary: rgb(10, 10, 10);
 }
 
 .header {

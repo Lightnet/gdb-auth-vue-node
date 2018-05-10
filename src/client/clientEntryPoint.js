@@ -7,8 +7,8 @@ import Vue from 'vue';
 Vue.config.productionTip = false
 
 import Element from 'element-ui'; // ui components
-import 'element-ui/lib/theme-chalk/index.css'; //css
-//import './element-variables.scss'; //css
+//import 'element-ui/lib/theme-chalk/index.css'; //css
+//import './components/scss/element-variables.scss'; //css
 
 Vue.use(Element);
 

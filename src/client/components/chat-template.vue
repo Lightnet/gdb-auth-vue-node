@@ -17,7 +17,7 @@
 			<div v-if="bchatlistselect">
 			<el-dropdown size="mini">
 				<el-button type="primary">
-					Chats<i class="el-icon-arrow-down el-icon--right"></i>
+					Chat Rooms<i class="el-icon-arrow-down el-icon--right"></i>
 				</el-button>
 				<el-dropdown-menu slot="dropdown">
 					<el-dropdown-item>Action 1</el-dropdown-item>

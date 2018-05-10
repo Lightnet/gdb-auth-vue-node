@@ -8,7 +8,7 @@
 		<div v-if="bforumlistselect">
 		<el-dropdown size="mini">
 			<el-button type="primary">
-				Forums<i class="el-icon-arrow-down el-icon--right"></i>
+				Forum List<i class="el-icon-arrow-down el-icon--right"></i>
 			</el-button>
 			<el-dropdown-menu slot="dropdown">
 				<el-dropdown-item>Action 1</el-dropdown-item>
