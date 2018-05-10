@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<el-card class="box-card" style="width:900px;">
+		<el-card class="box-card" style="width:800px;">
 			<div slot="header" class="clearfix">
 			<span>Alias Name: {{username}}</span>
 			
@@ -15,19 +15,19 @@
 
 		<el-form ref="form" label-width="64px" v-if="bprofileinfo">
 			<el-form-item label="Alias">
-				<el-input v-model="pubname" placeholder="name" v-on:change="updateprofiledata('name',pubname)"></el-input>
+				<el-input style="width:400px;" v-model="pubname" placeholder="name" v-on:change="updateprofiledata('name',pubname)"></el-input>
 				<el-button v-on:click="access_pubkey('pubname')" icon="el-icon-plus" circle></el-button>
 			</el-form-item>
 			<el-form-item label="Born">
-				<el-input v-model="pubborn" placeholder="born" v-on:change="updateprofiledata('born',pubborn)"></el-input>
+				<el-input style="width:400px;" v-model="pubborn" placeholder="born" v-on:change="updateprofiledata('born',pubborn)"></el-input>
 				<el-button v-on:click="access_pubkey('pubborn')" icon="el-icon-plus" circle></el-button>
 			</el-form-item>
 			<el-form-item label="Education">
-				<el-input v-model="pubeducation" placeholder="education" v-on:change="updateprofiledata('education',pubeducation)"></el-input>
+				<el-input style="width:400px;" v-model="pubeducation" placeholder="education" v-on:change="updateprofiledata('education',pubeducation)"></el-input>
 				<el-button v-on:click="access_pubkey('pubeducation')" icon="el-icon-plus" circle></el-button>
 			</el-form-item>
 			<el-form-item label="Skills">
-				<el-input v-model="pubskills" placeholder="skills" v-on:change="updateprofiledata('skills',pubskills)"></el-input>
+				<el-input style="width:400px;" v-model="pubskills" placeholder="skills" v-on:change="updateprofiledata('skills',pubskills)"></el-input>
 				<el-button v-on:click="access_pubkey('pubskills')" icon="el-icon-plus" circle></el-button>
 			</el-form-item>
 		</el-form>
@@ -38,11 +38,12 @@
 import bus from '../../bus';
 
 export default {
-	props:['username','userpublickey'],
+	//props:['username','userpublickey'],
 	data() {
 		return{
-			//username:'',
-			//userpublickey:'',
+			username:'',
+			userpublickey:'',
+
 			pubname:'',
 			pubborn:'',
 			pubeducation:'',
@@ -51,13 +52,12 @@ export default {
 		}
     },
     async created(){
-		//console.log(this.username);
+
 		if(this.$root.user.is){
 			let user = this.$root.user;
-			//user.get('profile').get('name').once((data)=>{
-				//console.log(data);
-				//this.pubname = data;
-			//});
+			this.username = user.is.alias;
+			this.userpublickey = user.is.pub;
+
 			this.pubname = await user.get('profile').get('name').then();
 			this.pubborn = await user.get('profile').get('born').then();
 			this.pubeducation = await user.get('profile').get('education').then();

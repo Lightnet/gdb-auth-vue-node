@@ -1,6 +1,5 @@
 <template>
 	<div>
-	<div>
 		<div id="topicscroll" style="overflow:auto;">
 			<el-card class="box-card" v-for="topic in mtopics" :key="topic.id">
 				<div slot="header" class="clearfix">User: {{topic.alias}}  | Title: {{ topic.posttitle }}</div>
@@ -18,7 +17,6 @@
 		</div>
 		<el-button type="primary" size="mini" v-if="!bpost" v-on:click="replypost_click"> Reply Topic </el-button>
     </div>
-	</div>
 </template>
 <script>
 import bus from '../../bus';

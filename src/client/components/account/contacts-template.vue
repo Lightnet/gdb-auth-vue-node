@@ -1,15 +1,12 @@
 <template>
 	<div>
 
-        <el-form ref="form" label-width="128px">
+        <el-form ref="form" label-width="92px">
 			<el-form-item label="Profile key">
-				<el-input v-model="pubkey" placeholder="profile key"></el-input>
+				<el-input style="width:760px;" v-model="pubkey" placeholder="profile key"></el-input><el-button type="primary" size="mini" @click="addcontact">Add</el-button> <label> Status: {{pubkeystatus}}</label>
 			</el-form-item>
 			<el-form-item label="Profile Info:">
-				<el-switch v-model="bprofileinfo"></el-switch>
-				<el-button type="primary" size="mini" @click="addcontact">Add</el-button>
-				<label> Status: {{pubkeystatus}}</label>
-				
+				<el-switch v-model="bprofileinfo"></el-switch>				
 			</el-form-item>
 			<span v-if="bprofileinfo">
 			<el-form-item label="Name">
@@ -30,7 +27,7 @@
 		<div>
 			Contacts:
 			<div id="contactscroll" style="overflow:auto;">
-				<el-card class="box-card" v-for="item in contacts" :key="item.id">
+				<el-card style="width:800px;" class="box-card" v-for="item in contacts" :key="item.id">
 					<div slot="header" class="clearfix">
 						Alias Name: {{ item.alias }} 
 						<el-button style="float: right;" v-on:click="deletecontact(item)" type="danger" icon="el-icon-delete" circle></el-button> 
@@ -41,7 +38,6 @@
 					</div>
 				</el-card>
 			</div>
-			End...
 		</div>
 
     </div>
@@ -114,6 +110,8 @@ export default {
 			if(!who.alias){ return }
 			user.get('contacts').get(pub).put({alias:who.alias});
 			this.$message({message:'Contacts Added!',type: 'success',duration:800});
+
+			this.contacts.push({id:pub,alias:who.alias});
 			//console.log('added contact!');
 		},
 		getpubkey:_.debounce(//typing key checks pub key string
@@ -137,14 +135,6 @@ export default {
 			let who = await to.then() || {};
 			this.pubkeystatus = 'Name: '+ who.alias || "User not found.";
 			if(!who.alias){ return }
-			//console.log("who",who);
-			//console.log("profile");
-			//to.get('profile').get(user.pair().pub).map().once((data,id)=>{
-				//console.log("profile");
-				//console.log(data);
-				//console.log(id);
-				//this.UI(say,id,dec);
-			//});
 
 			to.get('profile').map().once((data,id)=>{
 				//console.log("profile");
@@ -168,7 +158,6 @@ export default {
 		updatecontacts(){
 			let user = this.$root.user;
 			let self = this;
-
 			//console.log('contacts');
 			user.get('contacts').map().once((data,id)=>{
 				if(data == 'null')
@@ -182,13 +171,31 @@ export default {
 			//console.log('event');
 			//console.log(event);
 			let user = this.$root.user;
-			this.contacts.filter(contact => {
-				if(contact.id == event.id){
-					//self.pubkey = contact.id;
-					user.get('contacts').get(contact.id).put('null');
+			let self = this;
+			//CKLj2fswWfmJKiSVHEhNCWQh-c9bHBWgh3I45lm3OJo.Flq2KgGaAOqptA09C8L_msnh4uu6NTZgKQuVswebKoE
 
-				}
-				//return post.id !== idToRemove
+			this.$confirm('This will permanently delete the '+ event.alias  + '. Continue?', 'Warning', {
+				confirmButtonText: 'OK',
+				cancelButtonText: 'Cancel',
+				type: 'warning'
+			}).then(() => {
+
+				this.$message({
+					type: 'success',
+					message: 'Delete completed'
+				});
+
+				self.contacts = self.contacts.filter(contact => {
+					if(contact.id == event.id){
+						user.get('contacts').get(contact.id).put('null');
+					}
+					return contact.id !== event.id;
+				});
+			}).catch(() => {
+				this.$message({
+					type: 'info',
+					message: 'Delete canceled'
+				});          
 			});
 		},
     },

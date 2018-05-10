@@ -13,7 +13,7 @@
 		</div>
 
 		<div class="container">
-			<component :is="currentView" :username=username :userpublickey=userpublickey></component>
+			<component :is="currentView"></component>
 		</div>
 	</div>
 </template>
