@@ -7,6 +7,7 @@
 			<el-button type="primary" size="mini" style="float: right;" v-on:click="click_logout()">Logout</el-button>
 			<el-button size="mini" v-on:click="setview('profile')">Profile</el-button>
 			<el-button size="mini" v-on:click="setview('contacts')">Contacts</el-button>
+			<el-button size="mini" v-on:click="setview('options')">Options</el-button>
 
 			<el-button size="mini" v-on:click="Disconnect">Disconnect</el-button>
 		</div>
@@ -23,6 +24,7 @@ import bus from './bus';
 import logintemplate from './components/login-template.vue';
 import profiletemplate from './components/profile-template.vue';
 import contactstemplate from './components/contacts-template.vue';
+import profileoptionstemplate from './components/profile-options-template.vue';
 
 export default {
 	//props:['blogin','username'],
@@ -166,6 +168,7 @@ export default {
 		'login':logintemplate,
 		'profile':profiletemplate,
 		'contacts':contactstemplate,
+		'options':profileoptionstemplate,
 	}
 }
 </script>
