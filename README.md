@@ -22,12 +22,14 @@
 
 # Features:
  * Auth sea.js peer to peer access database
- * Post (private mode)
- * Chat (private mode)
- * Contact (user access public key)
+ * Simple profile (Name, Born, Education, Skills)
+ * Simple (Post / Create / Reply) Topic Post
+ * Chat (Add / Remove)
+ * Contact (Add / Remove / View Profile of other users contact public key)
  * Private Message (Work in progress)
  * To Do List (Add/Edit/Remove)
  * Theme Change (Work in progress)
+ * Forgot Password / Change Password / Hint (No email since it peer to peer database)
 
  Check for more information on docs folder.
 

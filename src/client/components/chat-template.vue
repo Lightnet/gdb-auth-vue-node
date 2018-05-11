@@ -3,10 +3,6 @@
 		<div v-if="blogin">
 			<label>Chat Room:(Not public yet!)</label>
 			<!--
-			<button @click="action('home')"> Home</button>
-			<button @click="action('lobby')" > Lobby</button>
-			<button @click="action('rooms')" > Rooms</button>
-			<button @click="action('pm')" > PM</button>
 			<button @click="action('options')" > Options</button>
 			<button @click="genChatKey" >Gen Public Key Chat</button>
 			-->
@@ -15,24 +11,7 @@
 			active-text="Chat Public Key List"
 			>List</el-switch>
 			<div v-if="bchatlistselect">
-			<el-dropdown size="mini">
-				<el-button type="primary">
-					Chat Rooms<i class="el-icon-arrow-down el-icon--right"></i>
-				</el-button>
-				<el-dropdown-menu slot="dropdown">
-					<el-dropdown-item>Action 1</el-dropdown-item>
-				</el-dropdown-menu>
-			<span> unknown chat </span>
-			</el-dropdown>
-			<el-button>
-				Remove
-			</el-button>
-			<span >
-				<el-input style="width:200px;"> </el-input>
-			</span>
-			<el-button>
-				Add
-			</el-button>
+				<ChatList></ChatList>
 			</div>
 			<div id="chatscroll" style="overflow-y: scroll;">
 				<el-card class="box-card" v-for="message in messages" :key="message.id">
@@ -62,12 +41,21 @@
 				<el-button @click="checkchatmessage"> check </el-button>
 			</div>
 		</div>
+		<div v-else>
+			<br>
+			<center>
+				<el-button type="warning" icon="el-icon-warning" circle></el-button>
+				Please Login.
+			</center>
+		</div>
 	</div>
 </template>
 
 <script>
 //event on and emit global
 import bus from '../bus';
+
+import ChatList from './chat/ChatList.vue';
 
 export default {
 	//props:['blogin'],
@@ -85,7 +73,7 @@ export default {
 		}
 	},
 	components: {
-		//TodoList
+		'ChatList':ChatList
 	},
 	watch:{
 		//blogin(n, o) {

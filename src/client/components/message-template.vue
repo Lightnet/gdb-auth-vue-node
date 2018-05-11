@@ -8,7 +8,13 @@
 		:messages="messages"
 		>
 		</MessageList>
-		
+	</div>
+	<div v-else>
+		<br>
+		<center>
+			<el-button type="warning" icon="el-icon-warning" circle></el-button>
+			Please Login.
+		</center>
 	</div>
 </template>
 
@@ -55,6 +61,7 @@ export default {
 		if(this.$root.user.is){
 			//this.updateContactList();
 			this.blogin = true;
+			//this.updateMessageList();//test
 			//console.log("update?");
 		}
 	},
@@ -84,6 +91,33 @@ export default {
 			this.pubkey = event;
 			this.updateSelectAliasMessage();
 		},
+		async updateMessageList(){
+			console.log("message?");
+			this.messages = [];
+			let user = this.$root.$gun.user();
+			//console.log(this.pubkey);
+			//let pub = (this.pubkey || '').trim();
+			//if(!pub){ return }
+			//let to = this.$root.$gun.user(pub);
+			//let who = await to.then() || {};
+			//this.pubkeystatus = who.alias || "User not found.";
+			//console.log(this.pmusercheck);
+			//if(!who.alias){ return }
+			//console.log("who",who);
+			let dec = await Gun.SEA.secret(user.pair().epub, user.pair()); // Diffie-Hellman
+			user.get('messages').get(user.pair().pub).map().once((say,id)=>{
+			//user.get('messages').map().once((say,id)=>{
+				if((say == null)||(say == 'null'))
+					return;
+				console.log("user chat");
+				this.UI2(say,id,dec);
+			});
+			//console.log("user.pair().pub: ",user.pair().pub);
+			//to.get('messages').get(user.pair().pub).map().once((say,id)=>{
+				//console.log("to chat");
+				//this.UI2(say,id,dec);
+			//});
+		},
 		async updateSelectAliasMessage(){
 			console.log("message?");
 			this.messages = [];
@@ -98,18 +132,23 @@ export default {
 			if(!who.alias){ return }
 			console.log("who",who);
 			let dec = await Gun.SEA.secret(who.epub, user.pair()); // Diffie-Hellman
-			user.get('chat').get(pub).map().once((say,id)=>{
+			user.get('messages').get(pub).map().once((say,id)=>{
 				console.log("user chat");
 				this.UI(say,id,dec);
 			});
 			console.log("user.pair().pub: ",user.pair().pub);
-			to.get('chat').get(user.pair().pub).map().once((say,id)=>{
+			to.get('messages').get(user.pair().pub).map().once((say,id)=>{
 				console.log("to chat");
 				this.UI(say,id,dec);
 			});
 		},
 		async UI(say, id, dec){
 			say = await Gun.SEA.decrypt(say,dec);
+			console.log(say);
+			this.messages.push({id:id,from:say.from, subject:say.subject , message:say.content});
+		},
+		async UI2(say, id, dec){
+			//say = await Gun.SEA.decrypt(say,dec);
 			console.log(say);
 			this.messages.push({id:id,from:say.from, subject:say.subject , message:say.content});
 		}

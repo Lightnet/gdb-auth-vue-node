@@ -19,6 +19,7 @@
 		</el-form>
 
 		<div v-if="bforgetpassword">
+			Test
 			<forgotpassword></forgotpassword>
 		</div>
 

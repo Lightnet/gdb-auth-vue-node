@@ -1,20 +1,23 @@
 <template id="Account">
 	<div>
 		<div v-if="blogin">
-			<el-button size="mini" v-on:click="cleardata()">Clear Local Database</el-button>
-		</div>	
+			<el-button size="mini" v-on:click="cleardata">Clear Local Database</el-button>
+			<el-button size="mini" v-on:click="Connect">Connect Database</el-button>
+			<el-button size="mini" v-on:click="Disconnect">Disconnect</el-button>
+		</div>
+
 		<div v-if="!blogin">
 			<el-button type="primary" size="mini" style="float: right;" v-on:click="click_logout()">Logout</el-button>
 			<el-button size="mini" v-on:click="setview('profile')">Profile</el-button>
 			<el-button size="mini" v-on:click="setview('contacts')">Contacts</el-button>
 			<el-button size="mini" v-on:click="setview('options')">Options</el-button>
-
 			<el-button size="mini" v-on:click="Disconnect">Disconnect</el-button>
 		</div>
 
 		<div class="container">
 			<component :is="currentView"></component>
 		</div>
+
 	</div>
 </template>
 
@@ -66,6 +69,10 @@ export default {
 		//console.log("user",this.$root.user);
 	},
 	methods:{
+		Connect(){
+			let gun = this.$root.$gun;
+			gun.get('data').once(function(){});
+		},
 		Disconnect(){
 			let peers = this.$root.$gun.back('opt.peers');
 			let url;

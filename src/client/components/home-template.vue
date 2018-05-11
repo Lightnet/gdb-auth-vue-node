@@ -21,13 +21,13 @@ export default {
             items:[
                 {name:'Peer to peer Security, Encryption, Authorization, and Database.'},
                 {name:'Simple profile (Name, Born, Education, Skills)'},
-                {name:'Cantact (Add / Remove / View Profile of other users contact public key)'},
+                {name:'Contact (Add / Remove / View Profile of other users contact public key)'},
                 {name:'Private message (Public Key)'},
                 {name:'Chat (Add / Remove)'},
                 {name:'To Do List (Add / Edit /Remove)'},
                 {name:'Simple (Post / Create / Reply) Topic Post'},
                 {name:'Forgot Password / Change Password / Hint (No email since it peer to peer database)'},
-
+                {name:'Theme Change (Partly working.)'},
             ]
         }
     }

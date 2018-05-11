@@ -97,7 +97,7 @@ export default {
 		,500)
 		,
 		async updateContactList(){
-			console.log("list?");
+			//console.log("list?");
 			//console.log(this.$root.$gun.user());
 			let user = this.$root.user;
 			let self = this;
@@ -143,10 +143,12 @@ export default {
 				return 
 			}
 			//console.log(SEA);
+			//get user data
 			var who = await gun.user(pub).then();
+			//get user pub key
 			var sec = await Gun.SEA.secret(who.epub, user.pair()); // Diffie-Hellman
 			var enc = await Gun.SEA.encrypt(what, sec);
-			user.get('chat').get(pub).set(enc);
+			user.get('messages').get(pub).set(enc);
 		},
 		async checkpubkey(){//needed
 			this.messages = [];

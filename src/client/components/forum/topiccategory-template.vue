@@ -1,29 +1,13 @@
 <template>
 	<div>
-		<el-button type="primary" size="mini" @click="$emit('newpost')">New Post</el-button>
+		<el-button type="primary" size="mini" @click="$emit('newpost')">New Topic</el-button>
+
 		<el-switch 
-		v-model="bforumlistselect"
-		active-text="Forum Public Key List"
-		>List</el-switch>
+			v-model="bforumlistselect"
+			active-text="Forum Public Key List"
+			>List</el-switch>
 		<div v-if="bforumlistselect">
-		<el-dropdown size="mini">
-			<el-button type="primary">
-				Forum List<i class="el-icon-arrow-down el-icon--right"></i>
-			</el-button>
-			<el-dropdown-menu slot="dropdown">
-				<el-dropdown-item>Action 1</el-dropdown-item>
-			</el-dropdown-menu>
-		<span> unknown forum </span>
-		</el-dropdown>
-		<el-button>
-			Remove
-		</el-button>
-		<span >
-			<el-input style="width:200px;"> </el-input>
-		</span>
-		<el-button>
-			Add
-		</el-button>
+			<ForumList> </ForumList>
 		</div>
 		<div id="topicscroll" style="overflow-y:scroll;">
 			<el-card class="box-card" v-for="post in posts" :key="post.id" href="#">
@@ -40,7 +24,12 @@
 <script>
 import bus from '../../bus';
 
+import ForumList from './ForumList.vue';
+
 export default {
+	components: {
+		'ForumList':ForumList
+	},
 	props:['posts','topicpubkey'],
 	data() {
 		return{

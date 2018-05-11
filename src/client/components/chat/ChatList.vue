@@ -1,43 +1,35 @@
-<template id="chat">
+<template>
 	<div>
-		<div v-if="blogin">
-			<el-switch 
-			v-model="bchatlistselect"
-			active-text="Chat Public Key List"
-			>List</el-switch>
-			<div v-if="bchatlistselect">
-			<el-dropdown size="mini">
-				<el-button type="primary">
-					Chat Rooms<i class="el-icon-arrow-down el-icon--right"></i>
-				</el-button>
-				<el-dropdown-menu slot="dropdown">
-					<el-dropdown-item>Action 1</el-dropdown-item>
-				</el-dropdown-menu>
-			<span> unknown chat </span>
-			</el-dropdown>
-			<el-button>
-				Remove
+		<el-dropdown size="mini">
+			<el-button type="primary">
+				Chat Rooms<i class="el-icon-arrow-down el-icon--right"></i>
 			</el-button>
-			<span >
-				<el-input style="width:200px;"> </el-input>
-			</span>
-			<el-button>
-				Add
-			</el-button>
-			</div>
-		</div>
+			<el-dropdown-menu slot="dropdown">
+				<el-dropdown-item>Action 1</el-dropdown-item>
+			</el-dropdown-menu>
+		<span> unknown chat </span>
+		</el-dropdown>
+		<el-button>
+			Remove
+		</el-button>
+		<span >
+			<el-input style="width:200px;"> </el-input>
+		</span>
+		<el-button>
+			Add
+		</el-button>
 	</div>
 </template>
 
 <script>
 //event on and emit global
-import bus from '../bus';
+import bus from '../../bus';
 
 export default {
 	//props:['blogin'],
 	data() {
 		return{
-			bchatlistselect:false,
+			//bchatlistselect:false,
 		}
 	},
 	components: {
@@ -51,20 +43,15 @@ export default {
 	beforeCreate() {
 	},
 	created(){
-		bus.$on('action',this.action);
+		//bus.$on('action',this.action);
 		//check if user exist to load page
 		if(this.$root.user.is){
-			this.blogin = true;
-			this.updateMessageList();
+			//this.blogin = true;
+			//this.updateMessageList();
 		}
 	},
-	mounted(){
-		window.addEventListener('resize', this.handleResize);
-		this.handleResize();
-	},
-	computed: {
-
-	},
+	mounted(){},
+	computed: {},
 	methods:{
 		genChatKey(){
 			console.log(Gun.SEA.pair());
