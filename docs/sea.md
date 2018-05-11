@@ -10,6 +10,13 @@
  * SEA.decrypt(data, pair)
  * SEA.work(data, pair)
 
+```javascript
+let n = 5;
+Gun.text.random(n,'*');
+//result
+//*****
+```
+
 # Basics:
 ```javascript
 ;(async () => {
@@ -38,12 +45,11 @@ Test();
 Two example how to get sea.js to work. Read more on link.
 
 
-
 # Notes:
  * You might need to setup sync for wait load variables.
  * Testing script here.
 
-```
+```javascript
 this.$root.$gun.get('alias/'+this.aliasname).map().once(data=>{
     //console.log(data);
     //console.log(data.forgot['#']);
@@ -57,7 +63,7 @@ this.$root.$gun.get('alias/'+this.aliasname).map().once(data=>{
 });
 ```
 
-```
+```javascript
 let gunalias = await this.$root.$gun.get('alias/'+this.aliasname).map().then() || {};
 console.log(gunalias);
 let q1 = await gun.get(gunalias.forgot['#']).get('q1').then() || '';
@@ -79,3 +85,9 @@ let hint = await gun.get(gunalias.forgot['#']).get('hint').then() || '';
     //console.log(id);
 //});
 ```
+
+# Links:
+ * https://gist.github.com/amark/755193244d28f4f4c980130055a26e5c
+
+ * http://jsbin.com/jenatavabe/edit?html,js,output Gun.text.random
+ * http://jsbin.com/jenatavabe/2/edit?html,js,output

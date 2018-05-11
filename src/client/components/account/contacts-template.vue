@@ -3,7 +3,10 @@
 
         <el-form ref="form" label-width="92px">
 			<el-form-item label="Profile key">
-				<el-input style="width:760px;" v-model="pubkey" placeholder="profile key"></el-input><el-button type="primary" size="mini" @click="addcontact">Add</el-button> <label> Status: {{pubkeystatus}}</label>
+				<el-input style="width:760px;" v-model="pubkey" placeholder="profile key">
+				</el-input>
+				<el-button type="primary" size="mini" @click="addcontact">Add</el-button>
+				<label> Status: {{pubkeystatus}}</label>
 			</el-form-item>
 			<el-form-item label="Profile Info:">
 				<el-switch v-model="bprofileinfo"></el-switch>				

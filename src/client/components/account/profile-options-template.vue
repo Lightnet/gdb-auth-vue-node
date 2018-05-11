@@ -10,13 +10,13 @@
 				<el-input v-model="unpassword" placeholder="New Password"></el-input>
 			</el-form-item>
 			<el-form-item>
-				<el-button v-on:click="changepassword"> Change Password </el-button>
+				<el-button type="primary" v-on:click="changepassword"> Change Password </el-button>
 			</el-form-item>
 		</el-form>
 
-		<br><el-switch v-model="bforgotpassword" active-text="Forgot Password"></el-switch>
+		<br><el-switch v-model="bhintpassword" active-text="Hint Password"></el-switch>
 
-		<el-form ref="form" label-width="128px" v-if="bforgotpassword">
+		<el-form ref="form" label-width="128px" v-if="bhintpassword">
 			<el-form-item label="Q1">
 				<el-input v-model="q1" placeholder="Question 1"></el-input>
 			</el-form-item>
@@ -27,7 +27,7 @@
 				<el-input v-model="hint" placeholder="Hint"></el-input>
 			</el-form-item>
 			<el-form-item>
-				<el-button v-on:click="forgotpassword_apply"> Apply </el-button>
+				<el-button type="primary" v-on:click="hintpassword_apply"> Apply </el-button>
 			</el-form-item>
 		</el-form>
 
@@ -46,7 +46,7 @@ export default {
 			q2:'',
 			hint:'',
 			bchangepassword:false,
-			bforgotpassword:false,
+			bhintpassword:false,
 		}
     },
     async created(){
@@ -57,7 +57,7 @@ export default {
 		if(this.$root.user.is){
 			let gun = this.$root.$gun;
 			let user = this.$root.$gun.user();
-			let gunforgot = user.get('forgot');
+			let gunforgot = user.get('settings');
 			//message crypt
 			let q1 = await gunforgot.get('q1').then();
 			//decode secret
@@ -99,13 +99,13 @@ export default {
 				},{change:this.unpassword});
 			}	
 		},
-		async forgotpassword_apply(){
+		async hintpassword_apply(){
 			//console.log(SEA);
 			let gun = this.$root.$gun;
 			let user = this.$root.$gun.user();
 			console.log(user);
 			//need to change this later.
-			let gunforgot = user.get('forgot');
+			let gunforgot = user.get('settings');
 			//console.log(Gun.SEA);
 			//message secret
 			var sec = await Gun.SEA.secret(user.pair().epub, user.pair()); // Diffie-Hellman
@@ -114,20 +114,24 @@ export default {
 			var enc_q1 = await Gun.SEA.encrypt(this.q1, sec);
 			var enc_q2 = await Gun.SEA.encrypt(this.q2, sec);
 			gunforgot.get('q1').put(enc_q1);
+			gunforgot.get('q1l').put(this.q1.length);
 			gunforgot.get('q2').put(enc_q2);
+			gunforgot.get('q2l').put(this.q2.length);
 
 			//
 			var proof = await Gun.SEA.work(this.q1, this.q2);
 			var enc_hint = await Gun.SEA.encrypt(this.hint, proof);
-
 			//gunforgot.get('hint').put(enc_hint);
-			gun.user().get('hint').put(enc_hint);
-
+			gun.user().get('hint').put(enc_hint,(ack)=>{
+				console.log(ack);
+				if(ack.ok){
+					this.$message({message:'Update Hint Password!',type: 'success',duration:800});
+				}
+			});
+			
 			//let salt = Gun.text.random(64);
 			//console.log(salt);
-
 			//let proof = await SEA.work('pass', salt);
-
 			//https://github.com/amark/gun/blob/master/sea.js
 			// line 1090
 		},
