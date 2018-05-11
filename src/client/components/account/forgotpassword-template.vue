@@ -33,7 +33,9 @@ export default {
 		return{
 			aliasname:'',
 			question1:'',
+			question1l:'',
 			question2:'',
+			question2l:'',
 			hint:'',
 		}
     },
@@ -53,7 +55,7 @@ export default {
 			let alias = await gun.get('alias/'+this.aliasname).then();
 			console.log(alias);
 			if(alias){
-				console.log("checking...");
+				//console.log("checking...");
 				hint = await gun.get('alias/'+this.aliasname).map().get('hint').then();
 				//console.log(hint);
 				this.checkhint(hint);

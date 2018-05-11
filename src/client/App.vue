@@ -21,6 +21,10 @@
 		<div class="container">
 			<component :is="currentView" @update="updateMessage" ></component>
 		</div>
+		<!--
+		<ComposeMessage />
+		-->
+		
 	</div>
 </template>
 
@@ -33,6 +37,10 @@ import toDoListTemplate from './components/todolist-template.vue';
 import accountTemplate from './components/account-template.vue';
 import messagesTemplate from './components/message-template.vue';
 import chatTemplate from './components/chat-template.vue';
+
+//import ComposeMessage from './components/message/ComposeMessage.vue';
+
+//Vue.use(ComposeMessage);
 
 import './components/scss/element-variables.scss'; //css
 
@@ -73,6 +81,7 @@ export default {
 		'account':accountTemplate,
 		'messages':messagesTemplate,
 		'chat':chatTemplate,
+		//'ComposeMessage':ComposeMessage,
 	},
 	methods: {
 		handleSelect(key, keyPath) {

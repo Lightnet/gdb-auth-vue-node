@@ -1,6 +1,5 @@
 <template>
 	<div>
-
         <el-form ref="form" label-width="92px">
 			<el-form-item label="Profile key">
 				<el-input style="width:760px;" v-model="pubkey" placeholder="profile key">
@@ -9,17 +8,17 @@
 				<label> Status: {{pubkeystatus}}</label>
 			</el-form-item>
 			<el-form-item label="Profile Info:">
-				<el-switch v-model="bprofileinfo"></el-switch>				
+				<el-switch v-model="bprofileinfo"></el-switch>
 			</el-form-item>
 			<span v-if="bprofileinfo">
 			<el-form-item label="Name">
-				<el-input v-model="pubname" placeholder="name"> </el-input> 
+				<el-input v-model="pubname" placeholder="name"> </el-input>
 			</el-form-item>
 			<el-form-item label="Born">
 				<el-input v-model="pborn" placeholder="born"> </el-input> 
 			</el-form-item>
 			<el-form-item label="Education">
-				<el-input v-model="peducation" placeholder="education"></el-input> 
+				<el-input v-model="peducation" placeholder="education"></el-input>
 			</el-form-item>
 			<el-form-item label="Skills">
 				<el-input v-model="pskills" placeholder="skills"></el-input> 
@@ -113,7 +112,7 @@ export default {
 			if(!who.alias){ return }
 			user.get('contacts').get(pub).put({alias:who.alias});
 			this.$message({message:'Contacts Added!',type: 'success',duration:800});
-
+			//need to fix this. incase over lap copy
 			this.contacts.push({id:pub,alias:who.alias});
 			//console.log('added contact!');
 		},
@@ -159,7 +158,7 @@ export default {
 			});
 		},
 		updatecontacts(){
-			let user = this.$root.user;
+			let user = this.$root.$gun.user();
 			let self = this;
 			//console.log('contacts');
 			user.get('contacts').map().once((data,id)=>{

@@ -11,7 +11,9 @@
 			</div>
 		</el-card>
 
-		Profile Info: <el-switch v-model="bprofileinfo"></el-switch>
+		<span v-if="bhint"> Please go to options for Forgot Password to setup hint. </span>
+
+		<br>Profile Info: <el-switch v-model="bprofileinfo"></el-switch>
 
 		<el-form ref="form" label-width="64px" v-if="bprofileinfo">
 			<el-form-item label="Alias">
@@ -49,6 +51,7 @@ export default {
 			pubeducation:'',
 			pubskills:'',
 			bprofileinfo:false,
+			bhint:false,
 		}
     },
     async created(){
@@ -62,6 +65,14 @@ export default {
 			this.pubborn = await user.get('profile').get('born').then();
 			this.pubeducation = await user.get('profile').get('education').then();
 			this.pubskills = await user.get('profile').get('skills').then();
+
+			let hint = await user.get('hint').then();
+			//console.log(hint);
+			if(!hint){
+				this.bhint = true;
+			}
+
+
 		}
 	},
 	methods:{
