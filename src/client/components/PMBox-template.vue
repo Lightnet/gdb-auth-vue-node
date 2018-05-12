@@ -19,6 +19,7 @@
 	</div>
 </template>
 <script>
+// private messsage box
 
 import PM from './msgbox/PM.vue';
 import PMList from './msgbox/PMList.vue';

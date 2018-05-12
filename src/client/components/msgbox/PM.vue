@@ -23,6 +23,7 @@
 	</div>
 </template>
 <script>
+// private messsage to alias contact
 export default {
     //components:{},
     data(){

@@ -13,6 +13,7 @@
     </div>
 </template>
 <script>
+// private messsage list from contacts
 export default {
     props:['messages'],
     data(){
