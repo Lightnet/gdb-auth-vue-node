@@ -4,7 +4,7 @@
 			<el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
 				<el-menu-item index="home">Home</el-menu-item>
 				<el-menu-item index="account">Account</el-menu-item>
-				<el-menu-item index="messagebox">Messages</el-menu-item>
+				<el-menu-item index="pm">Messages</el-menu-item>
 				<el-menu-item index="chat">Chat</el-menu-item>
 				<el-menu-item index="todolistapp">To Do List</el-menu-item>
 				<el-menu-item index="forum">Forum</el-menu-item>
@@ -17,14 +17,9 @@
 				</el-submenu>
 			</el-menu>
 		</div>
-
 		<div class="container">
 			<component :is="currentView" @update="updateMessage" ></component>
 		</div>
-		<!--
-		<ComposeMessage />
-		-->
-		
 	</div>
 </template>
 
@@ -35,19 +30,9 @@ import forumtemplate from './components/Forum-template.vue';
 import createtemplate from './components/forum/CreateTopic-template.vue';
 import toDoListTemplate from './components/Todolist-template.vue';
 import accountTemplate from './components/Account-template.vue';
-import MessageBoxTemplate from './components/MessageBox-template.vue';
+import MsgBoxTemplate from './components/PMBox-template.vue';
 import chatTemplate from './components/chat-template.vue';
-
-//import ComposeMessage from './components/message/ComposeMessage.vue';
-
-//Vue.use(ComposeMessage);
-
 import './components/scss/element-variables.scss'; //css
-
-//import light from './components/scss/element-light.scss';
-//console.log(light);
-//var dark = require('./components/scss/element-dark.scss');
-//console.log(dark);
 
 export default {
     name: 'app',
@@ -79,9 +64,9 @@ export default {
 		'create-post': createtemplate,
 		'todolistapp':toDoListTemplate,
 		'account':accountTemplate,
-		'messagebox':MessageBoxTemplate,
+		//'messagebox':MessageBoxTemplate,
 		'chat':chatTemplate,
-		//'ComposeMessage':ComposeMessage,
+		'pm':MsgBoxTemplate
 	},
 	methods: {
 		handleSelect(key, keyPath) {

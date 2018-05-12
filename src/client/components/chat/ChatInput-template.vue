@@ -14,7 +14,7 @@
 
 <script>
 //event on and emit global
-import bus from '../../bus';
+//import bus from '../../bus';
 
 export default {
 	props: {

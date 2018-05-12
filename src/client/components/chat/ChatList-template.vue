@@ -23,7 +23,7 @@
 
 <script>
 //event on and emit global
-import bus from '../../bus';
+//import bus from '../../bus';
 
 export default {
 	//props:['blogin'],
@@ -46,6 +46,7 @@ export default {
 		//bus.$on('action',this.action);
 		//check if user exist to load page
 		if(this.$root.user.is){
+			this.updateChatList();
 			//this.blogin = true;
 			//this.updateMessageList();
 		}
@@ -53,6 +54,13 @@ export default {
 	mounted(){},
 	computed: {},
 	methods:{
+		updateChatList(){
+			let user = this.$root.$gun.user();
+			user.get('contacts').map().once((data,id)=>{
+				console.log(data);
+				console.log("list?");
+			});
+		},
 		genChatKey(){
 			console.log(Gun.SEA.pair());
 		},

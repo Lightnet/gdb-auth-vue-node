@@ -1,4 +1,4 @@
-<template id="home">
+<template>
 	<div>
         <p>Welcome to peer to peer database decentralized prototype build. This is just a project to run some simple examples.</p>
 
@@ -15,7 +15,7 @@
 
 <script>
 export default {
-    name: 'home',
+    //name: 'home',
     data() {
 		return {
             items:[
