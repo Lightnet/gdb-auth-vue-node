@@ -1,20 +1,22 @@
 <template>
-	<div v-if="blogin">
-		<ComposeMessage
-		@selectcontact="selectcontact"
-		 />
-		
-		<MessageList 
-		:messages="messages"
-		>
-		</MessageList>
-	</div>
-	<div v-else>
-		<br>
-		<center>
-			<el-button type="warning" icon="el-icon-warning" circle></el-button>
-			Please Login.
-		</center>
+	<div>
+		<div v-if="blogin">
+			<ComposeMessage
+			@selectcontact="selectcontact"
+			/>
+			
+			<MessageList 
+			:messages="messages"
+			>
+			</MessageList>
+		</div>
+		<div v-else>
+			<br>
+			<center>
+				<el-button type="warning" icon="el-icon-warning" circle></el-button>
+				Please Login.
+			</center>
+		</div>
 	</div>
 </template>
 
@@ -23,8 +25,8 @@
 import Vue from 'vue';
 import bus from '../bus';
 
-import ComposeMessage from './message/ComposeMessage.vue';
-import MessageList from './message/MessageList.vue';
+import ComposeMessage from './messagebox/ComposeMessage.vue';
+import MessageList from './messagebox/MessageList.vue';
 //console.log(ComposeMessage);
 //console.log(MessageList);
 Vue.component('ComposeMessage', ComposeMessage);
@@ -152,7 +154,6 @@ export default {
 			console.log(say);
 			this.messages.push({id:id,from:say.from, subject:say.subject , message:say.content});
 		}
-
 	},
 	components: {
 		//TodoList

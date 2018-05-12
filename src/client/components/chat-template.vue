@@ -1,11 +1,7 @@
-<template id="chat">
+<template>
 	<div>
 		<div v-if="blogin">
 			<label>Chat Room:(Not public yet!)</label>
-			<!--
-			<button @click="action('options')" > Options</button>
-			<button @click="genChatKey" >Gen Public Key Chat</button>
-			-->
 			<el-switch 
 			v-model="bchatlistselect"
 			active-text="Chat Public Key List"
@@ -13,32 +9,16 @@
 			<div v-if="bchatlistselect">
 				<ChatList></ChatList>
 			</div>
-			<div id="chatscroll" style="overflow-y: scroll;">
-				<el-card class="box-card" v-for="message in messages" :key="message.id">
-					<div>
-					<el-tag class="wrap">{{ message.from }}</el-tag>
-					<el-button style="float: right;" type="danger" icon="el-icon-delete" circle v-on:click="deletechat(message)"></el-button>
-					
-					<el-tag type="info" v-if="!message.bedit">
-					{{ message.message }}
-					</el-tag>
-
-					<el-input v-if="message.bedit" v-model="message.message" v-on:change="chateditchange(message)">
-
-					</el-input>
-					</div>
-				</el-card >
-			</div>
+			<ChatLog 
+				:messages="messages"
+			></ChatLog>
 			<div>
-				<el-col :span="16">
-				<el-input
-					type="textarea"
-					autosize
+				<ChatInput
 					v-model="chatmessage"
-				></el-input>
-				</el-col>
-				<el-button type="primary" @click="sentmessage"> Chat </el-button>
-				<el-button @click="checkchatmessage"> check </el-button>
+					placeholder="Type something here..."
+					@enterchat="enterchat"
+					@keydown.enter.native="sentmessage"
+				></ChatInput>
 			</div>
 		</div>
 		<div v-else>
@@ -55,7 +35,9 @@
 //event on and emit global
 import bus from '../bus';
 
-import ChatList from './chat/ChatList.vue';
+import ChatList from './chat/ChatList-template.vue';
+import ChatLog from './chat/ChatLog-template.vue';
+import ChatInput from './chat/ChatInput-template.vue';
 
 export default {
 	//props:['blogin'],
@@ -73,30 +55,23 @@ export default {
 		}
 	},
 	components: {
-		'ChatList':ChatList
+		'ChatList':ChatList,
+		'ChatLog':ChatLog,
+		'ChatInput':ChatInput,
 	},
-	watch:{
-		//blogin(n, o) {
-      		//console.log(n, o) // n is the new value, o is the old value.
-    	//}
-	},
-	beforeCreate() {
-		//console.log("bcreated...");
-		//console.log(this);
-		//console.log(this.$parent.$parent);
-		//console.log(this.$parent.$parent.blogin);
-	},
+	watch:{},
+	beforeCreate() {},
 	created(){
-		bus.$on('action',this.action);
+		//bus.$on('action',this.action);
 		//check if user exist to load page
 		if(this.$root.user.is){
 			this.blogin = true;
-			this.updateMessageList();
+			this.updateChatMessages();
 		}
 	},
 	mounted(){
-		window.addEventListener('resize', this.handleResize);
-		this.handleResize();
+		//window.addEventListener('resize', this.handleResize);
+		//this.handleResize();
 	},
 	computed: {
 
@@ -117,38 +92,11 @@ export default {
 			//console.log('event',event);
 			//console.log(event.id);
 			//console.log(event.message);
-
 			let user = this.$root.$gun.user();
 			user.get('chatroom').get(this.publickey_chat).get(event.id).put({message:event.message});
 			event.bedit = false;
-
 		},
-		checkchatmessage(){
-			let user =  this.$root.$gun.user();
-			let self = this;
-			//let dec = await Gun.SEA.secret(this.epublickey_chat, user.pair());
-			//user.get('chatroom').get(this.publickey_chat).map().once((data)=>{
-				//console.log("data");
-				//console.log(data);
-				//self.messages.push({id:data.id,text:data.message});
-			//});
-
-			user.get('chatroom').map().once((data,id)=>{
-				//console.log("chat data");
-				//console.log(data);
-				//console.log(id);
-				self.messages.push({id:data.id,text:data.message});
-			});
-
-			//chatroom id key
-			//user.get('0CKF4mpoQ1KcQy_mNOoIgB5EjoAhPwLe49bGn5URdBY.XqRVAfqyCpyUawlUDumtMitr6IZrRIUUEwNV6z-onNM').map().once((data,id)=>{
-				//console.log("chat data");
-				//console.log(data);
-				//console.log(id);
-				//self.messages.push({id:data.id,text:data.message});
-			//});
-		},
-		async updateMessageList(){
+		async updateChatMessages(){
 			//console.log("list?");
 			let gun = this.$root.$gun;
 			let user = this.$root.user;
@@ -177,7 +125,6 @@ export default {
 				//this.UI(say,id,dec);
 				//self.messages.push({id:say.id,text:say.message});
 			//});
-			
 		},
 		async UI(say, id, dec){
 			say = await Gun.SEA.decrypt(say,dec);
@@ -186,17 +133,15 @@ export default {
 				return;
 			this.messages.push({id:id,from:say.alias,message:say.message,bedit:false});
 		},
-		updateMessage(message) {
-      		// By emitting the 'update' event in every intermediary component we can pass data
-      		// from GrandchildComponent to ChildComponent and from there to the parent
-      		this.$emit('update', message);
-    	},
-		action(param){
-			//console.log(param);
+		enterchat(event){
+			this.chatmessage = event;
+			console.log('test');
+			this.sentmessage();
 		},
 		async sentmessage(){
 			//console.log("send!");
 			//console.log(this.$root.user);
+			
 			let user = this.$root.$gun.user();
 			var messagedata ={
 				//'_':{'#':public_pair().pub},
@@ -212,6 +157,7 @@ export default {
 			user.get('chatroom').set(enc, function(ack){
 				//console.log(ack);
 			});
+			
 			//user.get('chatroom').get(this.publickey_chat).set(enc, function(ack){
 				//console.log(ack);
 			//});
@@ -235,7 +181,7 @@ export default {
 	},
 	beforeDestroy: function () {
 		//console.log('beforeDestroy');
-  		window.removeEventListener('resize', this.handleResize);
+  		//window.removeEventListener('resize', this.handleResize);
 	}
 }
 </script>

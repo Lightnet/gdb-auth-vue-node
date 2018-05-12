@@ -37,7 +37,7 @@ import topics from './forum/topics-template.vue';
 import topiccategory from './forum/topiccategory-template.vue';
 
 export default {
-    name: 'app',
+    //name: 'app',
     data() {
 		return {
 			bcategory: true,

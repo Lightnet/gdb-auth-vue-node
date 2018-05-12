@@ -4,7 +4,7 @@
 			<el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
 				<el-menu-item index="home">Home</el-menu-item>
 				<el-menu-item index="account">Account</el-menu-item>
-				<el-menu-item index="messages">Messages</el-menu-item>
+				<el-menu-item index="messagebox">Messages</el-menu-item>
 				<el-menu-item index="chat">Chat</el-menu-item>
 				<el-menu-item index="todolistapp">To Do List</el-menu-item>
 				<el-menu-item index="forum">Forum</el-menu-item>
@@ -30,12 +30,12 @@
 
 <script>
 import Vue from 'vue';
-import hometemplate from './components/home-template.vue';
-import forumtemplate from './components/forum-template.vue';
+import hometemplate from './components/Home-template.vue';
+import forumtemplate from './components/Forum-template.vue';
 import createtemplate from './components/forum/CreateTopic-template.vue';
-import toDoListTemplate from './components/todolist-template.vue';
-import accountTemplate from './components/account-template.vue';
-import messagesTemplate from './components/message-template.vue';
+import toDoListTemplate from './components/Todolist-template.vue';
+import accountTemplate from './components/Account-template.vue';
+import MessageBoxTemplate from './components/MessageBox-template.vue';
 import chatTemplate from './components/chat-template.vue';
 
 //import ComposeMessage from './components/message/ComposeMessage.vue';
@@ -79,7 +79,7 @@ export default {
 		'create-post': createtemplate,
 		'todolistapp':toDoListTemplate,
 		'account':accountTemplate,
-		'messages':messagesTemplate,
+		'messagebox':MessageBoxTemplate,
 		'chat':chatTemplate,
 		//'ComposeMessage':ComposeMessage,
 	},
