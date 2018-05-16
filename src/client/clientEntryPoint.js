@@ -88,6 +88,9 @@ if(location.origin == 'http://localhost:3000'){
 }
 //console.log(peers);
 
+require('./test');
+
+
 //gun.on('hi', peer => {
 	//console.log('connect peer to',peer);
 //});

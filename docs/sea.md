@@ -86,6 +86,29 @@ let hint = await gun.get(gunalias.forgot['#']).get('hint').then() || '';
 //});
 ```
 
+```javascript
+let user = gun.user();
+console.log(gun);
+
+//user data is bind to this variable key
+let room = user.get('room').put({name:'room'});
+console.log(room);
+//get current user to see variable for room
+//set room and then generate id key that is current user
+user.get('room').once((data)=>{
+    console.log(data);
+    console.log(data._['#']); //id key for using gun.get('jh4wa2x2~qjbFKQnhE0gSsO9ylW-0AlEfcf9MZ2AUc0HnO__7Jzg.5XrlD8CuBE1Brr6Pju4a5Fe2eQqzhp4uKNlWZErpNeA')
+});
+//get user from room id from current user and not other user rooms.
+gun.get('jh4wa2x2~qjbFKQnhE0gSsO9ylW-0AlEfcf9MZ2AUc0HnO__7Jzg.5XrlD8CuBE1Brr6Pju4a5Fe2eQqzhp4uKNlWZErpNeA').once((data)=>{
+    console.log(data);
+});
+//set data for user create is current own this id room as other users can't write this.
+gun.get('jh4wa2x2~qjbFKQnhE0gSsO9ylW-0AlEfcf9MZ2AUc0HnO__7Jzg.5XrlD8CuBE1Brr6Pju4a5Fe2eQqzhp4uKNlWZErpNeA').put({name:'test4'});
+```
+
+
+
 # Links:
  * https://gist.github.com/amark/755193244d28f4f4c980130055a26e5c
 

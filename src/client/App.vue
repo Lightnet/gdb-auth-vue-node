@@ -10,6 +10,8 @@
 				<el-menu-item index="forum">Forum</el-menu-item>
 				<el-menu-item index="create-post">Create Post</el-menu-item>
 
+				<el-menu-item index="prototype">Test</el-menu-item>
+
 				<el-submenu index="theme">
 					<template slot="title">Theme</template>
 					<el-menu-item index='light'>Light</el-menu-item>
@@ -32,6 +34,8 @@ import toDoListTemplate from './components/Todolist-template.vue';
 import accountTemplate from './components/Account-template.vue';
 import MsgBoxTemplate from './components/PMBox-template.vue';
 import chatTemplate from './components/chat-template.vue';
+
+import PrototypeTemplate from './components/Prototype-template.vue';
 import './components/scss/element-variables.scss'; //css
 
 export default {
@@ -66,7 +70,8 @@ export default {
 		'account':accountTemplate,
 		//'messagebox':MessageBoxTemplate,
 		'chat':chatTemplate,
-		'pm':MsgBoxTemplate
+		'pm':MsgBoxTemplate,
+		'prototype':PrototypeTemplate,
 	},
 	methods: {
 		handleSelect(key, keyPath) {
