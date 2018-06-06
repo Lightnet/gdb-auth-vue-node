@@ -244,6 +244,9 @@ Vue.use(VueGun, {
 	});
 
 	//$("#loading").empty();//empty element html when finish loading javascript...
-	document.getElementById('loading').innerHTML = '';
+	var _loading = document.getElementById('loading');//.innerHTML = '';
+	//_loading.innerHTML = '';
+	//document.getElementById('loading').pop();
+	document.body.removeChild(_loading);
 		
 //})()
