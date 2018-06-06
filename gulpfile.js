@@ -7,8 +7,8 @@ var gls = require('gulp-live-server');
 var browserSync = require('browser-sync').create();
 
 var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-var CompressionPlugin = require("compression-webpack-plugin");
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+//var CompressionPlugin = require("compression-webpack-plugin");
+//const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 var server = null;
 
