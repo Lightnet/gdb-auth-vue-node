@@ -36,7 +36,7 @@ import MsgBoxTemplate from './components/PMBox-template.vue';
 import chatTemplate from './components/Chat-template.vue';
 
 import PrototypeTemplate from './components/Prototype-template.vue';
-import './components/scss/element-variables.scss'; //css
+//import './components/scss/element-variables.scss'; //css
 
 export default {
     name: 'app',
@@ -82,20 +82,17 @@ export default {
 				//console.log(document);
 				document.querySelector('body').classList.remove("dark");
 				document.querySelector('body').classList.add("light");
-				require('./components/scss/element-light.scss');
+				//require('./components/scss/element-light.scss');
 				return;
 			}
 			if(key == 'dark'){
 				//require('./element-dark.scss');
 				document.querySelector('body').classList.remove("light");
 				document.querySelector('body').classList.add("dark");
-
-				//document.querySelector('body').classList.add("theme_dark");
-				//dark();
-				require('./components/scss/element-dark.scss');
-
 				document.querySelector('body').classList.add("theme_dark");
-
+				//dark();
+				//require('./components/scss/element-dark.scss');
+				document.querySelector('body').classList.add("theme_dark");
 				return;
 			}
 			//check if string is empty incase it goes blank.

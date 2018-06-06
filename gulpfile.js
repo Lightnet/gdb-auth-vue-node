@@ -6,6 +6,10 @@ const nodeExternals = require('webpack-node-externals');
 var gls = require('gulp-live-server');
 var browserSync = require('browser-sync').create();
 
+var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+var CompressionPlugin = require("compression-webpack-plugin");
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+
 var server = null;
 
 const commonModulejs = {
@@ -71,8 +75,10 @@ const commonModulejs = {
 }
 /* FRONT-END CONFIG */
 var frontWebpackConfig = {
-    mode: "development",
+    //mode: "development",
+    mode: 'production',
     entry: ['babel-polyfill','./src/client/clientEntryPoint.js'],
+    //entry: ['./src/client/clientEntryPoint.js'],
     output: {
         path: path.join(__dirname, 'public'),
         filename: 'bundle.js'
@@ -83,7 +89,22 @@ var frontWebpackConfig = {
         poll: 1000,
         ignored: /node_modules/
     },
-    module: commonModulejs
+    module: commonModulejs,//1910
+    plugins: [
+        new webpack.DefinePlugin({
+            'process.env.NODE_ENV': '"production"'
+        }),
+        //new webpack.optimize.ModuleConcatenationPlugin(),
+        new UglifyJsPlugin(),
+        new BundleAnalyzerPlugin(),
+        new CompressionPlugin({
+            asset: "[path].gz[query]",
+            algorithm: "gzip",
+            test: /\.js$|\.css$|\.html$/,
+            threshold: 10240,
+            minRatio: 0
+        }),
+    ],
 };
 
 const commonModule = {

@@ -7,7 +7,7 @@
   "description": "A simple Node app with gundb as a database management system, instantly up and running.",
   "main": "server.js",
   "scripts": {
-    "start": "webpack && babel-node main.js --presets env --host 0.0.0.0",
+    "start": "webpack -p && babel-node main.js --presets env --host 0.0.0.0",
     "watch": "webpack --watch"
   },
   "dependencies": {
@@ -19,6 +19,7 @@
     "babel-polyfill": "6.26.0",
     "babel-preset-env": "1.7.0",
     "browser-sync": "2.24.4",
+    "compression-webpack-plugin": "^1.1.11",
     "css-loader": "0.28.11",
     "dotenv": "5.0.1",
     "ejs": "2.6.1",
@@ -33,11 +34,13 @@
     "raw-loader": "0.5.1",
     "sass-loader": "7.0.3",
     "style-loader": "0.21.0",
+    "uglifyjs-webpack-plugin": "^1.2.5",
     "vue": "2.5.16",
     "vue-gun": "0.0.3",
     "vue-loader": "14.2.3",
     "vue-template-compiler": "2.5.16",
     "webpack": "4.11.0",
+    "webpack-bundle-analyzer": "^2.13.1",
     "webpack-cli": "2.1.5",
     "webpack-node-externals": "1.7.2"
   },
