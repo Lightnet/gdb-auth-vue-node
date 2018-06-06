@@ -1,24 +1,40 @@
 <template>
     <div>
-		<br><label>Compose:</label>
-		<br><label>Contacts:</label>
-		<select v-model="contact" v-on:change="$emit('selectcontact',contact)">
-			<option disabled value="">Please select one</option>
-			<option v-for="item in contacts" :key="item.id" :value="item.id">
-				{{ item.alias }}
-			</option>
-		</select>
-
-		<div>
-			Public Key: <input v-model="pubkey">
-			<el-button size="mini" @click="addcontact">Add</el-button>
-			<label>{{pubkeystatus}}</label>
-			<br>
-			Subject: <input v-model="sendersubject">
-			<br>
-			Content: <textarea v-model="sendercontent"> </textarea>
-			<el-button size="mini" @click="sentmessage"> Send </el-button>
-		</div>
+		<section>
+			<b-field label="Contacts">
+				<b-select v-model="contact" v-on:input="$emit('selectcontact',contact)">
+					<option disabled value="">Please select one</option>
+					<option v-for="item in contacts" :key="item.id" :value="item.id">
+						{{ item.alias }}
+					</option>
+				</b-select>
+			</b-field>
+			<b-field>
+				<b-switch v-model="bwritemessage">Compose Message</b-switch>
+			</b-field>
+		</section>
+		
+		<section v-if="bwritemessage">
+			<b-field>
+				<label class="button is-text">Public Key:</label>
+				<b-input v-model="pubkey" style="width:740px;"></b-input>
+				<p class="control">
+					<button class="button is-primary" @click="addcontact">Add</button>
+				</p>
+			</b-field>
+			<b-field>
+				<label class="label">Status: {{pubkeystatus}}</label>
+			</b-field>
+			<b-field label="Subject"  style="width:600px;">
+				<b-input v-model="sendersubject"></b-input>
+			</b-field>
+			<b-field label="Content">
+				<b-input type="textarea" v-model="sendercontent" style="width:600px;"> </b-input>
+			</b-field>
+			<b-field>
+				<button class="button is-primary" @click="sentmessage"> Send </button>
+			</b-field>
+		</section>
 		
 	</div>
 </template>
@@ -31,12 +47,13 @@ export default {
             contact:'',
             contacts:[],
             contactpubstatus:'Normal',
-            messages:[],
+            //messages:[],
             pubkey:'',
             sendersubject:'test subject',
 			sendercontent:'test content',
-			pubkeystatus:'Status:Normal',
+			pubkeystatus:'Normal',
 			messagescrollid:'messagescroll',
+			bwritemessage:false,
         }
     },
     watch: {
@@ -61,6 +78,9 @@ export default {
         this.updateList();
     },
     methods:{
+		SelectItem(evemt){
+			console.log('test?');
+		},
         async updateList(){
             let user = this.$root.$gun.user();
             user.get('contacts').map().once((data,id)=>{
@@ -76,7 +96,7 @@ export default {
 				if(this.pubkey.length == 87){
 					this.checkpubkey();
 				}else{
-					this.pubkeystatus = 'Not pub key and single key current!'
+					this.pubkeystatus = 'Not Alias public key and single key current!'
 				}
 			}
 		,500)
@@ -97,7 +117,11 @@ export default {
 			if(!what){ return }
 			var pub = (this.pubkey || '').trim();
 			if(!pub) {
-				this.$message('Send failed!');
+				//this.$message('Send failed!');
+				this.$toast.open({
+						message: 'Send failed!',
+						type: 'is-warning'
+					});
 				return 
 			}
 			//console.log(SEA);
@@ -107,17 +131,19 @@ export default {
 			var sec = await Gun.SEA.secret(who.epub, user.pair()); // Diffie-Hellman
 			var enc = await Gun.SEA.encrypt(what, sec);
 			user.get('messages').get(pub).set(enc);
+			console.log("send message?");
 		},
 		async checkpubkey(){//needed
-			this.messages = [];
+			//this.messages = [];
 			this.pubkeystatus = 'checking pub key...'
 			let user = this.$root.$gun.user();
 			let pub = (this.pubkey || '').trim();
 			if(!pub){ return }
 			let to = this.$root.$gun.user(pub);
 			let who = await to.then() || {};
-			this.pubkeystatus = who.alias || "User not found.";
+			this.pubkeystatus = 'Alias: ' + who.alias || "User not found.";
 			if(!who.alias){ return }
+			//$emit('selectcontact',this.contact);
 			//console.log("who",who);
 		},
 		async addcontact(){
@@ -131,13 +157,12 @@ export default {
 			//console.log(this.pmusercheck);
 			if(!who.alias){ return }
 			user.get('contacts').get(pub).put({alias:who.alias});
-			//console.log('added');
-			this.$message({
-				type: 'success',
-				message: 'Added contact!'
+
+			this.$toast.open({
+				message: 'Added contact!',
+				type: 'is-success'
 			});
 		},
     },
 }
 </script>
-

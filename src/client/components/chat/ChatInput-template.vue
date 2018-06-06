@@ -1,14 +1,15 @@
 <template>
-	<div>
-		<el-col :span="16">
-		<el-input
-			type="textarea"
-    		class="input"
-    		:value="value"
-			v-on="inputListeners"
-		></el-input>
-		</el-col>
-		<el-button type="primary" @click="$emit('enterchat',chatmessage)"> Chat </el-button>
+	<div class="columns">
+		<div class="column is-four-fifths">
+			<b-input
+				type="textarea"
+				:value="value"
+				v-on="inputListeners"
+			></b-input>
+		</div>
+		<div class="column">
+			<button class="button is-primary" @click="$emit('enterchat',chatmessage)"> Chat </button>
+		</div>
 	</div>
 </template>
 

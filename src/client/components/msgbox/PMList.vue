@@ -1,21 +1,29 @@
 <template>
     <div>
         <div id="messagescroll" style="overflow-y: scroll;">
-            Messages:
-            <el-card class="box-card" v-for="message in messages" :key="message.id">
+            <label class="label is-text">Messages:</label>
+            <div class="card" v-for="message in messages" :key="message.id">
                 <div>
-                <el-tag>From: {{ message.from }} </el-tag>
-                <el-tag type="info"> {{ message.message }} </el-tag>
-                <el-button type="danger" style="float: right; padding: 3px" icon="el-icon-delete" circle></el-button>
+                <label class="button is-text" @click="$emit('viewmessage',message)">From: {{ message.from }} </label>
+                <label class="button is-text" @click="$emit('viewmessage',message)"> {{ message.subject }} </label>
+
+                <a class="icon" style="float: right;" v-if="aliasid!=message.owner" v-on:click="$emit('deletemessage',message)">
+                    <b-icon
+                        pack="fas"
+                        icon="trash"
+                        >
+                    </b-icon>
+                </a>
+
                 </div>
-            </el-card>
+            </div>
         </div>
     </div>
 </template>
 <script>
 // private messsage list from contacts
 export default {
-    props:['messages'],
+    props:['messages','aliasid'],
     data(){
         return{
             messagescrollid:'messagescroll',
@@ -41,4 +49,3 @@ export default {
 	}
 }
 </script>
-

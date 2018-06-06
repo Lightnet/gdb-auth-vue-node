@@ -1,13 +1,25 @@
 <template>
   	<li>
-		<el-card class="box-card">
-    	<span v-if="!todo.bedit">{{ todo.text }}</span>
-		<el-input v-if="todo.bedit" v-model="todo.text" :id="todo.id" v-on="inputListeners"></el-input>
-		<span style="float: right; padding: 3px 0">
-		<el-button type="primary" icon="el-icon-edit" @click="$emit('edit', todo.id)" circle></el-button>
-    	<el-button type="danger" icon="el-icon-delete" @click="$emit('remove', todo.id)" circle></el-button>
-		</span>
-		</el-card>
+		<div class="card">
+			<div class="card-content">
+				<span v-if="!todo.bedit">{{ todo.text }}</span>
+				<b-input v-if="todo.bedit" v-model="todo.text" :id="todo.id" v-on="inputListeners"></b-input>
+				<span style="float: right; padding: 3px 0">
+				<button class="button is-primary" @click="$emit('edit', todo.id)">
+					<b-icon
+						pack="fas"
+						icon="edit">
+					</b-icon>
+				</button>
+				<button class="button is-danger" @click="$emit('remove', todo.id)">
+					<b-icon
+						pack="fas"
+						icon="trash">
+					</b-icon>
+				</button>
+				</span>
+			</div>
+		</div>
   	</li>
 </template>
 

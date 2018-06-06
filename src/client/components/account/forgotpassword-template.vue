@@ -1,26 +1,32 @@
 <template>
 	<div>
-		<el-form ref="form" label-width="128px">
-			<el-form-item>
-				Forget Password
-			</el-form-item>
-			<el-form-item label="Alias">
-				<el-input placeholder="alias" v-model="aliasname"></el-input>
-			</el-form-item>
-			<el-form-item label="Q1:">
-				<el-input placeholder="Question1" v-model="question1"></el-input> <label>{{question1.length}} / {{question1l}} </label>
-			</el-form-item>
-			<el-form-item label="Q2:">
-				<el-input placeholder="Question2" v-model="question2"></el-input> <label> {{question2.length}} / {{question2l}} </label>
-			</el-form-item>
-			<el-form-item label="Answer:">
-				<el-input placeholder="Hint" v-model="hint"></el-input>
-			</el-form-item>
-			<el-form-item>
-				<el-button type="primary" size="mini" v-on:click="forgotpassword_aliascheck">Get Hint</el-button>
-				<el-button size="mini" v-on:click="$parent.bforgetpassword=false">Back</el-button>
-			</el-form-item>
-		</el-form>
+		<section>
+			<b-field>
+				Forgot Password
+			</b-field>
+			<b-field label="Alias">
+				<b-input placeholder="alias" v-model="aliasname" style="width:300px"></b-input>
+			</b-field>
+			<b-field label="Q1:">
+				<b-input placeholder="Question1" v-model="question1" style="width:600px"></b-input> 
+			</b-field>
+			<b-field>
+				<label>{{question1.length}} / {{question1l}} </label>
+			</b-field>
+			<b-field label="Q2:">
+				<b-input placeholder="Question2" v-model="question2" style="width:600px"></b-input> 
+			</b-field>
+			<b-field>
+				<label> {{question2.length}} / {{question2l}} </label>
+			</b-field>
+			<b-field label="Answer:">
+				<b-input placeholder="Hint" v-model="hint" style="width:600px"></b-input>
+			</b-field>
+			<b-field>
+				<button class="button is-primary" v-on:click="forgotpassword_aliascheck">Get Hint</button>
+				<button class="button" v-on:click="$parent.bforgetpassword=false">Back</button>
+			</b-field>
+		</section>
 	</div>
 </template>
 <script>
@@ -92,7 +98,10 @@ export default {
 				//console.log(hint);
 				this.checkhint(hint);
 			}else{
-				this.$message({message:'No Alias Found!',type: 'warning',duration:800});
+				this.$toast.open({
+                    message: 'No Alias Found!',
+                    type: 'is-warning'
+                });
 			}
 		},
 		async checkhint(hint){
@@ -101,9 +110,15 @@ export default {
 			console.log(hint);
 			if(hint){
 				this.hint = hint;
-				this.$message({message:'Hint Found!',type: 'success',duration:800});
+				this.$toast.open({
+                    message: 'Hint Found!',
+                    type: 'is-success'
+                });
 			}else{
-				this.$message({message:'Fail Hint!',type: 'warning',duration:800});
+				this.$toast.open({
+                    message: 'Fail Hint!',
+                    type: 'is-warning'
+                });
 			}
 		}
     },

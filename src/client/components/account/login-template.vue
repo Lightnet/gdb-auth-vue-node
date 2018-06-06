@@ -1,25 +1,26 @@
 <template>
 	<div v-if="!blogin">
-		<!--
-		<label>Login:</label>	
-		-->
-		<br>
-		<el-form ref="form" label-width="128px" v-if="!bforgetpassword">
-			<el-form-item label="User">
-				<el-input placeholder="alias" v-model="aliasname"></el-input>
-			</el-form-item>
-			<el-form-item label="Passphrase">
-				<el-input placeholder="password" v-model="passphrase"></el-input>
-			</el-form-item>
-			<el-form-item>
-				<el-button type="primary" size="mini" v-on:click="loginclick()">Login</el-button>
-				<el-button size="mini" v-on:click="siginupclick()">Sign Up</el-button>
-				<br><a href="#" v-on:click="bforgetpassword=true">Forgot Password?</a>
-			</el-form-item>
-		</el-form>
+		<section v-if="!bforgetpassword">
+			<b-field label="User">
+				<b-input placeholder="alias" v-model="aliasname" style="width:300px;"></b-input>
+			</b-field>
+			<b-field label="Passphrase">
+				<b-input placeholder="password" v-model="passphrase" style="width:300px;"></b-input>
+			</b-field>
+			<b-field grouped>
+				<button class="button is-primary" size="mini" v-on:click="loginclick()">
+					<b-icon pack="fas" icon="user"></b-icon>
+					<span>Login</span>
+				</button>
+				<button class="button" v-on:click="siginupclick()">
+					<b-icon pack="fas" icon="user"></b-icon>
+					<span>Sign Up</span>
+				</button>
+				<a class="button is-text" href="#" v-on:click="bforgetpassword=true">Forgot Password?</a>
+			</b-field>
+		</section>
 
 		<div v-if="bforgetpassword">
-			Test
 			<forgotpassword></forgotpassword>
 		</div>
 

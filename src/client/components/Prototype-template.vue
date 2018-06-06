@@ -1,22 +1,20 @@
 <template>
 	<div v-if="$root.blogin">
-        <el-button v-on:click="test1">Test</el-button>
-        <el-button v-on:click="test2">Test2</el-button>
-        <el-button v-on:click="test3">Test3</el-button>
+        <button class="button" v-on:click="test1">Test</button>
+        <button class="button" v-on:click="test2">Test2</button>
+        <button class="button" v-on:click="test3">Test3</button>
 	</div>
 	<div v-else>
-		<br>
-		<center>
-			<el-button type="warning" icon="el-icon-warning" circle></el-button>
-			Please Login.
-		</center>
+		<PleaseLogin/>
 	</div>
 </template>
 
 <script>
+import PleaseLogin from './pleaselogin-template.vue';
+
 export default {
 	components: {
-		
+		PleaseLogin
     },
     methods:{
         test1(){

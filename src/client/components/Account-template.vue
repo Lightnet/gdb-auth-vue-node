@@ -1,17 +1,17 @@
 <template id="Account">
 	<div>
 		<div v-if="blogin">
-			<el-button size="mini" v-on:click="cleardata">Clear Local Database</el-button>
-			<el-button size="mini" v-on:click="Connect">Connect Database</el-button>
-			<el-button size="mini" v-on:click="Disconnect">Disconnect</el-button>
+			<button class="button" v-on:click="cleardata">Clear Local Database</button>
+			<button class="button" v-on:click="Connect">Connect Database</button>
+			<button class="button" v-on:click="Disconnect">Disconnect</button>
 		</div>
 
 		<div v-if="!blogin">
-			<el-button type="primary" size="mini" style="float: right;" v-on:click="click_logout()">Logout</el-button>
-			<el-button size="mini" v-on:click="setview('profile')">Profile</el-button>
-			<el-button size="mini" v-on:click="setview('contacts')">Contacts</el-button>
-			<el-button size="mini" v-on:click="setview('options')">Options</el-button>
-			<el-button size="mini" v-on:click="Disconnect">Disconnect</el-button>
+			<button class="button is-primary" style="float: right;" v-on:click="click_logout()">Logout</button>
+			<button class="button" v-on:click="setview('profile')">Profile</button>
+			<button class="button" v-on:click="setview('contacts')">Contacts</button>
+			<button class="button" v-on:click="setview('options')">Options</button>
+			<button class="button" v-on:click="Disconnect">Disconnect</button>
 		</div>
 
 		<div class="container">
@@ -34,18 +34,8 @@ export default {
 	data() {
 		return{
 			currentView: 'login',
-			//iusername:'test',
-			//ipassphrase:'test',
 			username:'',
 			userpublickey:'',
-			//pubname:'',
-			//pubborn:'',
-			//pubeducation:'',
-			//pubskills:'',
-			//pubname:'',
-			//pborn:'',
-			//peducation:'',
-			//pskills:'',
 			blogin:true,
 			contacts:[],
 		}
@@ -89,7 +79,10 @@ export default {
 		},
 		cleardata(){
 			localStorage.clear(); //clear database for gun
-			this.$message({message:'Clear Database!',type: 'success',duration:800});
+			this.$toast.open({
+				message: 'Clear Database!',
+				type: 'is-success'
+			});
 		},
 		setview(value){
 			this.currentView = value;

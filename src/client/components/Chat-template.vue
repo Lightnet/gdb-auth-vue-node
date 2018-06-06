@@ -1,16 +1,26 @@
 <template>
 	<div>
 		<div v-if="blogin">
-			<label>Chat Room:(Not public yet!)</label>
-			<el-switch 
-			v-model="bchatlistselect"
-			active-text="Chat Public Key List"
-			>List</el-switch>
+			<b-field>
+				<p class="control is-expanded">
+					<label class="label">Chat Room: {{chatroomname}}</label>
+				</p>
+				<p class="control">
+					<b-switch v-model="bchatlistselect">Chat Room List</b-switch>
+				</p>
+			</b-field>
 			<div v-if="bchatlistselect">
-				<ChatList></ChatList>
+				<ChatList
+					:chatrooms="chatrooms"
+					:chatdata="chatdata"
+					@chatroomselect="chatroomselect"
+				></ChatList>
 			</div>
 			<ChatLog 
 				:messages="messages"
+				@editchatmessage="editchatmessage"
+				@deletechatmessage="deletechatmessage"
+				@editchangemessagechange="editchatmessagechange"
 			></ChatLog>
 			<div>
 				<ChatInput
@@ -22,11 +32,7 @@
 			</div>
 		</div>
 		<div v-else>
-			<br>
-			<center>
-				<el-button type="warning" icon="el-icon-warning" circle></el-button>
-				Please Login.
-			</center>
+			<PleaseLogin/>
 		</div>
 	</div>
 </template>
@@ -38,45 +44,74 @@ import bus from '../bus';
 import ChatList from './chat/ChatList-template.vue';
 import ChatLog from './chat/ChatLog-template.vue';
 import ChatInput from './chat/ChatInput-template.vue';
+import PleaseLogin from './pleaselogin-template.vue';
 
 export default {
 	//props:['blogin'],
 	data() {
 		return{
 			bchatlistselect:false,
-			userpublickey:'',
 			blogin:false,
 			messages:[],
-			sendersubject:'test subject',
 			chatmessage:'test message',
-			publickey_chat : '0CKF4mpoQ1KcQy_mNOoIgB5EjoAhPwLe49bGn5URdBY.XqRVAfqyCpyUawlUDumtMitr6IZrRIUUEwNV6z-onNM',
-			epublickey_chat : '0VhBMpjKslndJbh3BFmNWca1TeIFq4PEerZJcRmNH9k.pW-MTXsu7witNqyYLGIuguQhDpZ5TCojE87O9gOB9nc',
-			chatidhandle:'chatscroll'
+			chatdata:null,
+			chatroomname:'Null',
+			chatrooms:[
+				//{id:'233w45',name:'test'},
+			],
 		}
 	},
 	components: {
 		'ChatList':ChatList,
 		'ChatLog':ChatLog,
 		'ChatInput':ChatInput,
+		PleaseLogin,
 	},
-	watch:{},
 	beforeCreate() {},
 	created(){
 		//bus.$on('action',this.action);
 		//check if user exist to load page
 		if(this.$root.user.is){
 			this.blogin = true;
-			this.updateChatMessages();
+			//this.updateChatMessages();
+			this.updatechatlist();
 		}
-	},
-	mounted(){
-		//window.addEventListener('resize', this.handleResize);
-		//this.handleResize();
 	},
 	computed: {
 
 	},
 	methods:{
+		updatechatlist(){
+			let user = this.$root.$gun.user();
+			user.get('chatlist').map().once((data,id)=>{
+				//console.log(data);
+				//console.log("list?");
+				if((data == 'null')||(data == null))
+					return;
+				if(!data.key)
+					return;
+				//console.log(data);
+				this.chatrooms.push({
+					id:id,
+					name:data.name,
+					access:data.access,
+					own:data.own,
+					pub:data.pub,
+					key:data.key
+				});
+			});
+		},
+		chatroomselect(event){
+			//console.log(event);
+			let user = this.$root.$gun.user();
+			this.messages = [];
+			//console.log('clear message');
+			//console.log(event);
+			this.chatdata = event;
+			this.chatroomname = event.name;
+			this.updateChatMessages();
+			this.bchatlistselect = false;
+		},
 		handleResize(event){
 			if(!document.getElementById(this.chatidhandle))
 				return;
@@ -85,15 +120,31 @@ export default {
 				document.getElementById(this.chatidhandle).style.height = scrollheight + 'px';
 			}
 		},
-		genChatKey(){
-			console.log(Gun.SEA.pair());
-		},
-		chateditchange(event){
+		//genChatKey(){
+			//console.log(Gun.SEA.pair());
+		//},
+		editchatmessagechange(event){
 			//console.log('event',event);
 			//console.log(event.id);
 			//console.log(event.message);
+			//let user = this.$root.$gun.user();
+			//user.get('chatroom').get(this.publickey_chat).get(event.id).put({message:event.message});
+			let gun = this.$root.$gun;
 			let user = this.$root.$gun.user();
-			user.get('chatroom').get(this.publickey_chat).get(event.id).put({message:event.message});
+
+			if(!this.chatdata){
+				//console.log("Null Chat Room!");
+				return;
+			}
+
+			//user.get('chatroom').get(this.publickey_chat).get(event.id).put('null');
+			//user.get('chatroom').get(event.id).put('null');
+			if(this.chatdata.access == 'public'){
+				gun.get(this.chatdata.key).get(event.id).put({message:event.message}, ack=>{
+					//console.log(ack);
+				});
+			}
+
 			event.bedit = false;
 		},
 		async updateChatMessages(){
@@ -102,29 +153,35 @@ export default {
 			let user = this.$root.user;
 			let self = this;
 
+			if(!this.chatdata)
+				return;
+
 			//let to = this.$root.$gun.user(this.publickey_chat);
 			//let dec = await Gun.SEA.secret(this.epublickey_chat, user.pair());
 
-			user.get('chatroom').map().once((data,id)=>{
-				//console.log("chat data");
-				//console.log("data",data);
-				//console.log('id',id);
-				if((data == null)||(data == 'null'))
-					return;
-				self.messages.push({id:id,from:data.alias,message:data.message,bedit:false});
-			});
+			//console.log(this.chatdata);
+			if(this.chatdata.access == 'public'){
+				//console.log('key:'+ this.chatdata.key);
+				//gun.get(this.chatdata.key).once(data=>{
+					//console.log(data);
+				//});
+				gun.get(this.chatdata.key).map().once((data,id)=>{
+					//console.log("chat data");
+					//console.log("data",data);
+					//console.log('id',id);
+					if((data == null)||(data == 'null'))
+						return;
+					if(!data.message)
+						return;
+					self.messages.push({id:id,from:data.alias,message:data.message,bedit:false});
+				});
+			}
 
-			//user.get('chatroom').get(this.publickey_chat).map().once((say,id)=>{
-				//console.log("user chat");
-				//this.UI(say,id,dec);
-				//self.messages.push({id:say.id,text:say.message});
-			//});
+			if(this.chatdata.access == 'private'){
 
-			//to.get('chatroom').get(user.pair().pub).map().once((say,id)=>{
-				//console.log("to chat");
-				//this.UI(say,id,dec);
-				//self.messages.push({id:say.id,text:say.message});
-			//});
+
+			}
+
 		},
 		async UI(say, id, dec){
 			say = await Gun.SEA.decrypt(say,dec);
@@ -135,13 +192,18 @@ export default {
 		},
 		enterchat(event){
 			this.chatmessage = event;
-			console.log('test');
+			//console.log('test');
 			this.sentmessage();
 		},
 		async sentmessage(){
 			//console.log("send!");
 			//console.log(this.$root.user);
-			
+
+			if(!this.chatdata){
+				//console.log("Null Chat Room!");
+				return;
+			}
+			let gun = this.$root.$gun;
 			let user = this.$root.$gun.user();
 			var messagedata ={
 				//'_':{'#':public_pair().pub},
@@ -153,30 +215,63 @@ export default {
 			
 			//var sec = await Gun.SEA.secret(this.epublickey_chat, user.pair());
 			//var enc = await Gun.SEA.encrypt(messagedata, sec);
-			let enc = messagedata;
-			user.get('chatroom').set(enc, function(ack){
-				//console.log(ack);
-			});
-			
-			//user.get('chatroom').get(this.publickey_chat).set(enc, function(ack){
+			//let enc = messagedata;
+			//user.get('chatroom').set(enc, function(ack){
 				//console.log(ack);
 			//});
+			
+			if(this.chatdata.access == 'public'){
+				let enc = messagedata;
+				gun.get(this.chatdata.key).set(enc,ack=>{
+					//console.log(ack);
+				});
+			}
+
+			this.chatmessage = '';
 		},
-		editchat(event){
+		editchatmessage(event){
 			//console.log("edit",event);
 			event.bedit = event.bedit != true;
 			//console.log(event.bedit);
 		},
-		deletechat(event){
+		deletechatmessage(event){
 			//console.log("delete",event);
+			let gun = this.$root.$gun;
 			let user = this.$root.$gun.user();
 
-			//user.get('chatroom').get(this.publickey_chat).get(event.id).put('null');
-			user.get('chatroom').get(event.id).put('null');
+			if(!this.chatdata){
+				//console.log("Null Chat Room!");
+				return;
+			}
 
-			this.messages = this.messages.filter(todo => {
-				return todo.id !== event.id;
-			});
+			//user.get('chatroom').get(this.publickey_chat).get(event.id).put('null');
+			//user.get('chatroom').get(event.id).put('null');
+			if(this.chatdata.access == 'public'){
+				console.log("delte chat message???");
+				gun.get(this.chatdata.key).get(event.id).put('null', ack=>{
+				//gun.get(this.chatdata.key).get(event.id).put(null, ack=>{
+					console.log(ack);
+					if(ack.err){
+						this.$toast.open({
+							message: ack.err,
+							type: 'is-danger'
+						});
+
+						return;
+					}
+					if(ack.ok){
+						this.$toast.open({
+								message: 'Chat Message Delete!',
+								type: 'is-danger'
+							});
+						this.messages = this.messages.filter(todo => {
+							return todo.id !== event.id;
+						});
+					}
+				});
+			}
+
+			
 		},
 	},
 	beforeDestroy: function () {

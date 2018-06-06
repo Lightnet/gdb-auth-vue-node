@@ -1,38 +1,80 @@
 <template>
 	<div>
-		<el-card class="box-card" style="width:800px;">
-			<div slot="header" class="clearfix">
-			<span>Alias Name: {{username}}</span>
-			
-			</div><div>
-			<el-button icon="el-icon-edit-outline"  v-on:click="copypubkey" circle style="float: right;"></el-button>
-			<label>Public Key: <el-input id="pubkey" v-model="userpublickey" readonly="readonly"></el-input> </label>
-			
+		<div class="card" style="width:890px;">
+			<div class="card-content">
+				<div class="media-content">
+					<p class="label is-text">Alias: {{username}}</p>
+				</div>
 			</div>
-		</el-card>
+			<div class="content">
+				<b-field>
+					<label class="button is-text">Public Key:</label> 
+					<b-input id="pubkey" style="width:740px;" v-model="userpublickey" readonly="readonly"></b-input> 
+					<p class="control">
+						<button class="button" v-on:click="copypubkey"> 
+							<b-icon
+								pack="fas"
+								icon="copy"
+								size="is-small">
+							</b-icon> 
+						</button>
+					</p>
+				</b-field>
+			</div>
+		</div>
 
-		<span v-if="bhint"> Please go to options for Forgot Password to setup hint. </span>
+		<label class="is-text" v-if="bhint"> Please go to options for Forgot Password to setup hint. </label>
 
-		<br>Profile Info: <el-switch v-model="bprofileinfo"></el-switch>
-
-		<el-form ref="form" label-width="64px" v-if="bprofileinfo">
-			<el-form-item label="Alias">
-				<el-input style="width:400px;" v-model="pubname" placeholder="name" v-on:change="updateprofiledata('name',pubname)"></el-input>
-				<el-button v-on:click="access_pubkey('pubname')" icon="el-icon-plus" circle></el-button>
-			</el-form-item>
-			<el-form-item label="Born">
-				<el-input style="width:400px;" v-model="pubborn" placeholder="born" v-on:change="updateprofiledata('born',pubborn)"></el-input>
-				<el-button v-on:click="access_pubkey('pubborn')" icon="el-icon-plus" circle></el-button>
-			</el-form-item>
-			<el-form-item label="Education">
-				<el-input style="width:400px;" v-model="pubeducation" placeholder="education" v-on:change="updateprofiledata('education',pubeducation)"></el-input>
-				<el-button v-on:click="access_pubkey('pubeducation')" icon="el-icon-plus" circle></el-button>
-			</el-form-item>
-			<el-form-item label="Skills">
-				<el-input style="width:400px;" v-model="pubskills" placeholder="skills" v-on:change="updateprofiledata('skills',pubskills)"></el-input>
-				<el-button v-on:click="access_pubkey('pubskills')" icon="el-icon-plus" circle></el-button>
-			</el-form-item>
-		</el-form>
+		<br>
+		<div class="field">
+		<b-switch v-model="bprofileinfo">Profile Information</b-switch>
+		</div>
+		<section v-if="bprofileinfo">
+			<b-field>
+				<label class="button is-text">Alias</label>
+				<b-input style="width:400px;" v-model="pubname" placeholder="name" v-on:keyup.enter.native="updateprofiledata('name',pubname)"></b-input>
+				<button class="button" v-on:click="access_pubkey('pubname')">
+					<b-icon
+                	pack="fas"
+                	icon="user-plus"
+                	size="is-small">
+            		</b-icon>
+				</button>
+			</b-field>
+			<b-field>
+				<label class="button is-text">Born</label>
+				<b-input style="width:400px;" v-model="pubborn" placeholder="born" v-on:keyup.enter.native="updateprofiledata('born',pubborn)"></b-input>
+				<button class="button" v-on:click="access_pubkey('pubborn')">
+					<b-icon
+                	pack="fas"
+                	icon="user-plus"
+                	size="is-small">
+            		</b-icon>
+				</button>
+			</b-field>
+			<b-field>
+				<label class="button is-text">Education</label>
+				<b-input style="width:400px;" v-model="pubeducation" placeholder="education" v-on:keyup.enter.native="updateprofiledata('education',pubeducation)"></b-input>
+				<button class="button" v-on:click="access_pubkey('pubeducation')">
+					<b-icon
+                	pack="fas"
+                	icon="user-plus"
+                	size="is-small">
+            		</b-icon>
+				</button>
+			</b-field>
+			<b-field>
+				<label class="button is-text">Skills</label>
+				<b-input style="width:400px;" v-model="pubskills" placeholder="skills" v-on:keyup.enter.native="updateprofiledata('skills',pubskills)"></b-input>
+				<button class="button" v-on:click="access_pubkey('pubskills')">
+					<b-icon
+                	pack="fas"
+                	icon="user-plus"
+                	size="is-small">
+            		</b-icon>
+				</button>
+			</b-field>
+		</section>
 
     </div>
 </template>
@@ -71,8 +113,6 @@ export default {
 			if(!hint){
 				this.bhint = true;
 			}
-
-
 		}
 	},
 	methods:{
@@ -86,74 +126,60 @@ export default {
 			document.execCommand("Copy");  
 			/* Alert the copied text */
 			//alert("Copied the text: " + copyText.value);
-			this.$message({message:'Public Key Copy:' + copyText.value ,type: 'success',duration:800});
+			this.$toast.open({
+				message: 'Public Key Copy:' + copyText.value,
+				type: 'is-success'
+			});
 		},
 		updateprofiledata(value,key){
 			//console.log(value);
 			this.$root.user.get('profile').get(value).put(key,(ack)=>{
 				//console.log(ack);
 				if(ack.ok){
-					this.$message({message:'Update ' + value + '!',type: 'success',duration:800});
+					//this.$message({message:'Update ' + value + '!',type: 'success',duration:800});
+					this.$toast.open({
+                    	message: 'Update ' + value + '!',
+                    	type: 'is-success'
+                	});
 				}
 			});
 		},
 		async access_pubkey(event){
-			//console.log(event);
-			//console.log("test");
-			this.$prompt('Alias Public Key:', 'Tip', {
-				confirmButtonText: 'OK',
-				cancelButtonText: 'Cancel',
-			}).then(event => {
-				//console.log(event.value);
-
-				var pub = (event.value || '').trim();
-
-				if(!pub) {
-					this.$message('Empty!');
-					return 
-				}
-
-				var to = this.$root.$gun.user(pub);
-				;(async () => {
-					var who = await to.get('alias').then();
-
-					if(!who) {
-						this.$message({
-							type: 'warning',
-							message: 'Public key fail!'
-						});
+			this.$dialog.prompt({
+				message: 'Alias Public Key:',
+				inputAttrs: {
+					placeholder: 'e.g. xxx_xxxx.xxx'
+				},
+				onConfirm:(value)=>{
+					//console.log('value:',value);
+					//this.$toast.open(`Your name is: ${value}`);
+					var pub = (value || '').trim();
+					if(!pub) {
+						this.$toast.open('Empty!');
 						return;
 					}
-					//console.log(who);
-
-					this.grantaccess_user(who,to);
-				})();
-				
-			}).catch(() => {
-          		this.$message({
-            		type: 'info',
-            		message: 'Alias Public key canceled!'
-          		});       
-        	});
+					var to = this.$root.$gun.user(pub);
+					;(async () => {
+						var who = await to.get('alias').then();
+						if(!who) {
+							this.$toast.open({message:'Public key fail!',type:'is-warning'});
+							return;
+						}
+						//console.log(who);
+						this.grantaccess_user(who,to);
+					})();
+				}
+			});
 		},
 		grantaccess_user(who,to){
-			this.$confirm('Grant access Alias to ' + who + '?', 'Tip', {
-				confirmButtonText: 'OK',
-				cancelButtonText: 'Cancel',
-				type: 'warning',
-			}).then(event2 => {
-
-				//user.get('profile').get(event).grant(to);
-				this.$message({
-					type: 'success',
-					message: 'Grant completed'
-				});
-
-			}).catch(() => {
-				this.$message({
-					type: 'info',
-					message: 'Grant canceled!'
-				});       
+			this.$dialog.confirm({
+				message: 'Grant access Alias to ' + who + '?',
+				onConfirm:(value)=>{
+					this.$toast.open({message:'Access Grant!',type:'is-success'});
+				},
+				onCancel:()=>{
+					this.$toast.open({message:'Cancel Access!',type:'is-warning'});
+				}
 			});
 		}
     },

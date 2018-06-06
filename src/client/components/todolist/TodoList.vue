@@ -1,10 +1,12 @@
 <template>
 	<div>
+		
 		<BaseInputText 
 			v-model="newTodoText"
 			placeholder="New todo"
 			@keydown.enter.native="addTodo"
 		/>
+		
 		<div id="todolistscroll" style="overflow:auto;">
 			<ul v-if="todos.length">
 				<TodoListItem

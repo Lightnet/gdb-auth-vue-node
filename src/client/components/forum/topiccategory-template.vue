@@ -1,40 +1,48 @@
 <template>
 	<div>
-		<el-button type="primary" size="mini" @click="$emit('newpost')">New Topic</el-button>
-
-		<el-switch 
-			v-model="bforumlistselect"
-			active-text="Forum Public Key List"
-			>List</el-switch>
-		<div v-if="bforumlistselect">
-			<ForumList> </ForumList>
-		</div>
 		<div id="topicscroll" style="overflow-y:scroll;">
-			<el-card class="box-card" v-for="post in posts" :key="post.id" href="#">
-				<label v-if="!post.bedit"  v-on:click="$emit('topicview',post)" class="wrap"> {{ post.text }} </label>
-				<el-input v-if="post.bedit" v-model="post.text" v-on:change="$emit('topicchange',post)"></el-input>
-				<span style="float: right; padding: 3px 0">
-					<el-button type="primary" icon="el-icon-edit" @click="$emit('topicedit',post)" circle></el-button>
-					<el-button type="danger" icon="el-icon-delete" @click="$emit('topicdelete',post)" circle></el-button>
-				</span>
-			</el-card>
+			<div class="card" v-for="post in posts" :key="post.id" href="#">
+				<div class="card-content">
+					<div class="field is-grouped is-grouped-left">
+						<p class="control is-expanded">
+						<label class="label wrap" v-if="!post.bedit" v-on:click="$emit('topicview',post)"> {{ post.text }} </label>
+						<b-input type="textarea" v-if="post.bedit" v-model="post.text"  v-on:keyup.enter.native="$emit('topicchange',post)"></b-input>
+						</p>
+						<p class="control">
+							<button class="button is-primary" @click="$emit('topicedit',post)">
+								<b-icon
+									pack="fas"
+									icon="edit">
+								</b-icon>
+							</button>
+							<button class="button is-danger" @click="$emit('topicdelete',post)">
+								<b-icon
+									pack="fas"
+									icon="trash">
+								</b-icon>
+							</button>
+						</p>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </template>
 <script>
 import bus from '../../bus';
 
-import ForumList from './ForumList.vue';
-
 export default {
 	components: {
-		'ForumList':ForumList
+		//'ForumList':ForumList
 	},
-	props:['posts','topicpubkey'],
+	props:['posts','topicpubkey','forumdata'],
 	data() {
 		return{
 			topicidhandle:'topicscroll',
-			bforumlistselect:false,
+			//forumlist:[
+				//{id:'testsdf',name:'test'},
+				//{id:'testddf',name:'test2'},
+			//],
 			//bpost:false,
 			//mtopics: this.topics,
 		}
@@ -52,6 +60,8 @@ export default {
 			//console.log(window.innerHeight);
 			//console.log(document.getElementById(this.topicidhandle).clientHeight);
 			//document.getElementById(this.topicidhandle).clientHeight = window.innerHeight;//read only
+			if(!document.getElementById(this.topicidhandle))
+				return;
 			if(window.innerHeight > 300){
 				let scrollheight = window.innerHeight - 120;
 				document.getElementById(this.topicidhandle).style.height = scrollheight + 'px';

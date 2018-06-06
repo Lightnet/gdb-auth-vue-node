@@ -1,40 +1,44 @@
 <template>
 	<div>
-		<el-switch v-model="bchangepassword" active-text="Change Password"></el-switch>
+		<b-switch v-model="bchangepassword" style="width:760px;">Change Password</b-switch>
 
-		<el-form ref="form" label-width="128px" v-if="bchangepassword">
-			<el-form-item label="Current Password">
-				<el-input v-model="upassword" placeholder="Current Password"></el-input>
-			</el-form-item>
-			<el-form-item label="New Password">
-				<el-input v-model="unpassword" placeholder="New Password"></el-input>
-			</el-form-item>
-			<el-form-item>
-				<el-button type="primary" v-on:click="changepassword"> Change Password </el-button>
-			</el-form-item>
-		</el-form>
+		<section v-if="bchangepassword">
+			<b-field label="Current Password">
+				<b-input v-model="upassword" placeholder="Current Password" style="width:360px;"></b-input>
+			</b-field>
+			<b-field label="New Password">
+				<b-input v-model="unpassword" placeholder="New Password" style="width:360px;"></b-input>
+			</b-field>
+			<b-field>
+				<button class="button is-primary" v-on:click="changepassword"> Change Password </button>
+			</b-field>
+		</section>
 
-		<br><el-switch v-model="bhintpassword" active-text="Hint Password"></el-switch>
+		<br><b-switch v-model="bhintpassword">Hint Password</b-switch>
 
-		<el-form ref="form" label-width="128px" v-if="bhintpassword">
-			<el-form-item label="Q1">
-				<el-input v-model="q1" placeholder="Question 1"></el-input>
-			</el-form-item>
-			<el-form-item label="Q2">
-				<el-input v-model="q2" placeholder="Question 2"></el-input>
-			</el-form-item>
-			<el-form-item label="Hint">
-				<el-input v-model="hint" placeholder="Hint"></el-input>
-			</el-form-item>
-			<el-form-item>
-				<el-button type="primary" v-on:click="hintpassword_apply"> Apply </el-button>
-			</el-form-item>
-		</el-form>
+		<section v-if="bhintpassword">
+			<b-field label="Q1">
+				<b-input v-model="q1" placeholder="Question 1"></b-input>
+			</b-field>
+			<b-field label="Q2">
+				<b-input v-model="q2" placeholder="Question 2"></b-input>
+			</b-field>
+			<b-field label="Hint">
+				<b-input v-model="hint" placeholder="Hint" style="width:760px;"></b-input>
+			</b-field>
+			<b-field>
+				<button class="button is-primary" v-on:click="hintpassword_apply"> Apply </button>
+			</b-field>
+		</section>
+
+		<DatabaseOptions></DatabaseOptions>
 
     </div>
 </template>
 <script>
-import bus from '../../bus';
+//import bus from '../../bus';
+
+import DatabaseOptions from '../helpers/DataBaseOptions-template.vue';
 
 export default {
 	//props:['var'],
@@ -48,7 +52,10 @@ export default {
 			bchangepassword:false,
 			bhintpassword:false,
 		}
-    },
+	},
+	components:{
+		DatabaseOptions,
+	},
     async created(){
 		if(Gun.SEA == null){
 			Gun.SEA = SEA;
@@ -87,14 +94,20 @@ export default {
 				let user = this.$root.$gun.user();
 				//gun.user().auth(alias, old, cb, {change: newPass})
 				let self = this;
-				user.auth(user.is.alias,this.upassword,function(ack){
+				user.auth(user.is.alias,this.upassword,(ack)=>{
 					console.log(ack);
 					if(ack.err){
-						self.$message({message:'Auth Fail Passwordd!',type: 'warning',duration:800});
+						this.$toast.open({
+							message: 'Auth Fail Password!',
+							type: 'is-warning'
+						});
 						return;
 					}
 					if(ack.ack){
-						self.$message({message:'Update Password!',type: 'success',duration:800});
+						this.$toast.open({
+							message: 'Update Password!',
+							type: 'is-success'
+						});
 					}
 				},{change:this.unpassword});
 			}	
@@ -125,7 +138,10 @@ export default {
 			gun.user().get('hint').put(enc_hint,(ack)=>{
 				console.log(ack);
 				if(ack.ok){
-					this.$message({message:'Update Hint Password!',type: 'success',duration:800});
+					this.$toast.open({
+						message: 'Update Hint Password!',
+						type: 'is-success'
+					});
 				}
 			});
 			

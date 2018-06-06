@@ -1,44 +1,74 @@
 <template>
 	<div>
-        <el-form ref="form" label-width="92px">
-			<el-form-item label="Profile key">
-				<el-input style="width:760px;" v-model="pubkey" placeholder="profile key">
-				</el-input>
-				<el-button type="primary" size="mini" @click="addcontact">Add</el-button>
-				<label> Status: {{pubkeystatus}}</label>
-			</el-form-item>
-			<el-form-item label="Profile Info:">
-				<el-switch v-model="bprofileinfo"></el-switch>
-			</el-form-item>
+        <div class="container">
+			<b-field>
+				<label class="label">Profile Contact:</label>
+			</b-field>
+			<b-field>
+				<label class="button is-text">Public key:</label>
+				<b-input style="width:760px;" v-model="pubkey" placeholder="profile key">
+				</b-input>
+				<button class="button is-primary" @click="addcontact">Add</button>
+			</b-field>
+			<b-field>
+				<label class="label is-text">Status: {{pubkeystatus}}</label>
+			</b-field>
+			<b-field>
+				<b-switch v-model="bprofileinfo">Display information</b-switch>
+			</b-field>
 			<span v-if="bprofileinfo">
-			<el-form-item label="Name">
-				<el-input v-model="pubname" placeholder="name"> </el-input>
-			</el-form-item>
-			<el-form-item label="Born">
-				<el-input v-model="pborn" placeholder="born"> </el-input> 
-			</el-form-item>
-			<el-form-item label="Education">
-				<el-input v-model="peducation" placeholder="education"></el-input>
-			</el-form-item>
-			<el-form-item label="Skills">
-				<el-input v-model="pskills" placeholder="skills"></el-input> 
-			</el-form-item>
+			<b-field label="Name">
+				<b-input v-model="pubname" placeholder="name"  style="width:400px;"> </b-input>
+			</b-field>
+			<b-field label="Born">
+				<b-input v-model="pborn" placeholder="born"  style="width:400px;"> </b-input> 
+			</b-field>
+			<b-field label="Education">
+				<b-input v-model="peducation" placeholder="education"  style="width:400px;"></b-input>
+			</b-field>
+			<b-field label="Skills">
+				<b-input v-model="pskills" placeholder="skills"  style="width:400px;"></b-input> 
+			</b-field>
 			</span>
-		</el-form>
+		</div>
 
 		<div>
-			Contacts:
-			<div id="contactscroll" style="overflow:auto;">
-				<el-card style="width:800px;" class="box-card" v-for="item in contacts" :key="item.id">
-					<div slot="header" class="clearfix">
-						Alias Name: {{ item.alias }} 
-						<el-button style="float: right;" v-on:click="deletecontact(item)" type="danger" icon="el-icon-delete" circle></el-button> 
+			<label class="label is-text">Contacts:</label>
+			<div id="contactscroll"  class="container" style="overflow:auto;">
+
+				<div class="card" style="width:900px;border-style:solid;border-width:1px;" v-for="item in contacts" :key="item.id">
+					<header class="card-header">
+						<p class="card-header-title">
+							Alias: {{ item.alias }}
+						</p>
+
+						<a class="card-header-icon" style="float: right;" v-on:click="deletecontact(item)">
+							<b-icon
+								pack="fas"
+								icon="trash"
+								>
+							</b-icon>
+							</a>
+					</header>
+
+					<div class="content">
+						
+						<b-field>
+							<label class="button is-text">Public Key:</label>
+							<b-input :id="item.id" v-model="item.id" readonly="readonly" style="width:740px;"> </b-input>
+							<p class="control">
+								<button class="button" v-on:click="copypubkey(item.id)">
+									<b-icon
+										pack="far"
+										icon="copy"
+										>
+									</b-icon>
+								</button>
+							</p>
+						</b-field>
 					</div>
-					<div>
-					<el-button icon="el-icon-edit-outline"  v-on:click="copypubkey(item.id)" circle style="float: right;"></el-button>
-					Public Key:<el-input :id="item.id" v-model="item.id" readonly="readonly"> </el-input>
-					</div>
-				</el-card>
+				</div>
+
 			</div>
 		</div>
 
@@ -98,7 +128,11 @@ export default {
 			document.execCommand("Copy");  
 			/* Alert the copied text */
 			//alert("Copied the text: " + copyText.value);
-			this.$message({message:'Public Key Copy:' + copyText.value ,type: 'success',duration:800});
+			//this.$message({message:'Public Key Copy:' + copyText.value ,type: 'success',duration:800});
+			this.$toast.open({
+				message: 'Public Key Copy:' + copyText.value,
+				type: 'is-success'
+			});
 		},
 		async addcontact(){
 			let user = this.$root.$gun.user();
@@ -111,9 +145,13 @@ export default {
 			//console.log(this.pmusercheck);
 			if(!who.alias){ return }
 			user.get('contacts').get(pub).put({alias:who.alias});
-			this.$message({message:'Contacts Added!',type: 'success',duration:800});
+			//this.$message({message:'Contacts Added!',type: 'success',duration:800});
+			this.$toast.open({
+				message: 'Contacts Added!',
+				type: 'is-success'
+			});
 			//need to fix this. incase over lap copy
-			this.contacts.push({id:pub,alias:who.alias});
+			//this.contacts.push({id:pub,alias:who.alias});
 			//console.log('added contact!');
 		},
 		getpubkey:_.debounce(//typing key checks pub key string
@@ -137,11 +175,12 @@ export default {
 			let who = await to.then() || {};
 			this.pubkeystatus = 'Name: '+ who.alias || "User not found.";
 			if(!who.alias){ return }
+			console.log(who.alias);
 
 			to.get('profile').map().once((data,id)=>{
 				//console.log("profile");
-				//console.log(data);
-				//console.log(id);
+				console.log(data);
+				console.log(id);
 				if(id == 'name'){
 					this.pubname = data;
 				}
@@ -174,31 +213,25 @@ export default {
 			//console.log(event);
 			let user = this.$root.user;
 			let self = this;
-			//CKLj2fswWfmJKiSVHEhNCWQh-c9bHBWgh3I45lm3OJo.Flq2KgGaAOqptA09C8L_msnh4uu6NTZgKQuVswebKoE
+			
+			this.$dialog.confirm({
+				message: 'This will permanently delete the '+ event.alias  + '. Continue?',
+				onConfirm:(value)=>{
+					this.$toast.open({message:'Delete completed!',type:'is-success'});
 
-			this.$confirm('This will permanently delete the '+ event.alias  + '. Continue?', 'Warning', {
-				confirmButtonText: 'OK',
-				cancelButtonText: 'Cancel',
-				type: 'warning'
-			}).then(() => {
+					self.contacts = self.contacts.filter(contact => {
+						if(contact.id == event.id){
+							user.get('contacts').get(contact.id).put('null');
+						}
+						return contact.id !== event.id;
+					});
 
-				this.$message({
-					type: 'success',
-					message: 'Delete completed'
-				});
-
-				self.contacts = self.contacts.filter(contact => {
-					if(contact.id == event.id){
-						user.get('contacts').get(contact.id).put('null');
-					}
-					return contact.id !== event.id;
-				});
-			}).catch(() => {
-				this.$message({
-					type: 'info',
-					message: 'Delete canceled'
-				});          
+				},
+				onCancel:()=>{
+					this.$toast.open({message:'Cancel Delete!',type:'is-warning'});
+				}
 			});
+
 		},
     },
 	beforeDestroy() {

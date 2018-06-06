@@ -1,32 +1,32 @@
 <template id="create-template">
   	<div v-if="$root.blogin">
-		Debug: <el-switch v-model="bdebugpost"></el-switch>
+		Debug: <b-switch v-model="bdebugpost"></b-switch>
 		<div v-if="bdebugpost">
 		<label>Parent:{{pubname}}</label>
 		<br><label>public key:{{pubkey}}</label>
 		<br><label>Status Post:{{poststatus}}</label>
 		</div>
 		<br><label>Create Post</label>
-		<el-form ref="form" action="javascript:void(0);" v-if="bpost" label-width="120px" style="width:500px;">
-			<el-form-item label="Title">
+		<section ref="form" action="javascript:void(0);" v-if="bpost" label-width="120px" style="width:500px;">
+			<b-field label="Title">
 				<div class="col-sm-10">
-					<el-input placeholder="Post title Topic:" v-model="topictitle"></el-input>
+					<b-input placeholder="Post title Topic:" v-model="topictitle"></b-input>
 				</div>
-			</el-form-item>
-			<el-form-item  label="Body:">
+			</b-field>
+			<b-field  label="Body:">
 				<div class="col-sm-10">
-					<el-input type="textarea" rows="5" v-model="topiccontent"></el-input>
+					<b-input type="textarea" rows="5" v-model="topiccontent"></b-input>
 				</div>
-			</el-form-item>
-			<el-form-item>
-				<el-button size="mini" type="primary" @click="topicpost">Create</el-button>
-			</el-form-item>
-		</el-form>
+			</b-field>
+			<b-field>
+				<button class="button is-primary" @click="topicpost">Create</button>
+			</b-field>
+		</section>
   	</div>
 	<div v-else>
 		<br>
 		<center>
-			<el-button type="warning" icon="el-icon-warning" circle></el-button>
+			<button type="warning" icon="el-icon-warning" circle></button>
 			Please Login.
 		</center>
 	</div>
@@ -49,7 +49,7 @@ export default {
 	created(){
 		let gun = this.$root.user;
 		//let gun = this.$root.$gun;
-		this.gun_posts = gun.get('posts');
+		//this.gun_posts = gun.get('posts');
 
 		this.pubkey = this.$root.publickeypost;
 	},
@@ -84,42 +84,63 @@ export default {
 					posttitle:this.topictitle,
 					postcontent:this.topiccontent,
 					postdate: timestamp,
+					parent:'default',
 				}
 				//this.gun_posts.get("pulbic/"+user.pub).set(post);
 
-				if(this.pubkey){
-					//console.log("keyfound!");
-					let gun = this.$root.user;
-					gun.get(this.pubkey).set(post,function(ack){
-						//console.log(ack);
-						if(ack.err){
-							self.poststatus = 'Error Post!';
-							self.$message.error({message:'Error Post!',duration:800});
-						}
-						if(ack.ok){
-							self.poststatus = 'Posted!';
-							self.bpost = false;
-							self.$message({message:'Posted!',type: 'success',duration:800});
-						}
-						//clear public key
-						self.pubkey = '';
-						self.$root.publickeypost = '';
-					});
-				}else{
-					//console.log("default!");
-					this.gun_posts.set(post,function(ack){
-						//console.log(ack);
-						if(ack.err){
-							self.poststatus = 'Error Post!';
-							self.$message.error({message:'Error Post!',duration:800});
-						}
-						if(ack.ok){
-							self.poststatus = 'Posted!';
-							self.bpost = false;
-							self.$message({message:'Posted!',type: 'success',duration:800});
-						}
-					});
+				let gun = this.$root.$gun;
+				let forumdata = this.$root.forumdata;
+				//console.log(forumdata);
+				if(forumdata.access == 'public'){
+					if(this.pubkey){
+						//post from topic list
+						gun.get(this.pubkey).set(post,(ack)=>{
+							//console.log(ack);
+							if(ack.err){
+								self.poststatus = 'Error Post!';
+								//self.$message.error({message:'Error Post!',duration:800});
+								self.$toast.open({
+									message: 'Error Post!',
+									type: 'is-warning'
+								});
+							}
+							if(ack.ok){
+								self.poststatus = 'Posted!';
+								self.bpost = false;
+								//self.$message({message:'Posted!',type: 'success',duration:800});
+								self.$toast.open({
+									message: 'Posted!',
+									type: 'is-success'
+								});
+							}
+							//clear public key
+							self.pubkey = '';
+							self.$root.publickeypost = '';
+						});
+
+
+					}else{
+						//default
+						//post from topic level
+						gun.get(forumdata.key).get('topic').set(post,ack=>{
+							if(ack.err){
+								console.log('error!');
+								return;
+							}
+							console.log(ack);
+							if(ack.ok){
+								self.$toast.open({
+									message: 'Posted!',
+									type: 'is-success'
+								});
+							}
+						});
+					}
+
+					self.pubkey = '';
+					self.$root.publickeypost = '';
 				}
+
 			}
 
 			//this.bpost = false;

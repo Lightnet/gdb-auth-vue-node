@@ -14,11 +14,6 @@ var server = null;
 
 const commonModulejs = {
     rules: [
-        //{ test: /\.css$/, loader: 'style!css' },
-        //{
-            //test: /\.scss$/,
-            //loaders: ['style-loader', 'raw-loader', 'sass-loader']
-        //},
         {
             test:/\.css$/,
             use:['style-loader','css-loader']
@@ -62,9 +57,7 @@ const commonModulejs = {
         {
             test: /\.js$/,
             include: [
-                path.resolve(__dirname, 'src')//,
-                //path.resolve(__dirname, 'node_modules/lance-gg'),
-                //fs.realpathSync('./node_modules/lance-gg')
+                path.resolve(__dirname, 'src')
             ],
             loader: 'babel-loader',
             query: {
@@ -75,10 +68,9 @@ const commonModulejs = {
 }
 /* FRONT-END CONFIG */
 var frontWebpackConfig = {
-    //mode: "development",
-    mode: 'production',
+    mode: "development",
+    //mode: 'production',
     entry: ['babel-polyfill','./src/client/clientEntryPoint.js'],
-    //entry: ['./src/client/clientEntryPoint.js'],
     output: {
         path: path.join(__dirname, 'public'),
         filename: 'bundle.js'
@@ -92,11 +84,13 @@ var frontWebpackConfig = {
     module: commonModulejs,//1910
     plugins: [
         new webpack.DefinePlugin({
-            'process.env.NODE_ENV': '"production"'
+            //'process.env.NODE_ENV': '"production"'
+            'process.env.NODE_ENV': '"development"'
         }),
         //new webpack.optimize.ModuleConcatenationPlugin(),
-        new UglifyJsPlugin(),
-        new BundleAnalyzerPlugin(),
+        //new UglifyJsPlugin(),
+        //new BundleAnalyzerPlugin(),
+        /*
         new CompressionPlugin({
             asset: "[path].gz[query]",
             algorithm: "gzip",
@@ -104,6 +98,7 @@ var frontWebpackConfig = {
             threshold: 10240,
             minRatio: 0
         }),
+        */
     ],
 };
 

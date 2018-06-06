@@ -4,20 +4,18 @@
 		<TodoList/>
 	</div>
 	<div v-else>
-		<br>
-		<center>
-			<el-button type="warning" icon="el-icon-warning" circle></el-button>
-			Please Login.
-		</center>
+		<PleaseLogin/>
 	</div>
 </template>
 
 <script>
 import TodoList from './todolist/TodoList.vue'
+import PleaseLogin from './pleaselogin-template.vue';
 
 export default {
 	components: {
-		TodoList
+		TodoList,
+		PleaseLogin
 	}
 }
 </script>
