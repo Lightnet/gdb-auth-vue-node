@@ -8,14 +8,14 @@ Vue.config.productionTip = false
 
 import Element from 'element-ui'; // ui components
 //import 'element-ui/lib/theme-chalk/index.css'; //css
-//import './components/scss/element-variables.scss'; //css
+import './components/scss/element-variables.scss'; //css
 
 Vue.use(Element);
 
 import VueGun from 'vue-gun';
 
 //gun.js
-import Gun from 'gun';
+import Gun from 'gun/gun';
 import 'gun/sea';
 
 //custom chain gun.js
@@ -88,8 +88,7 @@ if(location.origin == 'http://localhost:3000'){
 }
 //console.log(peers);
 
-require('./test');
-
+//require('./test');
 
 //gun.on('hi', peer => {
 	//console.log('connect peer to',peer);
@@ -243,5 +242,8 @@ Vue.use(VueGun, {
 			}
 		},
 	});
+
+	//$("#loading").empty();//empty element html when finish loading javascript...
+	document.getElementById('loading').innerHTML = '';
 		
 //})()

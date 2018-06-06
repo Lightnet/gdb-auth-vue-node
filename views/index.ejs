@@ -50,23 +50,93 @@
         });
       };
       */
+
+      var req = new XMLHttpRequest();
+			req.addEventListener("progress", function(event) {
+				//console.log('??', event.lengthComputable);
+				if (event.lengthComputable) {
+					var percentComplete = (event.loaded / event.total) * 100;
+					percentComplete = Math.floor(percentComplete);
+					//console.log(percentComplete);
+					document.getElementById('percent').innerText = percentComplete + '%';
+					document.getElementById('progressbar').value = percentComplete;
+				} else {
+					// Unable to compute progress information since the total size is unknown
+					console.log("Unable to compute progress");
+				}
+			}, false);
+			// load responseText into a new script element
+			req.addEventListener("load", function(event) {
+				var e = event.target;
+				var s = document.createElement("script");
+				s.innerHTML = e.responseText;
+				// or: s[s.innerText!=undefined?"innerText":"textContent"] = e.responseText
+				document.documentElement.appendChild(s);
+
+				s.addEventListener("load", function() {
+					// this runs after the new script has been executed...
+					//init();
+				});
+				console.log("loaded");
+			}, false);
+
+			function transferFailed(event) {
+				console.log("An error occurred while transferring the file.");
+			}
+			req.addEventListener("error", transferFailed);
+			function transferCanceled(event) {
+				console.log("The transfer has been canceled by the user.");
+			}
+			req.addEventListener("abort", transferCanceled);
+			req.open("GET", "/bundle.js");
+			req.send();
+
+			function progressbar(event){
+				console.log("loading...");
+			}
+
+
     </script>
     <!-- import the webpage's stylesheet -->
     <!--
     <link rel="stylesheet" href="/style.css">
     -->
     <style>
-      
+      .loader {
+				border: 16px solid #f3f3f3;
+				border-radius: 50%;
+				border-top: 16px solid #3498db;
+				width: 120px;
+				height: 120px;
+				-webkit-animation: spin 2s linear infinite; /* Safari */
+				animation: spin 2s linear infinite;
+			}
+			/* Safari */
+			@-webkit-keyframes spin {
+				0% { -webkit-transform: rotate(0deg); }
+				100% { -webkit-transform: rotate(360deg); }
+			}
+			@keyframes spin {
+				0% { transform: rotate(0deg); }
+				100% { transform: rotate(360deg); }
+			}
     </style>
   </head>
   <body>
+    <div id="loading">
+        <div class="loader"></div>
+        <span id="percent"> </span> Loading App...
+        <br><progress id="progressbar" value="0" max="100"></progress>
+    </div>
     <div id="app"></div>
     <!-- include the Glitch button to show what the webpage is about and
           to make it easier for folks to view source and remix 
     <div class="glitchButton" style="position:fixed;top:20px;right:20px;"></div>
     <script src="https://button.glitch.me/button.js"></script>
     -->
-    <!-- import the webpage's client-side javascript file -->
-    <script src="/bundle.js"></script>
+    <!-- import the webpage's client-side javascript file
+      <script src="/bundle.js"></script>
+     -->
+
   </body>
 </html>
