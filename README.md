@@ -38,6 +38,7 @@
 # Notes:
  * Chat and Post are not yet public access yet.
  * You can check the example site link.
+ * File names are case sensitive for linux server.
 
 Project Links: (Work in progress.)
  * https://glitch.com/edit/#!/gdb-auth-vue-node Glitch Example Project Editor 

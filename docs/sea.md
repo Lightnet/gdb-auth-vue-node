@@ -106,7 +106,7 @@ gun.get('jh4wa2x2~qjbFKQnhE0gSsO9ylW-0AlEfcf9MZ2AUc0HnO__7Jzg.5XrlD8CuBE1Brr6Pju
 //set data for user create is current own this id room as other users can't write this.
 gun.get('jh4wa2x2~qjbFKQnhE0gSsO9ylW-0AlEfcf9MZ2AUc0HnO__7Jzg.5XrlD8CuBE1Brr6Pju4a5Fe2eQqzhp4uKNlWZErpNeA').put({name:'test4'});
 ```
-
+npm install node-webcrypto-ossl
 
 
 # Links:
