@@ -104,9 +104,22 @@ export default {
 			this.userpublickey = user.is.pub;
 
 			this.pubname = await user.get('profile').get('name').then();
+			//console.log(this.pubname);
+			this.pubname = await this.getprofilevar('name', this.pubname);
+
 			this.pubborn = await user.get('profile').get('born').then();
 			this.pubeducation = await user.get('profile').get('education').then();
 			this.pubskills = await user.get('profile').get('skills').then();
+
+			//console.log(user.pair().pub);
+
+			//let pkey = await user.get('trust').get(user.pair().pub).get('name'+'profile').then();
+			//var mix = await Gun.SEA.secret(await user.get('epub').then(), user.pair());
+			//let epub = await user.get('epub').then();
+			//pkey = await Gun.SEA.decrypt(pkey, mix);
+			//let val = await Gun.SEA.decrypt(this.pubname, pkey);
+			//console.log(val);
+
 
 			let hint = await user.get('hint').then();
 			//console.log(hint);
@@ -116,6 +129,18 @@ export default {
 		}
 	},
 	methods:{
+		async getprofilevar(_name,_value){
+			let user = this.$root.user;
+
+			let pkey = await user.get('trust').get(user.pair().pub).get(_name+'profile').then();
+			var mix = await Gun.SEA.secret(await user.get('epub').then(), user.pair());
+			let epub = await user.get('epub').then();
+			pkey = await Gun.SEA.decrypt(pkey, mix);
+			//console.log(pkey)
+			let val = await Gun.SEA.decrypt(_value, pkey);
+			//console.log(val)
+			return val || _value;
+		},
 		copypubkey(){
 			/* Get the text field */
 			var copyText = document.getElementById("pubkey");
@@ -131,10 +156,16 @@ export default {
 				type: 'is-success'
 			});
 		},
-		updateprofiledata(value,key){
+		async updateprofiledata(value,key){
 			//console.log(value);
-			this.$root.user.get('profile').get(value).put(key,(ack)=>{
-				//console.log(ack);
+			//this.$root.user.get('profile').get(value).put(key,(ack)=>{
+			//console.log(this.$root.user.get('profile').get(value));
+
+			let user = this.$root.user;
+			console.log(user);
+
+			user.get('profile').get(value).secret(key,(ack)=>{
+				console.log(ack);
 				if(ack.ok){
 					//this.$message({message:'Update ' + value + '!',type: 'success',duration:800});
 					this.$toast.open({
@@ -143,6 +174,12 @@ export default {
                 	});
 				}
 			});
+
+			//this.getprofilevar(key,value)
+
+			//let pkey = await user.get('trust').get(user.pair().pub).get(user.is.alias+'profile').then();
+			//console.log(pkey);
+
 		},
 		async access_pubkey(event){
 			this.$dialog.prompt({
@@ -166,15 +203,23 @@ export default {
 							return;
 						}
 						//console.log(who);
-						this.grantaccess_user(who,to);
+						this.grantaccess_user(who,to,event);
 					})();
 				}
 			});
 		},
-		grantaccess_user(who,to){
+		grantaccess_user(who,to,event){
+			console.log(event);
 			this.$dialog.confirm({
 				message: 'Grant access Alias to ' + who + '?',
 				onConfirm:(value)=>{
+					let user = this.$root.user;
+
+					if(event == 'pubname'){
+						console.log(user.get('profile').get('name'));
+						user.get('profile').get('name').grant(to);
+					}
+
 					this.$toast.open({message:'Access Grant!',type:'is-success'});
 				},
 				onCancel:()=>{

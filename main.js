@@ -26,7 +26,7 @@ app.use(function(req, res, next) {
     next();
 });
 
-app.use(Gun.serve);
+//app.use(Gun.serve);
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // we've started you off with Express, 
